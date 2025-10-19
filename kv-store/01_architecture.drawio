@@ -1,0 +1,105 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36" version="28.2.7">
+  <diagram name="Page-1" id="z_aroH6lkUC3TkP02nGX">
+    <mxGraphModel dx="1554" dy="822" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-4" value="Coordinator node" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="N77PFvMpFTcjrFDEWI0x-2" target="N77PFvMpFTcjrFDEWI0x-3" edge="1">
+          <mxGeometry x="0.1397" y="-22" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-2" value="&lt;strong data-end=&quot;594&quot; data-start=&quot;570&quot;&gt;Client / Application&lt;/strong&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="10" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-3" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="194" y="90" width="226" height="430" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-14" value="Locate Nodes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="N77PFvMpFTcjrFDEWI0x-5" target="N77PFvMpFTcjrFDEWI0x-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-5" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;HashRing&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="192.5" y="230" width="226" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-10" value="Apply Consistency Models" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" target="N77PFvMpFTcjrFDEWI0x-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="306" y="380" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-6" value="ReplicationManager" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="192.5" y="340" width="226" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-7" value="Consistent Config" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="194" y="480" width="223" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-36" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="N77PFvMpFTcjrFDEWI0x-8" target="N77PFvMpFTcjrFDEWI0x-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-37" value="Placement algorithm call" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="N77PFvMpFTcjrFDEWI0x-36" vertex="1" connectable="0">
+          <mxGeometry x="-0.0569" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-8" value="&lt;br&gt;KV-Service (API + Logic)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="230" y="90" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-15" value="Consistent Hash Ring (0 … n – 1)" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="607" y="110" width="393" height="393" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="N77PFvMpFTcjrFDEWI0x-22" target="N77PFvMpFTcjrFDEWI0x-24" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-22" value="&lt;div&gt;Node A&lt;/div&gt;&lt;div&gt;in-memory KV map&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="743.5" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="N77PFvMpFTcjrFDEWI0x-23" target="N77PFvMpFTcjrFDEWI0x-22" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-23" value="&lt;div&gt;Node D&lt;/div&gt;&lt;div&gt;in-memory KV map&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;rotation=90;" parent="1" vertex="1">
+          <mxGeometry x="590" y="270" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-28" value="Replication (R = 3)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="N77PFvMpFTcjrFDEWI0x-24" target="N77PFvMpFTcjrFDEWI0x-25" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-24" value="&lt;div&gt;Node B&lt;/div&gt;&lt;div&gt;in-memory KV map&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;rotation=90;" parent="1" vertex="1">
+          <mxGeometry x="900" y="270" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" parent="1" source="N77PFvMpFTcjrFDEWI0x-25" target="N77PFvMpFTcjrFDEWI0x-23" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-25" value="&lt;div&gt;Node C&lt;/div&gt;&lt;div&gt;in-memory KV map&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="743.5" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.014;entryY=0.533;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="N77PFvMpFTcjrFDEWI0x-5" target="N77PFvMpFTcjrFDEWI0x-15" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-27" value="&lt;div&gt;hash(key) → find node&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="N77PFvMpFTcjrFDEWI0x-26" vertex="1" connectable="0">
+          <mxGeometry x="-0.101" y="3" relative="1" as="geometry">
+            <mxPoint y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-34" value="&lt;div&gt;New node join → only neighbor reshuffled&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="950" y="143" width="90" height="77" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-38" value="VNode1" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="910" y="180" width="50" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-40" value="VNode2" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="650" y="180" width="50" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-41" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" target="N77PFvMpFTcjrFDEWI0x-22" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="670" y="180" as="sourcePoint" />
+            <mxPoint x="720" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="N77PFvMpFTcjrFDEWI0x-42" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" parent="1" source="N77PFvMpFTcjrFDEWI0x-24" target="N77PFvMpFTcjrFDEWI0x-38" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="790" y="250" as="sourcePoint" />
+            <mxPoint x="863.5" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
