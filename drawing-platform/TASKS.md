@@ -15,11 +15,11 @@ Each task implements one mechanism.
 
 ## Phase 2 — KV-store teaching artifact
 
-- [ ] Express the 60-second KV architecture as an editable board template.
-- [ ] Export a deterministic repository image.
-- [ ] Replace the KV README with the matching short explanation.
-- [ ] Correct quorum, replication, versioning, and repair terminology.
-- [ ] Test the template's educational content.
+- [x] Express the 60-second KV architecture as an editable board template.
+- [x] Export a deterministic repository image.
+- [x] Replace the KV README with the matching short explanation.
+- [x] Correct quorum, replication, versioning, and repair terminology.
+- [x] Test the template's educational content.
 
 ## Later mechanisms
 

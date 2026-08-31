@@ -8,6 +8,7 @@
   },
   "scripts": {
     "assets": "node scripts/copy-excalidraw-assets.mjs",
+    "generate:kv": "node scripts/generate-kv-template.mjs",
     "predev": "npm run assets",
     "dev": "concurrently --kill-others-on-fail --names api,web --prefix-colors magenta,cyan \"npm:dev:api\" \"npm:dev:web\"",
     "dev:api": "tsx watch server/index.ts",
@@ -15,7 +16,7 @@
     "prebuild": "npm run assets",
     "build": "npm run typecheck && vite build && tsc -p tsconfig.server.json",
     "start": "node dist-server/server/index.js",
-    "lint": "eslint src server shared tests vite.config.ts",
+    "lint": "eslint src server shared tests scripts vite.config.ts",
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.test.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"

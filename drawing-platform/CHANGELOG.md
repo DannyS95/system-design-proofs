@@ -14,3 +14,7 @@
 - Fastify board and template APIs backed by atomic JSON-file replacement.
 - Container packaging and tests for contracts, persistence, autosave, routes,
   local recovery, and stencils.
+- Editable KV-store teaching template with a deterministic, accessible SVG
+  export generated from the same 60-second learning model.
+- Concise KV-store documentation covering routing ownership, deterministic
+  placement, quorums, version siblings, temporary divergence, and repair.

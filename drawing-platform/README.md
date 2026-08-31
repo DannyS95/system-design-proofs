@@ -35,6 +35,12 @@ npm test
 npm run build
 ```
 
+Regenerate the checked-in KV-store template, importable board, and SVG together:
+
+```bash
+npm run generate:kv
+```
+
 ## What is included
 
 - Excalidraw's infinite canvas, shapes, connectors, drawing tools, history,
@@ -44,6 +50,8 @@ npm run build
 - JSON import/export plus SVG and PNG export
 - generic routing, service, distributed-data, systems, and hardware stencils
 - a template API for creating independent, reusable board copies
+- a tested [KV-store teaching board](./examples/kv-store.system-canvas.json)
+  matching the repository's [60-second SVG](../kv-store/architecture.svg)
 
 See [STACK.md](./STACK.md) for the technology decision and
 [DESIGN.md](./DESIGN.md) for the boundaries and invariants.

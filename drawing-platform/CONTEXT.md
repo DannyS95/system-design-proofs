@@ -15,6 +15,15 @@
   revisions in a loop or silently replaces newer local work.
 - Excalidraw loads its fonts and editor assets at runtime, so the production
   image copies and serves those assets instead of depending on a CDN.
+- The KV-store explanation became faster to scan when routing context was a
+  breadcrumb rather than the main architecture. The KV-owned path remains
+  client → coordinator → placement → replicas; failure and convergence share a
+  separate amber lane.
+- `R` and `W` name response and acknowledgment thresholds. Calling them simply
+  “reads” and “writes” obscures the mechanism and was rejected by the template
+  content test.
+- Generating the API template, importable board document, and SVG from one
+  script prevents the editable and repository views from drifting apart.
 
 ## Trade-offs
 
