@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node", "vitest/globals"],
+    "noEmit": true
+  },
+  "include": ["src", "server", "shared", "tests", "vite.config.ts"]
+}

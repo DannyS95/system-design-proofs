@@ -1,0 +1,10 @@
+.git
+.gitignore
+.data
+coverage
+dist
+dist-server
+node_modules
+public/excalidraw-assets
+*.log
+.DS_Store

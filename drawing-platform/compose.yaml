@@ -1,0 +1,30 @@
+services:
+  system-canvas:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      HOST: "${HOST:-0.0.0.0}"
+      PORT: "${PORT:-8787}"
+      SYSTEM_CANVAS_DATA_DIR: /app/.data
+    ports:
+      - "${PORT:-8787}:${PORT:-8787}"
+    volumes:
+      - system-canvas-data:/app/.data
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - >-
+          fetch('http://127.0.0.1:' + process.env.PORT + '/api/health')
+          .then((response) => { if (!response.ok) process.exit(1); })
+          .catch(() => process.exit(1))
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    init: true
+
+volumes:
+  system-canvas-data:
