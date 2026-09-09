@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import type { BoardDocument } from "../shared/contracts.js";
+import {
+  BOARD_SCHEMA_VERSION,
+  createEmptyScene,
+  type BoardDocument,
+} from "../shared/contracts.js";
 import {
   chooseNewestDocument,
   createLocalBoardStore,
@@ -22,13 +26,13 @@ class MemoryStorage {
 }
 
 const board = (updatedAt: string): BoardDocument => ({
-  schemaVersion: 1,
+  schemaVersion: BOARD_SCHEMA_VERSION,
   id: "board-one",
   name: "Board one",
   revision: 2,
   createdAt: "2026-01-01T00:00:00.000Z",
   updatedAt,
-  scene: { elements: [], appState: {}, files: {} },
+  scene: createEmptyScene(),
 });
 
 describe("local board store", () => {

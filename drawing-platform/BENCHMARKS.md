@@ -1,17 +1,20 @@
 # Benchmarks
 
-Measured on the phase-one implementation. These are development-machine
-observations, not service-level guarantees.
+Measured on the native SVG implementation with Node 20.17, Vite 6.4.3, and
+Vitest 3.2.7. These are development-machine observations, not service-level
+guarantees.
 
-| Metric | Environment | Result |
-| --- | --- | --- |
-| Production build | Node 20.17, Vite 6.4.3 | 20.43 s wall, 41 MiB `dist/` |
-| JavaScript output | Minified, source maps included separately | 7,767,674 bytes; 1,340.42 kB main entry (435.78 kB gzip) |
-| Editor runtime assets | Self-hosted Excalidraw fonts/assets | 14 MiB |
-| Test suite | Vitest 3.2.7, 31 tests | 0.90 s wall; 557 ms reported duration |
-| API health | Loopback, warm process | 2.39 ms observed |
-| API board list | Loopback, warm process | 0.65 ms observed |
+| Metric | Result |
+| --- | --- |
+| Typecheck + production build | 8.16 s wall; Vite build completed in 1.63 s |
+| HTML entry | 0.59 kB; 0.36 kB gzip |
+| Browser JavaScript | 271.44 kB; 82.86 kB gzip |
+| Browser CSS | 40.24 kB; 8.56 kB gzip |
+| JavaScript source map | 775.74 kB; development artifact, not runtime transfer |
+| Test suite | 15 files, 80 tests; 1.03 s reported duration |
+| Editor-specific external runtime assets | None; system icons are local SVG geometry |
 
-The build warns about chunks above 500 kB. That weight is primarily the editor
-engine and its lazy diagram/export integrations; code splitting is a later
-optimization, not a correctness claim for this scaffold.
+The React/TypeScript editor is part of the browser JavaScript bundle and renders
+ordinary SVG DOM nodes. It does not download a separate editor engine, font
+pack, or whiteboard asset tree. The current main chunk remains below Vite's
+500 kB warning threshold.

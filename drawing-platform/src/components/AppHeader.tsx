@@ -4,6 +4,7 @@ import {
   Cloud,
   CloudOff,
   Download,
+  Eye,
   LoaderCircle,
   Menu,
   Plus,
@@ -13,6 +14,7 @@ import {
 } from "lucide-react";
 
 export type PersistenceStatus =
+  | "preview"
   | "saved-locally"
   | "saving"
   | "synced"
@@ -40,6 +42,11 @@ interface StatusPresentation {
 }
 
 const STATUS_PRESENTATION: Record<PersistenceStatus, StatusPresentation> = {
+  preview: {
+    label: "Template preview",
+    detail: "This template is loaded temporarily. Use its plus button to create a saved board.",
+    icon: Eye,
+  },
   "saved-locally": {
     label: "Saved locally",
     detail: "This board is safe in your browser and waiting to sync.",

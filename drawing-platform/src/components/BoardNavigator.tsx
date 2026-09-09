@@ -26,8 +26,11 @@ export interface BoardNavigatorProps {
   boards: readonly BoardNavigationItem[];
   activeBoardId?: string;
   templates?: readonly TemplateNavigationItem[];
+  activeTemplateId?: string;
+  loadingTemplateId?: string;
   onSelectBoard: (boardId: string) => void;
   onCreateBoard: () => void;
+  onPreviewTemplate: (templateId: string) => void;
   onCreateFromTemplate: (templateId: string) => void;
   onRequestDelete: (board: BoardNavigationItem) => void;
   onClose?: () => void;
@@ -45,8 +48,11 @@ export function BoardNavigator({
   boards,
   activeBoardId,
   templates = [],
+  activeTemplateId,
+  loadingTemplateId,
   onSelectBoard,
   onCreateBoard,
+  onPreviewTemplate,
   onCreateFromTemplate,
   onRequestDelete,
   onClose,
@@ -185,31 +191,46 @@ export function BoardNavigator({
 
             <div className="template-list">
               {templates.map((template, index) => (
-                <button
-                  className="template-card"
-                  type="button"
+                <div
+                  className={`template-card${template.id === activeTemplateId ? " is-previewing" : ""}`}
                   key={template.id}
-                  onClick={() => onCreateFromTemplate(template.id)}
-                  disabled={isCreating}
                 >
-                  <span className={`template-card__preview template-card__preview--${(index % 3) + 1}`}>
-                    <i />
-                    <i />
-                    <i />
-                  </span>
-                  <span className="template-card__copy">
-                    <strong>{template.name}</strong>
-                    <small>{template.description}</small>
-                  </span>
-                  <Plus aria-hidden="true" />
-                </button>
+                  <button
+                    className="template-card__select"
+                    type="button"
+                    onClick={() => onPreviewTemplate(template.id)}
+                    disabled={isCreating || Boolean(loadingTemplateId)}
+                    aria-label={`Preview ${template.name} without saving`}
+                    aria-pressed={template.id === activeTemplateId}
+                  >
+                    <span className={`template-card__preview template-card__preview--${(index % 3) + 1}`}>
+                      <i />
+                      <i />
+                      <i />
+                    </span>
+                    <span className="template-card__copy">
+                      <strong>{template.name}</strong>
+                      <small>{template.description}</small>
+                    </span>
+                  </button>
+                  <button
+                    className="template-card__add"
+                    type="button"
+                    onClick={() => onCreateFromTemplate(template.id)}
+                    disabled={isCreating || Boolean(loadingTemplateId)}
+                    aria-label={`Add ${template.name} as a saved board`}
+                    title={`Add ${template.name} as a saved board`}
+                  >
+                    <Plus aria-hidden="true" />
+                  </button>
+                </div>
               ))}
             </div>
           </section>
         ) : null}
 
         <p className="side-panel__footnote">
-          Boards save locally first, so a dropped connection never stops the canvas.
+          Select a template to preview it. Use + to create a saved board.
         </p>
       </aside>
     </>

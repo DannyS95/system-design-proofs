@@ -3,6 +3,7 @@ import type {
   BoardSummary,
   CreateBoardInput,
   SaveBoardInput,
+  TemplateDefinition,
   TemplateSummary,
 } from "../../shared/contracts.js";
 
@@ -75,6 +76,12 @@ export const apiClient = {
       "/api/templates",
     );
     return result.templates;
+  },
+
+  getTemplate(templateId: string): Promise<TemplateDefinition> {
+    return request<TemplateDefinition>(
+      `/api/templates/${encodeURIComponent(templateId)}`,
+    );
   },
 
   getBoard(boardId: string): Promise<BoardDocument> {

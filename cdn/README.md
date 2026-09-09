@@ -1,55 +1,65 @@
-# CDN Architecture Overview
+# Content Delivery Network
 
-This document explains each element of the CDN design captured in `architecture_2.drawio.png`, outlining how requests flow through the system and what responsibilities each component carries.
+A CDN is a geographically distributed system that serves content from edge
+locations closer to users. It moves data toward demand instead of sending every
+request to one central origin.
 
-![CDN architecture](architecture_2.drawio.png)
+![CDN routing, edge-hit, miss, fill, and failover paths](./system-canvas.png)
 
-## Request Lifecycle
-- A user request starts at the **Client Application**, which reaches out to the CDN for content.
-- The **Request Routing System** (DNS, Anycast, or HTTP redirection) steers the request toward the most appropriate edge location based on proximity and load.
-- An **Edge Proxy / Point-of-Presence (PoP)** attempts to serve the object from cache, optionally checking neighboring peers before escalating to the origin.
-- If the object is missing, the **Origin Servers** supply the definitive version, either directly to the proxy (pull) or via the distribution pipeline (push).
-- The **Distribution System** disseminates updates from origins to proxies, while the **Management System** observes the entire fleet and feeds routing decisions with real-time health metrics.
+[Open the editable System Canvas board](../drawing-platform/examples/cdn.system-canvas.json).
 
-## Component Responsibilities
+## Problem
 
-### Client Application / Browser
-- Entry point for user traffic; issues `/requestContent` calls to the CDN.
-- Receives cached responses directly from nearby edge proxies, minimizing round-trips to origins.
+A single origin becomes a latency bottleneck, repeats the same long-distance
+transfer, and creates one large failure point. A CDN protects the origin by
+letting edge proxies answer repeated requests.
 
-### Request Routing System
-- Directs users to the optimal PoP using DNS mapping, Anycast advertisements, or HTTP redirects.
-- Consumes health and capacity signals from the management plane to avoid degraded nodes.
-- Outputs the edge proxy endpoint that should handle the client’s next hop.
+## Core invariant
 
-### Edge Proxy Servers / PoPs
-- Core caching tier that stores, serves, and refreshes content close to users.
-- Exposes APIs such as `/retrieveContent`, `/searchContent`, `/updateContent`, and `/deleteContent` to fetch or manage objects.
-- Reports usage, cache hit rates, and health data back to the management system.
-- Receives push updates from the distribution system to keep replicas current.
+> Route each request to a healthy edge that can answer quickly, preferably from
+> content already cached there.
 
-### Origin Servers
-- Source of truth for all assets; maintains versioning and consistency.
-- Supports `/retrieveContent` (pull model) and `/deliverContent` (push model) interactions.
-- Supplies content when caches miss or distribution needs to seed new objects.
+“Close” means a good network path, not simply geographic distance. Routing
+considers path latency, available capacity, health, and whether the object is
+already cached. Load means growing queues, memory pressure, or a network link
+nearing its limit—not CPU usage alone.
 
-### Distribution System
-- Propagates fresh content from origins to PoPs, preventing cache drift.
-- Listens for `/deliverContent` events, then replicates objects to edge nodes.
-- Reduces load on origins by pre-warming caches and enabling push-based updates.
+## Components
 
-### Management System
-- Control plane that aggregates telemetry from proxies (traffic, cache hits, errors).
-- Feeds routing decisions with availability and load metrics.
-- Generates operational reports and orchestrates configuration updates for the fleet.
+- **Client:** asks for an object.
+- **Global routing:** chooses a point of presence (PoP).
+- **PoP:** a facility at one location containing multiple machines.
+- **Edge proxy/cache:** the machine that receives the request and stores copies.
+- **Parent cache:** an optional intermediate proxy/cache protecting the origin.
+- **Origin:** authoritative content source.
+- **Control and placement system:** chooses push or pull placement, distributes
+  policy, and observes health.
 
-### Peer Sync (Optional)
-- Allows peers within the same PoP to share objects via `/searchContent` and `/updateContent`.
-- Improves cache hit ratios by checking sibling caches before reaching the origin.
-- Reduces origin load and latency for hot or region-specific content.
+A CDN contains caches, but it is more than a cache: it also performs global
+routing, placement, failover, and traffic absorption.
 
-## Operational Notes
-- Combine push and pull models to balance freshness and on-demand scalability.
-- Continuous telemetry from proxies enables adaptive routing and capacity planning.
-- Optional peer synchronization is most valuable in high-traffic PoPs where objects replicate quickly across nodes.
-- Component-level trade-offs live in `trade-offs.md`.
+## Request paths
+
+```text
+hit
+client → global routing → PoP → edge proxy → cache HIT
+       → return object directly to client
+
+miss with a parent cache
+edge MISS → optional parent
+parent HIT  → fill edge → return object to client
+parent MISS → origin → fill parent + edge → return object to client
+
+miss without a parent cache
+edge MISS → origin → fill edge → return object to client
+
+failure
+selected PoP unhealthy → global routing → alternate healthy PoP
+```
+
+Every extra hop adds latency and system cost. The origin should be the exception
+path, not the normal path.
+
+See [trade-offs](./trade-offs.md) for push/pull placement, storage tiers, and
+failure behavior. The older draw.io source remains at
+[`architecture_2.drawio`](./architecture_2.drawio).

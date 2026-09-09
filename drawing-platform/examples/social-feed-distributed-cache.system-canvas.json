@@ -1,0 +1,1837 @@
+{
+  "schemaVersion": 2,
+  "id": "social-feed-distributed-cache",
+  "name": "Social Feed — Distributed Cache",
+  "revision": 0,
+  "createdAt": "2026-09-02T00:00:00.000Z",
+  "updatedAt": "2026-09-02T00:00:00.000Z",
+  "scene": {
+    "elements": [
+      {
+        "id": "design-contract",
+        "type": "shape",
+        "x": 80,
+        "y": 150,
+        "width": 1900,
+        "height": 92,
+        "rotation": 0,
+        "style": {
+          "fill": "#fbfaf6",
+          "stroke": "#087e8b",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#2563eb"
+        },
+        "shape": "rectangle",
+        "label": "WORKLOAD + GUARANTEE · READ-HEAVY FEED · BRIEF STALENESS IS ACCEPTABLE",
+        "fontSize": 22,
+        "locked": false
+      },
+      {
+        "id": "level-1",
+        "type": "shape",
+        "x": 80,
+        "y": 690,
+        "width": 2100,
+        "height": 100,
+        "rotation": 0,
+        "style": {
+          "fill": "#e8efff",
+          "stroke": "#2563eb",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#2563eb"
+        },
+        "shape": "rectangle",
+        "label": "FEED READ · HIT RETURNS FROM RAM · MISS RESUMES IN THE FEED API",
+        "fontSize": 22,
+        "locked": false
+      },
+      {
+        "id": "mechanism-db-fallback",
+        "type": "shape",
+        "x": 80,
+        "y": 1230,
+        "width": 930,
+        "height": 86,
+        "rotation": 0,
+        "style": {
+          "fill": "#fff1da",
+          "stroke": "#bd6212",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#bd6212"
+        },
+        "shape": "rectangle",
+        "label": "MISS PATH · DATABASE FALLBACK, THEN CACHE REFILL",
+        "fontSize": 22,
+        "locked": false
+      },
+      {
+        "id": "level-2",
+        "type": "shape",
+        "x": 80,
+        "y": 1890,
+        "width": 2100,
+        "height": 100,
+        "rotation": 0,
+        "style": {
+          "fill": "#e9f7ed",
+          "stroke": "#15803d",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "shape": "rectangle",
+        "label": "KEY PLACEMENT + REPLICATION · HASH CHOOSES SHARD · HEALTHY REPLICA SERVES IT",
+        "fontSize": 22,
+        "locked": false
+      },
+      {
+        "id": "mechanism-sharding",
+        "type": "shape",
+        "x": 80,
+        "y": 2080,
+        "width": 700,
+        "height": 86,
+        "rotation": 0,
+        "style": {
+          "fill": "#f1ebff",
+          "stroke": "#7c3aed",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#7c3aed"
+        },
+        "shape": "rectangle",
+        "label": "SHARDING · MORE SHARDS ADD CACHE RAM",
+        "fontSize": 22,
+        "locked": false
+      },
+      {
+        "id": "mechanism-replication",
+        "type": "shape",
+        "x": 1650,
+        "y": 2080,
+        "width": 1350,
+        "height": 86,
+        "rotation": 0,
+        "style": {
+          "fill": "#e9f7ed",
+          "stroke": "#15803d",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "shape": "rectangle",
+        "label": "REPLICATION · COPIES KEEP ONE SHARD AVAILABLE",
+        "fontSize": 22,
+        "locked": false
+      },
+      {
+        "id": "replica-set-b",
+        "type": "shape",
+        "x": 1550,
+        "y": 2240,
+        "width": 1900,
+        "height": 650,
+        "rotation": 0,
+        "style": {
+          "fill": "#f7fcf8",
+          "stroke": "#15803d",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "shape": "rectangle",
+        "locked": false
+      },
+      {
+        "id": "level-3",
+        "type": "shape",
+        "x": 80,
+        "y": 3150,
+        "width": 2100,
+        "height": 100,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffe9e6",
+          "stroke": "#d84b43",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#d84b43"
+        },
+        "shape": "rectangle",
+        "label": "WRITE POLICY · DATABASE FIRST → INVALIDATE CACHE → NEXT READ REFILLS",
+        "fontSize": 22,
+        "locked": false
+      },
+      {
+        "id": "write-request-step",
+        "type": "shape",
+        "x": 100,
+        "y": 3430,
+        "width": 400,
+        "height": 100,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#15803d",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "shape": "rectangle",
+        "label": "1 · WRITE REQUEST",
+        "fontSize": 20,
+        "locked": false
+      },
+      {
+        "id": "write-database-step",
+        "type": "shape",
+        "x": 800,
+        "y": 3430,
+        "width": 400,
+        "height": 100,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#15803d",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "shape": "rectangle",
+        "label": "2 · UPDATE DATABASE",
+        "fontSize": 20,
+        "locked": false
+      },
+      {
+        "id": "invalidate-key-step",
+        "type": "shape",
+        "x": 1500,
+        "y": 3430,
+        "width": 400,
+        "height": 100,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#15803d",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "shape": "rectangle",
+        "label": "3 · INVALIDATE CACHE KEY",
+        "fontSize": 20,
+        "locked": false
+      },
+      {
+        "id": "next-read-miss-step",
+        "type": "shape",
+        "x": 2200,
+        "y": 3430,
+        "width": 400,
+        "height": 100,
+        "rotation": 0,
+        "style": {
+          "fill": "#fff1da",
+          "stroke": "#bd6212",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#bd6212"
+        },
+        "shape": "rectangle",
+        "label": "4 · NEXT READ MISSES",
+        "fontSize": 20,
+        "locked": false
+      },
+      {
+        "id": "database-refill-step",
+        "type": "shape",
+        "x": 2900,
+        "y": 3430,
+        "width": 400,
+        "height": 100,
+        "rotation": 0,
+        "style": {
+          "fill": "#e9f7ed",
+          "stroke": "#15803d",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "shape": "rectangle",
+        "label": "5 · DATABASE → REFILL",
+        "fontSize": 20,
+        "locked": false
+      },
+      {
+        "id": "mechanism-memory-policy",
+        "type": "shape",
+        "x": 80,
+        "y": 4070,
+        "width": 2100,
+        "height": 100,
+        "rotation": 0,
+        "style": {
+          "fill": "#fff1da",
+          "stroke": "#bd6212",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#bd6212"
+        },
+        "shape": "rectangle",
+        "label": "MEMORY + FAILURE + PROOF · TTL/LFU · REPLICA FALLBACK · HOT KEYS · METRICS",
+        "fontSize": 22,
+        "locked": false
+      },
+      {
+        "id": "client-to-api",
+        "type": "connector",
+        "x": 400,
+        "y": 990,
+        "width": 250,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#2563eb",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#2563eb"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            250,
+            0
+          ]
+        ],
+        "label": "feed request",
+        "fontSize": 20,
+        "startBinding": "user-client",
+        "endBinding": "feed-api",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "api-to-cache-client",
+        "type": "connector",
+        "x": 990,
+        "y": 990,
+        "width": 260,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#2563eb",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#2563eb"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            260,
+            0
+          ]
+        ],
+        "label": "lookup feed key",
+        "fontSize": 20,
+        "startBinding": "feed-api",
+        "endBinding": "cache-client",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "cache-client-to-hash",
+        "type": "connector",
+        "x": 1700,
+        "y": 990,
+        "width": 250,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#7c3aed",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#7c3aed"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            250,
+            0
+          ]
+        ],
+        "label": "place key",
+        "fontSize": 20,
+        "startBinding": "cache-client",
+        "endBinding": "hash-key",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "hash-to-shard",
+        "type": "connector",
+        "x": 2250,
+        "y": 990,
+        "width": 250,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#7c3aed",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#7c3aed"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            250,
+            0
+          ]
+        ],
+        "label": "owning range",
+        "fontSize": 20,
+        "startBinding": "hash-key",
+        "endBinding": "owning-shard",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "shard-to-replica",
+        "type": "connector",
+        "x": 2820,
+        "y": 990,
+        "width": 250,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            250,
+            0
+          ]
+        ],
+        "label": "healthy replica",
+        "fontSize": 20,
+        "startBinding": "owning-shard",
+        "endBinding": "healthy-replica",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "hit-to-api",
+        "type": "connector",
+        "x": 820,
+        "y": 830,
+        "width": 2440,
+        "height": 70,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
+            2440,
+            60
+          ],
+          [
+            2440,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            70
+          ]
+        ],
+        "label": "HIT · FEED FROM RAM → FEED API",
+        "fontSize": 20,
+        "startBinding": "healthy-replica",
+        "endBinding": "feed-api",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "hit-api-to-client",
+        "type": "connector",
+        "x": 250,
+        "y": 1080,
+        "width": 570,
+        "height": 80,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
+            570,
+            0
+          ],
+          [
+            570,
+            80
+          ],
+          [
+            0,
+            80
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "label": "RETURN FEED",
+        "fontSize": 20,
+        "startBinding": "feed-api",
+        "endBinding": "user-client",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "replica-miss-to-api",
+        "type": "connector",
+        "x": 3000,
+        "y": 1090,
+        "width": 370,
+        "height": 310,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#bd6212",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#bd6212"
+        },
+        "points": [
+          [
+            370,
+            0
+          ],
+          [
+            370,
+            200
+          ],
+          [
+            0,
+            200
+          ],
+          [
+            0,
+            310
+          ]
+        ],
+        "label": "MISS · RESUME IN FEED API",
+        "fontSize": 20,
+        "startBinding": "healthy-replica",
+        "endBinding": "miss-api",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "api-reads-db",
+        "type": "connector",
+        "x": 2020,
+        "y": 1470,
+        "width": 680,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#bd6212",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#bd6212"
+        },
+        "points": [
+          [
+            680,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "label": "MISS · READ DATABASE",
+        "fontSize": 20,
+        "startBinding": "miss-api",
+        "endBinding": "authoritative-db",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "db-result-to-api",
+        "type": "connector",
+        "x": 2020,
+        "y": 1570,
+        "width": 680,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#bd6212",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#bd6212"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            680,
+            0
+          ]
+        ],
+        "label": "DATABASE RESULT → FEED API",
+        "fontSize": 20,
+        "startBinding": "authoritative-db",
+        "endBinding": "miss-api",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "api-refills-cache",
+        "type": "connector",
+        "x": 3200,
+        "y": 1090,
+        "width": 110,
+        "height": 310,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 3.5,
+          "strokeStyle": "dashed",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
+            0,
+            310
+          ],
+          [
+            0,
+            120
+          ],
+          [
+            110,
+            120
+          ],
+          [
+            110,
+            0
+          ]
+        ],
+        "label": "REFILL VALUE + TTL",
+        "fontSize": 20,
+        "startBinding": "miss-api",
+        "endBinding": "healthy-replica",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "miss-api-to-client",
+        "type": "connector",
+        "x": 40,
+        "y": 990,
+        "width": 2960,
+        "height": 750,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#bd6212",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#bd6212"
+        },
+        "points": [
+          [
+            2960,
+            640
+          ],
+          [
+            2960,
+            750
+          ],
+          [
+            0,
+            750
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            60,
+            0
+          ]
+        ],
+        "label": "FEED API RETURNS DATABASE RESULT",
+        "fontSize": 20,
+        "startBinding": "miss-api",
+        "endBinding": "user-client",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "ring-to-a",
+        "type": "connector",
+        "x": 550,
+        "y": 2285,
+        "width": 300,
+        "height": 65,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#66717d",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#66717d"
+        },
+        "points": [
+          [
+            0,
+            65
+          ],
+          [
+            100,
+            65
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            300,
+            0
+          ]
+        ],
+        "label": "RANGE A",
+        "fontSize": 20,
+        "startBinding": "hash-ring",
+        "endBinding": "shard-a",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "ring-to-b",
+        "type": "connector",
+        "x": 550,
+        "y": 2410,
+        "width": 300,
+        "height": 165,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            140,
+            0
+          ],
+          [
+            140,
+            165
+          ],
+          [
+            300,
+            165
+          ]
+        ],
+        "label": "RANGE B · SELECTED",
+        "fontSize": 20,
+        "startBinding": "hash-ring",
+        "endBinding": "shard-b",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "ring-to-c",
+        "type": "connector",
+        "x": 550,
+        "y": 2470,
+        "width": 300,
+        "height": 395,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#66717d",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#66717d"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            80,
+            0
+          ],
+          [
+            80,
+            395
+          ],
+          [
+            300,
+            395
+          ]
+        ],
+        "label": "RANGE C",
+        "fontSize": 20,
+        "startBinding": "hash-ring",
+        "endBinding": "shard-c",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "shard-b-to-selected-replica",
+        "type": "connector",
+        "x": 1210,
+        "y": 2575,
+        "width": 490,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            490,
+            0
+          ]
+        ],
+        "label": "SELECT HEALTHY REPLICA",
+        "fontSize": 20,
+        "startBinding": "shard-b",
+        "endBinding": "replica-b-primary",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "replicate-to-peer-1",
+        "type": "connector",
+        "x": 2100,
+        "y": 2560,
+        "width": 200,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            200,
+            0
+          ]
+        ],
+        "label": "SAME SHARD DATA",
+        "fontSize": 20,
+        "startBinding": "replica-b-primary",
+        "endBinding": "replica-b-peer-1",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "replicate-to-peer-2",
+        "type": "connector",
+        "x": 2700,
+        "y": 2560,
+        "width": 200,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            200,
+            0
+          ]
+        ],
+        "label": "SAME SHARD DATA",
+        "fontSize": 20,
+        "startBinding": "replica-b-peer-1",
+        "endBinding": "replica-b-peer-2",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "write-request-to-database",
+        "type": "connector",
+        "x": 500,
+        "y": 3480,
+        "width": 300,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            300,
+            0
+          ]
+        ],
+        "startBinding": "write-request-step",
+        "endBinding": "write-database-step",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "database-to-invalidation",
+        "type": "connector",
+        "x": 1200,
+        "y": 3480,
+        "width": 300,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            300,
+            0
+          ]
+        ],
+        "startBinding": "write-database-step",
+        "endBinding": "invalidate-key-step",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "invalidation-to-next-miss",
+        "type": "connector",
+        "x": 1900,
+        "y": 3480,
+        "width": 300,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#bd6212",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#bd6212"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            300,
+            0
+          ]
+        ],
+        "startBinding": "invalidate-key-step",
+        "endBinding": "next-read-miss-step",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "next-miss-to-database-refill",
+        "type": "connector",
+        "x": 2600,
+        "y": 3480,
+        "width": 300,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            300,
+            0
+          ]
+        ],
+        "startBinding": "next-read-miss-step",
+        "endBinding": "database-refill-step",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "contract-workload",
+        "type": "system",
+        "x": 100,
+        "y": 330,
+        "width": 700,
+        "height": 200,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#2563eb",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "client",
+        "title": "Workload",
+        "subtitle": "about 500,000 active users · reads greatly outnumber writes",
+        "body": "Repeated feed reads create locality; trending posts create hot keys.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "client",
+        "locked": false
+      },
+      {
+        "id": "contract-target",
+        "type": "system",
+        "x": 950,
+        "y": 330,
+        "width": 700,
+        "height": 200,
+        "rotation": 0,
+        "style": {
+          "fill": "#e4f6f7",
+          "stroke": "#087e8b",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "telemetry",
+        "title": "Success",
+        "subtitle": "cache hit ratio ≥ 91% · database fallback ≤ 9% · low p99",
+        "body": "Most feed requests should terminate in RAM rather than reaching the database.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "observability",
+        "locked": false
+      },
+      {
+        "id": "contract-consistency",
+        "type": "system",
+        "x": 1800,
+        "y": 330,
+        "width": 700,
+        "height": 200,
+        "rotation": 0,
+        "style": {
+          "fill": "#e9f7ed",
+          "stroke": "#15803d",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "policy-gate",
+        "title": "Consistency choice",
+        "subtitle": "brief staleness is acceptable",
+        "body": "Speed is prioritized; the database remains authoritative.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "service",
+        "locked": false
+      },
+      {
+        "id": "contract-failure",
+        "type": "system",
+        "x": 2650,
+        "y": 330,
+        "width": 700,
+        "height": 200,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffe9e6",
+          "stroke": "#d84b43",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "fallback",
+        "title": "Failure rule",
+        "subtitle": "cache loss hurts speed, not correctness",
+        "body": "A failed lookup becomes a database fallback and later refill.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "warning",
+        "locked": false
+      },
+      {
+        "id": "user-client",
+        "type": "system",
+        "x": 100,
+        "y": 900,
+        "width": 300,
+        "height": 180,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#2563eb",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "client",
+        "title": "User / client",
+        "subtitle": "asks for a feed",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "client",
+        "locked": false
+      },
+      {
+        "id": "feed-api",
+        "type": "system",
+        "x": 650,
+        "y": 900,
+        "width": 340,
+        "height": 180,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#2563eb",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "application-server",
+        "title": "Feed API",
+        "subtitle": "application service",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "service",
+        "locked": false
+      },
+      {
+        "id": "cache-client",
+        "type": "system",
+        "x": 1250,
+        "y": 890,
+        "width": 450,
+        "height": 200,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#7c3aed",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "data-router",
+        "title": "Cache client + key routing",
+        "subtitle": "code inside the Feed API",
+        "body": "Builds the feed key and chooses its cache shard.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "routing",
+        "locked": false
+      },
+      {
+        "id": "hash-key",
+        "type": "system",
+        "x": 1950,
+        "y": 900,
+        "width": 300,
+        "height": 180,
+        "rotation": 0,
+        "style": {
+          "fill": "#f1ebff",
+          "stroke": "#7c3aed",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "hash-ring",
+        "title": "hash(key)",
+        "subtitle": "stable placement",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "routing",
+        "locked": false
+      },
+      {
+        "id": "owning-shard",
+        "type": "system",
+        "x": 2500,
+        "y": 900,
+        "width": 320,
+        "height": 180,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#15803d",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "partition",
+        "title": "Owning shard B",
+        "subtitle": "owns this key range",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "cache",
+        "locked": false
+      },
+      {
+        "id": "healthy-replica",
+        "type": "system",
+        "x": 3070,
+        "y": 890,
+        "width": 380,
+        "height": 204,
+        "rotation": 0,
+        "style": {
+          "fill": "#e9f7ed",
+          "stroke": "#15803d",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "cache",
+        "title": "Selected healthy replica",
+        "subtitle": "temporary feed value in RAM",
+        "body": "A HIT ends the cache lookup here.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "cache",
+        "locked": false
+      },
+      {
+        "id": "authoritative-db",
+        "type": "system",
+        "x": 1500,
+        "y": 1400,
+        "width": 520,
+        "height": 230,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#d84b43",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "database",
+        "title": "Authoritative database",
+        "subtitle": "durable original data",
+        "body": "Correctness stays here; cached values are disposable copies.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "database",
+        "locked": false
+      },
+      {
+        "id": "miss-api",
+        "type": "system",
+        "x": 2700,
+        "y": 1400,
+        "width": 600,
+        "height": 230,
+        "rotation": 0,
+        "style": {
+          "fill": "#fff1da",
+          "stroke": "#bd6212",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "application-server",
+        "title": "Same Feed API request",
+        "subtitle": "cache returned MISS",
+        "body": "MISS means absent, expired, evicted, or no replica available.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "service",
+        "locked": false
+      },
+      {
+        "id": "hash-ring",
+        "type": "system",
+        "x": 120,
+        "y": 2290,
+        "width": 430,
+        "height": 240,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#7c3aed",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "hash-ring",
+        "title": "Consistent hash",
+        "subtitle": "hash(key) → one shard",
+        "body": "Adding or losing a node moves only nearby key ranges.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "routing",
+        "locked": false
+      },
+      {
+        "id": "shard-a",
+        "type": "system",
+        "x": 850,
+        "y": 2190,
+        "width": 360,
+        "height": 190,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#66717d",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "partition",
+        "title": "Shard A",
+        "subtitle": "different key range",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "cache",
+        "locked": false
+      },
+      {
+        "id": "shard-b",
+        "type": "system",
+        "x": 850,
+        "y": 2480,
+        "width": 360,
+        "height": 190,
+        "rotation": 0,
+        "style": {
+          "fill": "#e9f7ed",
+          "stroke": "#15803d",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "partition",
+        "title": "Shard B",
+        "subtitle": "selected key range",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "cache",
+        "locked": false
+      },
+      {
+        "id": "shard-c",
+        "type": "system",
+        "x": 850,
+        "y": 2770,
+        "width": 360,
+        "height": 190,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#66717d",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "partition",
+        "title": "Shard C",
+        "subtitle": "different key range",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "cache",
+        "locked": false
+      },
+      {
+        "id": "replica-b-primary",
+        "type": "system",
+        "x": 1700,
+        "y": 2440,
+        "width": 400,
+        "height": 240,
+        "rotation": 0,
+        "style": {
+          "fill": "#e9f7ed",
+          "stroke": "#15803d",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "cache",
+        "title": "Shard B",
+        "subtitle": "replica 1 · healthy · selected",
+        "body": "Serves this read from RAM.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "cache",
+        "locked": false
+      },
+      {
+        "id": "replica-b-peer-1",
+        "type": "system",
+        "x": 2300,
+        "y": 2440,
+        "width": 400,
+        "height": 240,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#15803d",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "cache",
+        "title": "Shard B",
+        "subtitle": "replica 2 · healthy",
+        "body": "Stores the same shard data.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "cache",
+        "locked": false
+      },
+      {
+        "id": "replica-b-peer-2",
+        "type": "system",
+        "x": 2900,
+        "y": 2440,
+        "width": 400,
+        "height": 240,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#15803d",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "cache",
+        "title": "Shard B",
+        "subtitle": "replica 3 · healthy",
+        "body": "Stores the same shard data.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "cache",
+        "locked": false
+      },
+      {
+        "id": "database-first-write",
+        "type": "system",
+        "x": 600,
+        "y": 3690,
+        "width": 2400,
+        "height": 180,
+        "rotation": 0,
+        "style": {
+          "fill": "#e9f7ed",
+          "stroke": "#15803d",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "writer",
+        "title": "Selected write policy",
+        "subtitle": "cache-aside reads + database-first writes",
+        "body": "The database is updated first. The old cache entry is invalidated. The next read fetches fresh data and repopulates the cache.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "service",
+        "locked": false
+      },
+      {
+        "id": "memory-policy",
+        "type": "system",
+        "x": 100,
+        "y": 4310,
+        "width": 550,
+        "height": 250,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#bd6212",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "policy-gate",
+        "title": "TTL or eviction",
+        "subtitle": "entry absent → next read misses",
+        "body": "MISS → database fallback → cache refill.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "service",
+        "locked": false
+      },
+      {
+        "id": "node-failure",
+        "type": "system",
+        "x": 850,
+        "y": 4310,
+        "width": 600,
+        "height": 270,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#d84b43",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "fallback",
+        "title": "Cache node down",
+        "subtitle": "another healthy replica → read succeeds",
+        "body": "No healthy replica → MISS → database → refill.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "warning",
+        "locked": false
+      },
+      {
+        "id": "cache-stampede",
+        "type": "system",
+        "x": 1650,
+        "y": 4310,
+        "width": 650,
+        "height": 290,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#d84b43",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "request-coalescer",
+        "title": "Popular key expires",
+        "subtitle": "many reads miss together",
+        "body": "Allow one database read; make duplicate requests wait, then share the result.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "warning",
+        "locked": false
+      },
+      {
+        "id": "hot-key",
+        "type": "system",
+        "x": 2500,
+        "y": 4310,
+        "width": 600,
+        "height": 250,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#d84b43",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "cache",
+        "title": "Hot key",
+        "subtitle": "one shard gets too many requests",
+        "body": "Add extra replicas for that item or cache it in the application.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "warning",
+        "locked": false
+      },
+      {
+        "id": "observability",
+        "type": "system",
+        "x": 1200,
+        "y": 4750,
+        "width": 1200,
+        "height": 220,
+        "rotation": 0,
+        "style": {
+          "fill": "#e4f6f7",
+          "stroke": "#087e8b",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "telemetry",
+        "title": "What to measure",
+        "subtitle": "hit ratio · shard QPS · p99",
+        "body": "Database fallback rate · healthy replicas · evictions · replication delay.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "variant": "observability",
+        "locked": false
+      },
+      {
+        "id": "title",
+        "type": "text",
+        "x": 70,
+        "y": 38,
+        "width": 1350,
+        "height": 51,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "transparent",
+          "strokeWidth": 0,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "text": "Social Feed — Distributed Cache",
+        "fontSize": 36,
+        "fontFamily": "sans",
+        "fontWeight": 600,
+        "align": "left",
+        "locked": false
+      },
+      {
+        "id": "legend",
+        "type": "text",
+        "x": 2100,
+        "y": 48,
+        "width": 1400,
+        "height": 30,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "transparent",
+          "strokeWidth": 0,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#66717d"
+        },
+        "text": "BLUE request · GREEN cache answer · AMBER database fallback · CORAL failure",
+        "fontSize": 20,
+        "fontFamily": "sans",
+        "fontWeight": 600,
+        "align": "right",
+        "locked": false
+      },
+      {
+        "id": "replica-set-b-label",
+        "type": "text",
+        "x": 1568,
+        "y": 2252,
+        "width": 1864,
+        "height": 33,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "transparent",
+          "strokeWidth": 0,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "text": "SHARD B · THREE RAM REPLICAS",
+        "fontSize": 22,
+        "fontFamily": "sans",
+        "fontWeight": 700,
+        "align": "left",
+        "locked": false
+      }
+    ],
+    "appState": {
+      "camera": {
+        "x": 18,
+        "y": 18,
+        "zoom": 0.48
+      },
+      "background": {
+        "color": "#f7f4ec",
+        "pattern": "dots",
+        "spacing": 24
+      }
+    },
+    "files": {}
+  }
+}

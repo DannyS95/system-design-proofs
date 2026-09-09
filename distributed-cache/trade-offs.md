@@ -1,13 +1,36 @@
-# Trade-offs
+# Distributed-cache trade-offs
 
-This architecture prioritizes **correctness and durability** for financial data while supporting **horizontal scaling**.
+## Selected consistency model
 
-**Quorum reads and writes (R + W > N)** guarantee that clients never observe stale committed values.
+- Cache replica set: `N=3`, `R=2`, `W=2`.
+- Quorum intersection: `R + W > N`.
+- Database: Cassandra with `RF=3` and `CL=QUORUM`.
+- Financial-key writes: synchronous write-through.
+- The cache client selects replicas, compares the versions returned by the read
+  quorum, and returns the newest value.
 
-The trade-off is **reduced availability** when quorum cannot be reached and **higher write latency** due to write-through persistence.
+This costs more network work per operation than an eventually consistent cache,
+but preserves the board's invariant: no client observes a value older than the
+last committed write.
 
-**TTL and LFU** control cache memory usage, but when keys leave the cache the system must **fall back to the database**, increasing load.
+## Availability
 
-**LFU relies on past access patterns**, so it cannot predict when a key will suddenly become hot, which can cause **temporary cache misses and database spikes**.
+- One unavailable replica still leaves a read or write quorum.
+- Fewer than two available replicas makes that shard's operation unavailable.
+- Rejecting the operation protects consistency instead of returning a stale
+  financial value.
 
-**Consistent hashing** enables horizontal scaling but adds **replica coordination overhead**, while **Cassandra anchors durability**, making database performance critical for writes and cache misses.
+## Placement and memory
+
+- Consistent hashing limits key movement during scale-out.
+- Virtual nodes smooth uneven or hot shard placement.
+- TTL expiration converges old cache entries.
+- LFU eviction retains frequently accessed keys under memory pressure.
+
+## Monitoring
+
+- cache hit ratio
+- shard QPS
+- latency p50 and p99
+- quorum failures
+- replica lag

@@ -5,8 +5,11 @@ import {
   Plus,
   Search,
   Shapes,
+  Trash2,
   X,
 } from "lucide-react";
+
+import { SystemIcon } from "../editor/SystemIcon";
 
 export interface StencilShelfItem {
   id: string;
@@ -14,7 +17,9 @@ export interface StencilShelfItem {
   role: string;
   category: string;
   accent: string;
-  glyph?: string;
+  iconId: string;
+  keywords?: readonly string[];
+  removable?: boolean;
 }
 
 export interface StencilShelfProps {
@@ -22,6 +27,7 @@ export interface StencilShelfProps {
   searchQuery: string;
   onSearchQueryChange: (query: string) => void;
   onInsertStencil: (stencilId: string) => void;
+  onRemoveStencil?: (stencilId: string) => void;
   onToggleCollapsed: () => void;
   collapsed?: boolean;
   isOpen?: boolean;
@@ -37,6 +43,7 @@ export function StencilShelf({
   searchQuery,
   onSearchQueryChange,
   onInsertStencil,
+  onRemoveStencil,
   onToggleCollapsed,
   collapsed = false,
   isOpen = false,
@@ -45,7 +52,12 @@ export function StencilShelf({
   const normalizedQuery = searchQuery.trim().toLocaleLowerCase();
   const filteredStencils = normalizedQuery
     ? stencils.filter((stencil) =>
-        [stencil.name, stencil.role, stencil.category].some((value) =>
+        [
+          stencil.name,
+          stencil.role,
+          stencil.category,
+          ...(stencil.keywords ?? []),
+        ].some((value) =>
           value.toLocaleLowerCase().includes(normalizedQuery),
         ),
       )
@@ -144,23 +156,39 @@ export function StencilShelf({
                     </div>
                     <div className="stencil-grid">
                       {items.map((stencil) => (
-                        <button
-                          className="stencil-card"
-                          style={stencilStyle(stencil.accent)}
-                          type="button"
-                          key={stencil.id}
-                          onClick={() => onInsertStencil(stencil.id)}
-                          title={`Add ${stencil.name}: ${stencil.role}`}
-                        >
-                          <span className="stencil-card__glyph" aria-hidden="true">
-                            {stencil.glyph ?? stencil.name.charAt(0).toLocaleUpperCase()}
-                          </span>
-                          <span className="stencil-card__copy">
-                            <strong>{stencil.name}</strong>
-                            <small>{stencil.role}</small>
-                          </span>
-                          <Plus className="stencil-card__add" aria-hidden="true" />
-                        </button>
+                        <div className="stencil-card-wrap" key={stencil.id}>
+                          <button
+                            className="stencil-card"
+                            style={stencilStyle(stencil.accent)}
+                            type="button"
+                            onClick={() => onInsertStencil(stencil.id)}
+                            title={`Add ${stencil.name}: ${stencil.role}`}
+                          >
+                            <span className="stencil-card__glyph" aria-hidden="true">
+                              <SystemIcon
+                                iconId={stencil.iconId}
+                                size={19}
+                                color={stencil.accent}
+                              />
+                            </span>
+                            <span className="stencil-card__copy">
+                              <strong>{stencil.name}</strong>
+                              <small>{stencil.role}</small>
+                            </span>
+                            <Plus className="stencil-card__add" aria-hidden="true" />
+                          </button>
+                          {stencil.removable && onRemoveStencil ? (
+                            <button
+                              className="stencil-card__remove"
+                              type="button"
+                              aria-label={`Remove ${stencil.name} from my library`}
+                              title="Remove from my library"
+                              onClick={() => onRemoveStencil(stencil.id)}
+                            >
+                              <Trash2 aria-hidden="true" />
+                            </button>
+                          ) : null}
+                        </div>
                       ))}
                     </div>
                   </section>

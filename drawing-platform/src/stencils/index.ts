@@ -9,11 +9,12 @@ export {
   STENCIL_HEIGHT,
   STENCIL_WIDTH,
   createStencilElements,
-  createStencilSkeleton,
-} from "./toExcalidraw";
+  type SystemStencilElement,
+} from "./createStencilElements";
 export {
   STENCIL_CATEGORIES,
   type StencilCategory,
   type StencilDefinition,
   type StencilPlacement,
+  type SystemIconId,
 } from "./types";

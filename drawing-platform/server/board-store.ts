@@ -46,6 +46,7 @@ export interface BoardStore {
   saveBoard(boardId: string, input: SaveBoardInput): Promise<BoardDocument>;
   deleteBoard(boardId: string): Promise<void>;
   listTemplates(): Promise<TemplateSummary[]>;
+  getTemplate(templateId: string): Promise<TemplateDefinition>;
 }
 
 export interface FileBoardStoreOptions {
@@ -234,6 +235,19 @@ export class FileBoardStore implements BoardStore {
         elementCount: template.scene.elements.length,
       }))
       .sort((left, right) => left.name.localeCompare(right.name));
+  }
+
+  async getTemplate(templateId: string): Promise<TemplateDefinition> {
+    await this.initialize();
+    const validTemplateId = parseBoardId(templateId, "templateId");
+    const template = this.templates.get(validTemplateId);
+    if (!template) {
+      throw new TemplateNotFoundError(validTemplateId);
+    }
+    return {
+      ...template,
+      scene: cloneScene(template.scene),
+    };
   }
 
   private async initializeStore(): Promise<void> {

@@ -6,4 +6,5 @@ Implement exactly the active task. Follow the defined dependency boundaries and
 contracts. Do not invent future architecture or perform unrelated refactors.
 
 Add tests, run the full verification contract, update `CHANGELOG.md` and
-`CONTEXT.md`, and stop when the phase acceptance criteria pass.
+`CONTEXT.md`, use the commit format defined in `../AGENTS.md`, and stop when the
+phase acceptance criteria pass.

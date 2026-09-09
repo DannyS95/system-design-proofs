@@ -17,12 +17,21 @@ const HARDWARE = "#c92a2a";
  */
 export const STENCIL_CATALOG = [
   {
+    id: "internet",
+    category: "Routing",
+    name: "Internet",
+    role: "Carries requests from users",
+    accent: ROUTING,
+    iconId: "internet",
+    keywords: ["public", "network", "wan", "entry", "traffic"],
+  },
+  {
     id: "global-routing",
     category: "Routing",
     name: "Global Routing",
     role: "Directs users to regions",
     accent: ROUTING,
-    glyph: "DNS",
+    iconId: "global-routing",
     keywords: ["dns", "geo", "region", "internet", "traffic"],
   },
   {
@@ -31,7 +40,7 @@ export const STENCIL_CATALOG = [
     name: "Edge / CDN",
     role: "Serves from nearby edges",
     accent: ROUTING,
-    glyph: "E",
+    iconId: "edge-pop",
     keywords: ["cdn", "edge", "pop", "cache", "geographic"],
   },
   {
@@ -40,7 +49,7 @@ export const STENCIL_CATALOG = [
     name: "Load Balancer",
     role: "Spreads traffic in a cluster",
     accent: ROUTING,
-    glyph: "LB",
+    iconId: "load-balancer",
     keywords: ["cluster", "proxy", "traffic", "routing", "balancer"],
   },
   {
@@ -49,7 +58,7 @@ export const STENCIL_CATALOG = [
     name: "API Gateway",
     role: "Routes and governs service calls",
     accent: ROUTING,
-    glyph: "GW",
+    iconId: "service-routing",
     keywords: ["service", "route", "ingress", "auth", "rate limit"],
   },
   {
@@ -58,7 +67,7 @@ export const STENCIL_CATALOG = [
     name: "Application Router",
     role: "Maps paths to handlers",
     accent: ROUTING,
-    glyph: "APP",
+    iconId: "application-router",
     keywords: ["framework", "endpoint", "handler", "express", "fastify"],
   },
   {
@@ -67,7 +76,7 @@ export const STENCIL_CATALOG = [
     name: "Data Router",
     role: "Maps keys to partitions",
     accent: ROUTING,
-    glyph: "#",
+    iconId: "data-router",
     keywords: ["shard", "partition", "consistent hash", "key", "placement"],
   },
 
@@ -77,8 +86,17 @@ export const STENCIL_CATALOG = [
     name: "Client",
     role: "Starts a request",
     accent: SERVICES,
-    glyph: "C",
+    iconId: "client",
     keywords: ["browser", "mobile", "consumer", "caller", "user"],
+  },
+  {
+    id: "workspace",
+    category: "Services",
+    name: "Application Workspace",
+    role: "Frames tools around a canvas",
+    accent: SERVICES,
+    iconId: "workspace",
+    keywords: ["react", "shell", "sidebar", "canvas", "interface", "ui"],
   },
   {
     id: "api-service",
@@ -86,7 +104,7 @@ export const STENCIL_CATALOG = [
     name: "API Service",
     role: "Handles synchronous requests",
     accent: SERVICES,
-    glyph: "API",
+    iconId: "application-server",
     keywords: ["backend", "server", "http", "rpc", "microservice"],
   },
   {
@@ -95,7 +113,7 @@ export const STENCIL_CATALOG = [
     name: "Worker",
     role: "Runs background work",
     accent: SERVICES,
-    glyph: "W",
+    iconId: "worker",
     keywords: ["consumer", "job", "task", "async", "background"],
   },
   {
@@ -104,7 +122,7 @@ export const STENCIL_CATALOG = [
     name: "Scheduler",
     role: "Triggers work over time",
     accent: SERVICES,
-    glyph: "T",
+    iconId: "scheduler",
     keywords: ["cron", "timer", "job", "periodic", "trigger"],
   },
   {
@@ -113,8 +131,35 @@ export const STENCIL_CATALOG = [
     name: "Service Registry",
     role: "Finds available instances",
     accent: SERVICES,
-    glyph: "R",
+    iconId: "service-registry",
     keywords: ["discovery", "catalog", "health", "instance", "endpoint"],
+  },
+  {
+    id: "request-coalescer",
+    category: "Services",
+    name: "Request Coalescer",
+    role: "Merges duplicate work",
+    accent: SERVICES,
+    iconId: "request-coalescer",
+    keywords: ["singleflight", "collapse", "deduplicate", "stampede", "merge"],
+  },
+  {
+    id: "policy-gate",
+    category: "Services",
+    name: "Policy Gate",
+    role: "Allows or rejects a path",
+    accent: SERVICES,
+    iconId: "policy-gate",
+    keywords: ["admission", "quota", "rate limit", "authorization", "guard"],
+  },
+  {
+    id: "telemetry",
+    category: "Services",
+    name: "Observability",
+    role: "Measures every request path",
+    accent: SERVICES,
+    iconId: "telemetry",
+    keywords: ["telemetry", "observation", "metrics", "logs", "traces", "monitoring"],
   },
 
   {
@@ -123,7 +168,7 @@ export const STENCIL_CATALOG = [
     name: "Key-Value Store",
     role: "Reads and writes by key",
     accent: DISTRIBUTED_DATA,
-    glyph: "KV",
+    iconId: "key-value-store",
     keywords: ["database", "get", "put", "storage", "distributed"],
   },
   {
@@ -132,8 +177,26 @@ export const STENCIL_CATALOG = [
     name: "Cache",
     role: "Keeps hot data close",
     accent: DISTRIBUTED_DATA,
-    glyph: "C",
+    iconId: "cache",
     keywords: ["memory", "ttl", "eviction", "hot", "redis"],
+  },
+  {
+    id: "database",
+    category: "Distributed Data",
+    name: "Database",
+    role: "Stores authoritative records",
+    accent: DISTRIBUTED_DATA,
+    iconId: "database",
+    keywords: ["sql", "durable", "authority", "records", "storage"],
+  },
+  {
+    id: "distributed-database",
+    category: "Distributed Data",
+    name: "Distributed Database",
+    role: "Stores data across nodes",
+    accent: DISTRIBUTED_DATA,
+    iconId: "distributed-database",
+    keywords: ["cluster", "sql", "replicated", "durable", "spanner"],
   },
   {
     id: "message-queue",
@@ -141,7 +204,7 @@ export const STENCIL_CATALOG = [
     name: "Message Queue",
     role: "Buffers asynchronous work",
     accent: DISTRIBUTED_DATA,
-    glyph: "Q",
+    iconId: "message-queue",
     keywords: ["broker", "stream", "event", "async", "log"],
   },
   {
@@ -150,7 +213,7 @@ export const STENCIL_CATALOG = [
     name: "Partition / Shard",
     role: "Owns a slice of data",
     accent: DISTRIBUTED_DATA,
-    glyph: "P",
+    iconId: "partition",
     keywords: ["shard", "range", "hash", "split", "tablet"],
   },
   {
@@ -159,7 +222,7 @@ export const STENCIL_CATALOG = [
     name: "Replica Group",
     role: "Copies data for availability",
     accent: DISTRIBUTED_DATA,
-    glyph: "R",
+    iconId: "replica-group",
     keywords: ["replication", "quorum", "consensus", "follower", "copy"],
   },
   {
@@ -168,7 +231,7 @@ export const STENCIL_CATALOG = [
     name: "Leader Replica",
     role: "Orders writes for a group",
     accent: DISTRIBUTED_DATA,
-    glyph: "L",
+    iconId: "leader",
     keywords: ["primary", "leader", "write", "consensus", "raft"],
   },
 
@@ -178,7 +241,7 @@ export const STENCIL_CATALOG = [
     name: "Process",
     role: "Runs an isolated program",
     accent: SYSTEMS,
-    glyph: "P",
+    iconId: "process",
     keywords: ["pid", "program", "address space", "isolation", "execution"],
   },
   {
@@ -187,7 +250,7 @@ export const STENCIL_CATALOG = [
     name: "Thread",
     role: "Executes inside a process",
     accent: SYSTEMS,
-    glyph: "T",
+    iconId: "thread",
     keywords: ["concurrency", "stack", "scheduler", "execution", "task"],
   },
   {
@@ -196,7 +259,7 @@ export const STENCIL_CATALOG = [
     name: "Operating System",
     role: "Manages machine resources",
     accent: SYSTEMS,
-    glyph: "OS",
+    iconId: "operating-system",
     keywords: ["kernel", "linux", "resource", "driver", "syscall"],
   },
   {
@@ -205,7 +268,7 @@ export const STENCIL_CATALOG = [
     name: "Runtime",
     role: "Executes application code",
     accent: SYSTEMS,
-    glyph: "RT",
+    iconId: "runtime",
     keywords: ["vm", "language", "garbage collection", "interpreter", "compiler"],
   },
   {
@@ -214,7 +277,7 @@ export const STENCIL_CATALOG = [
     name: "Network Socket",
     role: "Connects communicating processes",
     accent: SYSTEMS,
-    glyph: "S",
+    iconId: "network-socket",
     keywords: ["tcp", "udp", "port", "connection", "network"],
   },
   {
@@ -223,7 +286,7 @@ export const STENCIL_CATALOG = [
     name: "File System",
     role: "Organizes persistent files",
     accent: SYSTEMS,
-    glyph: "FS",
+    iconId: "file-system",
     keywords: ["inode", "file", "directory", "mount", "storage"],
   },
 
@@ -233,7 +296,7 @@ export const STENCIL_CATALOG = [
     name: "Server",
     role: "Machine running workloads",
     accent: HARDWARE,
-    glyph: "S",
+    iconId: "server",
     keywords: ["host", "machine", "node", "compute", "bare metal"],
   },
   {
@@ -242,7 +305,7 @@ export const STENCIL_CATALOG = [
     name: "CPU",
     role: "Executes instructions",
     accent: HARDWARE,
-    glyph: "CPU",
+    iconId: "cpu",
     keywords: ["processor", "core", "instruction", "compute", "clock"],
   },
   {
@@ -251,7 +314,7 @@ export const STENCIL_CATALOG = [
     name: "Memory",
     role: "Holds active data",
     accent: HARDWARE,
-    glyph: "RAM",
+    iconId: "memory",
     keywords: ["ram", "dimm", "volatile", "heap", "page"],
   },
   {
@@ -260,7 +323,7 @@ export const STENCIL_CATALOG = [
     name: "Disk",
     role: "Persists local data",
     accent: HARDWARE,
-    glyph: "D",
+    iconId: "disk",
     keywords: ["ssd", "hdd", "nvme", "storage", "block"],
   },
   {
@@ -269,7 +332,7 @@ export const STENCIL_CATALOG = [
     name: "Network Interface",
     role: "Moves packets on a link",
     accent: HARDWARE,
-    glyph: "NIC",
+    iconId: "network-interface",
     keywords: ["nic", "ethernet", "packet", "link", "adapter"],
   },
   {
@@ -278,7 +341,7 @@ export const STENCIL_CATALOG = [
     name: "Rack",
     role: "Groups physical machines",
     accent: HARDWARE,
-    glyph: "R",
+    iconId: "rack",
     keywords: ["cabinet", "data center", "server", "switch", "physical"],
   },
 ] as const satisfies readonly StencilDefinition[];

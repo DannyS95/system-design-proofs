@@ -1,58 +1,32 @@
-import { describe, expect, it, vi } from "vitest";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { describe, expect, it } from "vitest";
 
-let convertedId = 0;
-
-// Excalidraw 0.18.1's browser bundle imports roughjs without a file extension,
-// which Node cannot load directly. The production build exercises the real
-// package; this narrow adapter mock keeps the unit test focused on the
-// skeleton-to-editor contract and generated insertion identity.
-vi.mock("@excalidraw/excalidraw", () => ({
-  convertToExcalidrawElements: (
-    skeleton: readonly Record<string, unknown>[] | null,
-  ): Record<string, unknown>[] =>
-    (skeleton ?? []).map((element) => ({
-      angle: 0,
-      backgroundColor: "transparent",
-      boundElements: null,
-      fillStyle: "solid",
-      frameId: null,
-      height: 0,
-      index: "a0",
-      isDeleted: false,
-      link: null,
-      locked: false,
-      opacity: 100,
-      roughness: 0,
-      seed: 1,
-      strokeColor: "#000000",
-      strokeStyle: "solid",
-      strokeWidth: 1,
-      updated: 1,
-      version: 1,
-      versionNonce: 1,
-      width: 0,
-      ...element,
-      id: `converted-${++convertedId}`,
-    })),
-}));
-
+import {
+  SYSTEM_ICON_IDS,
+  SystemIcon,
+  isSystemIconId,
+} from "../src/editor/SystemIcon";
 import {
   STENCIL_CATALOG,
   STENCIL_CATEGORIES,
   STENCIL_HEIGHT,
   STENCIL_WIDTH,
   createStencilElements,
-  createStencilSkeleton,
   getStencilById,
   getStencilsByCategory,
   searchStencils,
 } from "../src/stencils";
 
 describe("stencil catalog", () => {
-  it("populates every required category with unique vendor-neutral entries", () => {
+  it("populates every category with unique vendor-neutral icons", () => {
     const ids = new Set(STENCIL_CATALOG.map((stencil) => stencil.id));
+    const iconIds = new Set(
+      STENCIL_CATALOG.map((stencil) => stencil.iconId),
+    );
 
     expect(ids.size).toBe(STENCIL_CATALOG.length);
+    expect(iconIds.size).toBe(STENCIL_CATALOG.length);
     expect(STENCIL_CATEGORIES).toEqual([
       "Routing",
       "Services",
@@ -65,10 +39,43 @@ describe("stencil catalog", () => {
       expect(getStencilsByCategory(category).length).toBeGreaterThanOrEqual(5);
     }
 
+    expect(STENCIL_CATALOG.every(({ iconId }) => isSystemIconId(iconId))).toBe(
+      true,
+    );
+    expect(new Set(SYSTEM_ICON_IDS).size).toBe(SYSTEM_ICON_IDS.length);
+    expect(SYSTEM_ICON_IDS).toEqual(
+      expect.arrayContaining([
+        "browser",
+        "whiteboard",
+        "workspace",
+        "local-storage",
+        "file-snapshot",
+        "template-grid",
+        "image",
+        "import-export",
+        "origin-shield",
+        "control-plane",
+      ]),
+    );
     expect(getStencilById("load-balancer")?.category).toBe("Routing");
     expect(getStencilById("message-queue")?.category).toBe("Distributed Data");
     expect(getStencilById("cpu")?.category).toBe("Hardware");
     expect(getStencilById("disk")?.category).toBe("Hardware");
+  });
+
+  it("draws a distinct geometric mark for every routing layer", () => {
+    const routingIcons = getStencilsByCategory("Routing").map(
+      ({ iconId }) =>
+        renderToStaticMarkup(
+          createElement(SystemIcon, { iconId }),
+        ),
+    );
+
+    expect(new Set(routingIcons).size).toBe(routingIcons.length);
+    expect(routingIcons.every((markup) => markup.includes("<svg"))).toBe(true);
+    expect(routingIcons.every((markup) => !markup.includes("<text"))).toBe(
+      true,
+    );
   });
 
   it("searches names, roles, categories, and keywords case-insensitively", () => {
@@ -81,60 +88,57 @@ describe("stencil catalog", () => {
     expect(searchStencils("HaNdLeR").map(({ id }) => id)).toEqual([
       "application-router",
     ]);
+    expect(searchStencils("observation").map(({ id }) => id)).toEqual([
+      "telemetry",
+    ]);
     expect(searchStencils("not-a-real-component")).toEqual([]);
     expect(searchStencils(" ")).toBe(STENCIL_CATALOG);
   });
 });
 
 describe("stencil conversion", () => {
-  it("centers a native, editable skeleton at the requested scene point", () => {
+  it("centers one semantic system node at the requested scene point", () => {
     const center = { x: 640, y: 360 };
-    const skeleton = createStencilSkeleton(
-      "key-value-store",
-      center,
-      "test-group",
-    );
-    const card = skeleton[0];
+    const elements = createStencilElements("key-value-store", center);
 
-    expect(card).toMatchObject({
-      type: "rectangle",
+    expect(elements).toHaveLength(1);
+    expect(elements[0]).toMatchObject({
+      type: "system",
       x: center.x - STENCIL_WIDTH / 2,
       y: center.y - STENCIL_HEIGHT / 2,
       width: STENCIL_WIDTH,
       height: STENCIL_HEIGHT,
-      groupIds: ["test-group"],
+      iconId: "key-value-store",
+      title: "Key-Value Store",
+      subtitle: "Reads and writes by key",
+      variant: "storage",
+      rotation: 0,
+      style: {
+        fill: "#ffffff",
+        stroke: "#0b7285",
+      },
     });
-    expect(skeleton.every((element) => element.groupIds?.[0] === "test-group")).toBe(
-      true,
-    );
-    expect(skeleton.map((element) => element.type)).toEqual([
-      "rectangle",
-      "ellipse",
-      "text",
-      "text",
-    ]);
   });
 
-  it("produces valid grouped Excalidraw elements for every category", () => {
+  it("produces a complete semantic node for every category", () => {
     for (const category of STENCIL_CATEGORIES) {
       const stencil = getStencilsByCategory(category)[0];
-      const elements = createStencilElements(stencil, { x: 120, y: 80 });
-      const groups = new Set(elements.flatMap((element) => element.groupIds));
+      const [element] = createStencilElements(stencil, { x: 120, y: 80 });
 
-      expect(elements.length).toBeGreaterThanOrEqual(4);
-      expect(groups.size).toBe(1);
-      expect(elements.every((element) => element.id.length > 0)).toBe(true);
-      expect(elements.every((element) => element.isDeleted === false)).toBe(true);
-      expect(elements.some((element) => element.type === "text")).toBe(true);
+      expect(element.id.length).toBeGreaterThan(0);
+      expect(element.type).toBe("system");
+      expect(element.iconId).toBe(stencil.iconId);
+      expect(element.title).toBe(stencil.name);
+      expect(element.subtitle).toBe(stencil.role);
+      expect(element.style.stroke).toBe(stencil.accent);
     }
   });
 
   it("creates independent identifiers on repeated insertion", () => {
-    const first = createStencilElements("cpu", { x: 0, y: 0 });
-    const second = createStencilElements("cpu", { x: 0, y: 0 });
+    const [first] = createStencilElements("cpu", { x: 0, y: 0 });
+    const [second] = createStencilElements("cpu", { x: 0, y: 0 });
 
-    expect(first.map(({ id }) => id)).not.toEqual(second.map(({ id }) => id));
-    expect(first[0].groupIds).not.toEqual(second[0].groupIds);
+    expect(first.id).not.toBe(second.id);
   });
 
   it("rejects unknown catalog identifiers", () => {

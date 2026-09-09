@@ -1,10 +1,6 @@
-import {
-  exportToBlob,
-  exportToSvg,
-} from "@excalidraw/excalidraw";
-import type { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types";
 import type { BoardDocument } from "../../shared/contracts.js";
-import { sceneFromApi, toExportDocument } from "./scene.js";
+import type { CanvasEditorApi } from "./EditorCanvas.js";
+import { toExportDocument } from "./scene.js";
 
 const safeFilename = (name: string): string =>
   name
@@ -19,14 +15,14 @@ const download = (blob: Blob, filename: string): void => {
   anchor.href = url;
   anchor.download = filename;
   anchor.click();
-  URL.revokeObjectURL(url);
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
 };
 
 export const exportBoardJson = (
   board: BoardDocument,
-  api: ExcalidrawImperativeAPI,
+  api: CanvasEditorApi,
 ): void => {
-  const payload = toExportDocument(board, sceneFromApi(api));
+  const payload = toExportDocument(board, api.getScene());
   download(
     new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }),
     `${safeFilename(board.name)}.system-canvas.json`,
@@ -35,38 +31,52 @@ export const exportBoardJson = (
 
 export const exportBoardSvg = async (
   board: BoardDocument,
-  api: ExcalidrawImperativeAPI,
+  api: CanvasEditorApi,
 ): Promise<void> => {
-  const svg = await exportToSvg({
-    elements: api.getSceneElements(),
-    appState: {
-      ...api.getAppState(),
-      exportBackground: true,
-      exportWithDarkMode: false,
-    },
-    files: api.getFiles(),
-    exportPadding: 32,
-  });
   download(
-    new Blob([svg.outerHTML], { type: "image/svg+xml" }),
+    new Blob([api.exportSvg()], { type: "image/svg+xml;charset=utf-8" }),
     `${safeFilename(board.name)}.svg`,
   );
 };
 
+const rasterizeSvg = (svg: string): Promise<Blob> =>
+  new Promise((resolve, reject) => {
+    const svgBlob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(svgBlob);
+    const image = new Image();
+    image.onload = () => {
+      try {
+        const width = Math.max(1, Math.min(8192, image.naturalWidth));
+        const height = Math.max(1, Math.min(8192, image.naturalHeight));
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const context = canvas.getContext("2d");
+        if (!context) throw new Error("PNG export is unavailable in this browser.");
+        context.drawImage(image, 0, 0, width, height);
+        canvas.toBlob((blob) => {
+          URL.revokeObjectURL(url);
+          if (blob) resolve(blob);
+          else reject(new Error("PNG export could not be encoded."));
+        }, "image/png");
+      } catch (error) {
+        URL.revokeObjectURL(url);
+        reject(error);
+      }
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("PNG export could not render the SVG scene."));
+    };
+    image.src = url;
+  });
+
 export const exportBoardPng = async (
   board: BoardDocument,
-  api: ExcalidrawImperativeAPI,
+  api: CanvasEditorApi,
 ): Promise<void> => {
-  const blob = await exportToBlob({
-    elements: api.getSceneElements(),
-    appState: {
-      ...api.getAppState(),
-      exportBackground: true,
-      exportWithDarkMode: false,
-    },
-    files: api.getFiles(),
-    mimeType: "image/png",
-    exportPadding: 32,
-  });
-  download(blob, `${safeFilename(board.name)}.png`);
+  download(
+    await rasterizeSvg(api.exportSvg()),
+    `${safeFilename(board.name)}.png`,
+  );
 };

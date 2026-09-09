@@ -11,21 +11,14 @@ import {
   useRef,
   useState,
 } from "react";
-import {
-  CaptureUpdateAction,
-  viewportCoordsToSceneCoords,
-} from "@excalidraw/excalidraw";
-import type {
-  AppState,
-  BinaryFileData,
-  ExcalidrawImperativeAPI,
-} from "@excalidraw/excalidraw/types";
 import type {
   BoardDocument,
   BoardScene,
   BoardSummary,
+  CanvasElement,
   TemplateSummary,
 } from "../shared/contracts.js";
+import { BOARD_SCHEMA_VERSION } from "../shared/contracts.js";
 import {
   AppEmptyState,
   AppErrorState,
@@ -42,6 +35,10 @@ import {
 } from "./components/index.js";
 import { apiClient } from "./data/api-client.js";
 import {
+  createCustomStencilStore,
+  instantiateCustomStencil,
+} from "./data/custom-stencil-store.js";
+import {
   chooseNewestDocument,
   createLocalBoardStore,
 } from "./data/local-board-store.js";
@@ -49,7 +46,11 @@ import {
   RevisionSaveQueue,
   type SaveStatus,
 } from "./data/revision-save-queue.js";
-import { EditorCanvas } from "./editor/EditorCanvas.js";
+import {
+  EditorCanvas,
+  type CanvasEditorApi,
+} from "./editor/EditorCanvas.js";
+import { CanvasErrorBoundary } from "./editor/CanvasErrorBoundary.js";
 import {
   exportBoardJson,
   exportBoardPng,
@@ -95,11 +96,21 @@ export function App() {
     () => createLocalBoardStore(window.localStorage),
     [],
   );
+  const customStencilStore = useMemo(
+    () => createCustomStencilStore(window.localStorage),
+    [],
+  );
   const [loadState, setLoadState] = useState<LoadState>("loading");
   const [loadError, setLoadError] = useState("");
   const [reloadToken, setReloadToken] = useState(0);
+  const [editorSession, setEditorSession] = useState(0);
   const [boards, setBoards] = useState<BoardSummary[]>([]);
   const [templates, setTemplates] = useState<TemplateSummary[]>([]);
+  const [previewTemplateId, setPreviewTemplateId] = useState<string>();
+  const [loadingTemplateId, setLoadingTemplateId] = useState<string>();
+  const [customStencils, setCustomStencils] = useState(() =>
+    customStencilStore.list(),
+  );
   const [activeBoard, setActiveBoard] = useState<BoardDocument | null>(null);
   const [draftName, setDraftName] = useState("");
   const [syncStatus, setSyncStatus] =
@@ -119,9 +130,18 @@ export function App() {
   const [conflictReloadOpen, setConflictReloadOpen] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const editorApiRef = useRef<ExcalidrawImperativeAPI | null>(null);
+  const editorApiRef = useRef<CanvasEditorApi | null>(null);
   const activeBoardRef = useRef<BoardDocument | null>(null);
   const saveQueueRef = useRef<RevisionSaveQueue | null>(null);
+  const previewTemplateIdRef = useRef<string | null>(null);
+  const localWriteFailedRef = useRef(false);
+
+  const handleEditorApiReady = useCallback(
+    (api: CanvasEditorApi) => {
+      editorApiRef.current = api;
+    },
+    [],
+  );
 
   const dismissToast = useCallback((toastId: string) => {
     setToasts((current) => current.filter(({ id }) => id !== toastId));
@@ -134,6 +154,32 @@ export function App() {
       window.setTimeout(() => dismissToast(id), 4_500);
     },
     [dismissToast],
+  );
+
+  const writeLocalBoard = useCallback(
+    (document: BoardDocument): boolean => {
+      try {
+        localBoards.write(document);
+        localWriteFailedRef.current = false;
+        return true;
+      } catch {
+        setSyncStatus("offline");
+        setSyncMessage(
+          "Browser storage is full. Remove large images or export the board before continuing.",
+        );
+        if (!localWriteFailedRef.current) {
+          localWriteFailedRef.current = true;
+          notify({
+            title: "Local save failed",
+            description:
+              "Browser storage is full. The current canvas is still open; export it before reloading.",
+            tone: "error",
+          });
+        }
+        return false;
+      }
+    },
+    [localBoards, notify],
   );
 
   const updateBoardSummary = useCallback((document: BoardDocument) => {
@@ -150,13 +196,16 @@ export function App() {
   const activateBoard = useCallback(
     (document: BoardDocument, status: PersistenceStatus) => {
       saveQueueRef.current?.dispose();
+      previewTemplateIdRef.current = null;
+      setPreviewTemplateId(undefined);
       activeBoardRef.current = document;
       setActiveBoard(document);
+      setEditorSession((value) => value + 1);
       setDraftName(document.name);
       setSyncStatus(status);
       setSyncMessage(undefined);
       setBoardActionError(undefined);
-      localBoards.write(document);
+      writeLocalBoard(document);
       localBoards.setActive(document.id);
       updateBoardSummary(document);
       window.history.replaceState(null, "", `?board=${document.id}`);
@@ -188,7 +237,7 @@ export function App() {
             updatedAt: newestTimestamp(current.updatedAt, saved.updatedAt),
           };
           activeBoardRef.current = next;
-          localBoards.write(next);
+          writeLocalBoard(next);
           setActiveBoard((visible) =>
             visible?.id === boardId
               ? {
@@ -202,7 +251,7 @@ export function App() {
         },
       });
     },
-    [localBoards, updateBoardSummary],
+    [localBoards, updateBoardSummary, writeLocalBoard],
   );
 
   const openBoard = useCallback(
@@ -314,11 +363,14 @@ export function App() {
         scene,
       };
       activeBoardRef.current = next;
-      localBoards.write(next);
+      if (previewTemplateIdRef.current) {
+        return;
+      }
+      if (!writeLocalBoard(next)) return;
       updateBoardSummary(next);
       saveQueueRef.current?.enqueue({ name: next.name, scene });
     },
-    [localBoards, updateBoardSummary],
+    [updateBoardSummary, writeLocalBoard],
   );
 
   const commitBoardName = useCallback(() => {
@@ -341,10 +393,11 @@ export function App() {
     setActiveBoard((visible) =>
       visible?.id === next.id ? { ...visible, name } : visible,
     );
-    localBoards.write(next);
+    if (previewTemplateIdRef.current) return;
+    if (!writeLocalBoard(next)) return;
     updateBoardSummary(next);
     saveQueueRef.current?.enqueue({ name, scene: next.scene });
-  }, [draftName, localBoards, notify, updateBoardSummary]);
+  }, [draftName, notify, updateBoardSummary, writeLocalBoard]);
 
   const createBoard = useCallback(
     async (templateId?: string) => {
@@ -377,6 +430,51 @@ export function App() {
     [activateBoard, notify, templates],
   );
 
+  const previewTemplate = useCallback(
+    async (templateId: string) => {
+      setLoadingTemplateId(templateId);
+      setBoardActionError(undefined);
+      try {
+        const template = await apiClient.getTemplate(templateId);
+        const timestamp = new Date().toISOString();
+        const preview: BoardDocument = {
+          schemaVersion: BOARD_SCHEMA_VERSION,
+          id: `preview-${template.id}`,
+          name: template.name,
+          revision: 0,
+          createdAt: timestamp,
+          updatedAt: timestamp,
+          scene: structuredClone(template.scene),
+        };
+
+        saveQueueRef.current?.dispose();
+        saveQueueRef.current = null;
+        previewTemplateIdRef.current = template.id;
+        setPreviewTemplateId(template.id);
+        activeBoardRef.current = preview;
+        setActiveBoard(preview);
+        setEditorSession((value) => value + 1);
+        setDraftName(template.name);
+        setSyncStatus("preview");
+        setSyncMessage(undefined);
+        setBoardDrawerOpen(false);
+        window.history.replaceState(null, "", window.location.pathname);
+        notify({
+          title: "Template preview",
+          description: "Loaded temporarily. Use + to create a saved board.",
+        });
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "The template could not be previewed.";
+        setBoardActionError(message);
+        notify({ title: "Could not preview template", description: message, tone: "error" });
+      } finally {
+        setLoadingTemplateId(undefined);
+      }
+    },
+    [notify],
+  );
+
   const deleteBoard = useCallback(async () => {
     if (!deleteTarget) return;
     setIsDeleting(true);
@@ -405,28 +503,47 @@ export function App() {
     (stencilId: string) => {
       const api = editorApiRef.current;
       if (!api) return;
-      const appState = api.getAppState();
-      const center = viewportCoordsToSceneCoords(
-        {
-          clientX: appState.offsetLeft + appState.width / 2,
-          clientY: appState.offsetTop + appState.height / 2,
-        },
-        appState,
+      const custom = customStencils.find(({ id }) => id === stencilId);
+      api.insertElements(
+        custom
+          ? [instantiateCustomStencil(custom, api.getViewportCenter())]
+          : createStencilElements(stencilId, api.getViewportCenter()),
       );
-      const inserted = createStencilElements(stencilId, center);
-      api.updateScene({
-        elements: [...api.getSceneElementsIncludingDeleted(), ...inserted],
-        appState: {
-          selectedElementIds: Object.fromEntries(
-            inserted.map(({ id }) => [id, true]),
-          ),
-        },
-        captureUpdate: CaptureUpdateAction.IMMEDIATELY,
-      });
-      api.scrollToContent(inserted, { animate: true, fitToViewport: false });
       setStencilDrawerOpen(false);
     },
-    [],
+    [customStencils],
+  );
+
+  const saveSelectionToLibrary = useCallback(
+    (element: CanvasElement) => {
+      try {
+        const saved = customStencilStore.save(element);
+        setCustomStencils(customStencilStore.list());
+        setStencilCollapsed(false);
+        notify({
+          title: "Component saved",
+          description: `${saved.name} is now reusable from My library.`,
+          tone: "success",
+        });
+      } catch (error) {
+        notify({
+          title: "Component not saved",
+          description:
+            error instanceof Error ? error.message : "Browser storage is unavailable.",
+          tone: "error",
+        });
+      }
+    },
+    [customStencilStore, notify],
+  );
+
+  const removeCustomStencil = useCallback(
+    (stencilId: string) => {
+      customStencilStore.remove(stencilId);
+      setCustomStencils(customStencilStore.list());
+      notify({ title: "Component removed from library", tone: "success" });
+    },
+    [customStencilStore, notify],
   );
 
   const importBoard = useCallback(
@@ -437,15 +554,8 @@ export function App() {
 
       try {
         const imported = parseBoardImport(JSON.parse(await file.text()));
-        const fileValues = Object.values(imported.scene.files) as BinaryFileData[];
-        if (fileValues.length) api.addFiles(fileValues);
-        api.updateScene({
-          elements: imported.scene.elements as Parameters<
-            typeof api.updateScene
-          >[0]["elements"],
-          appState: imported.scene.appState as unknown as AppState,
-          captureUpdate: CaptureUpdateAction.IMMEDIATELY,
-        });
+        const isPreview = Boolean(previewTemplateIdRef.current);
+        api.replaceScene(imported.scene);
         if (imported.name) setDraftName(imported.name.slice(0, 80));
         persistLocalChange(
           imported.scene,
@@ -453,7 +563,9 @@ export function App() {
         );
         notify({
           title: "Board imported",
-          description: "The imported scene is now saved as this board.",
+          description: isPreview
+            ? "The imported scene is loaded only in this temporary preview."
+            : "The imported scene is now saved as this board.",
           tone: "success",
         });
       } catch (error) {
@@ -522,6 +634,20 @@ export function App() {
     canDelete: boards.length > 1,
   }));
 
+  const availableStencils = [
+    ...customStencils.map((stencil) => ({
+      id: stencil.id,
+      name: stencil.name,
+      role: stencil.role,
+      category: "My library",
+      accent: stencil.accent,
+      iconId: stencil.iconId,
+      keywords: ["custom", "saved", "library"],
+      removable: true,
+    })),
+    ...STENCIL_CATALOG,
+  ];
+
   if (loadState === "loading") {
     return <AppLoadingState />;
   }
@@ -555,8 +681,11 @@ export function App() {
       boards={navigationBoards}
       activeBoardId={activeBoard?.id}
       templates={templates}
+      activeTemplateId={previewTemplateId}
+      loadingTemplateId={loadingTemplateId}
       onSelectBoard={(boardId) => void openBoard(boardId)}
       onCreateBoard={() => void createBoard()}
+      onPreviewTemplate={(templateId) => void previewTemplate(templateId)}
       onCreateFromTemplate={(templateId) => void createBoard(templateId)}
       onRequestDelete={setDeleteTarget}
       onClose={() => setBoardDrawerOpen(false)}
@@ -568,10 +697,11 @@ export function App() {
 
   const stencilShelf = (
     <StencilShelf
-      stencils={STENCIL_CATALOG}
+      stencils={availableStencils}
       searchQuery={stencilQuery}
       onSearchQueryChange={setStencilQuery}
       onInsertStencil={insertStencil}
+      onRemoveStencil={removeCustomStencil}
       onToggleCollapsed={() => setStencilCollapsed((value) => !value)}
       collapsed={stencilCollapsed}
       isOpen={stencilDrawerOpen}
@@ -587,13 +717,15 @@ export function App() {
         stencilShelf={stencilShelf}
       >
         {activeBoard ? (
-          <EditorCanvas
-            board={activeBoard}
-            onApiReady={(api) => {
-              editorApiRef.current = api;
-            }}
-            onSceneChange={persistLocalChange}
-          />
+          <CanvasErrorBoundary resetKey={`${activeBoard.id}:${editorSession}`}>
+            <EditorCanvas
+              key={`${activeBoard.id}:${editorSession}`}
+              board={activeBoard}
+              onApiReady={handleEditorApiReady}
+              onSceneChange={persistLocalChange}
+              onSaveSelectionToLibrary={saveSelectionToLibrary}
+            />
+          </CanvasErrorBoundary>
         ) : (
           <AppEmptyState
             onCreateBoard={() => void createBoard()}

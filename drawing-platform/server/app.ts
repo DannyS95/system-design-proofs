@@ -107,6 +107,14 @@ export async function buildApp(
     templates: await store.listTemplates(),
   }));
 
+  app.get<{ Params: { templateId: string } }>(
+    "/api/templates/:templateId",
+    async (request) => {
+      const templateId = parseBoardId(request.params.templateId, "templateId");
+      return store.getTemplate(templateId);
+    },
+  );
+
   if (options.staticDirectory) {
     await app.register(fastifyStatic, {
       root: resolve(options.staticDirectory),

@@ -1,22 +1,50 @@
 import { describe, expect, it, vi } from "vitest";
-import type { BoardDocument, BoardScene } from "../shared/contracts.js";
+import {
+  BOARD_SCHEMA_VERSION,
+  createEmptyScene,
+  type BoardDocument,
+  type BoardScene,
+  type CanvasTextElement,
+} from "../shared/contracts.js";
 import {
   RevisionSaveQueue,
   type PendingBoardSave,
   type SaveStatus,
 } from "../src/data/revision-save-queue.js";
 
+const textElement = (label: string): CanvasTextElement => ({
+  id: `text-${label.toLocaleLowerCase()}`,
+  type: "text",
+  x: 0,
+  y: 0,
+  width: 180,
+  height: 42,
+  rotation: 0,
+  style: {
+    fill: "transparent",
+    stroke: "transparent",
+    strokeWidth: 0,
+    strokeStyle: "solid",
+    opacity: 1,
+    textColor: "#1d2939",
+  },
+  text: label,
+  fontSize: 18,
+  fontFamily: "sans",
+  fontWeight: 600,
+  align: "left",
+});
+
 const scene = (label: string): BoardScene => ({
-  elements: [{ label }],
-  appState: {},
-  files: {},
+  ...createEmptyScene(),
+  elements: [textElement(label)],
 });
 
 const savedDocument = (
   payload: PendingBoardSave,
   revision: number,
 ): BoardDocument => ({
-  schemaVersion: 1,
+  schemaVersion: BOARD_SCHEMA_VERSION,
   id: "board-one",
   name: payload.name,
   revision,
