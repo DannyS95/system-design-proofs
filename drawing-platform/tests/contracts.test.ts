@@ -140,6 +140,46 @@ describe("board contract validation", () => {
     expect(parseBoardScene(scene)).toEqual(scene);
   });
 
+  it("round-trips semantic shape icons and validated visual parents", () => {
+    const container = {
+      id: "shard-b-group",
+      type: "shape" as const,
+      shape: "rectangle" as const,
+      x: 0,
+      y: 0,
+      width: 600,
+      height: 400,
+      rotation: 0,
+      style,
+    };
+    const logicalShard = {
+      id: "logical-shard-b",
+      type: "shape" as const,
+      shape: "rectangle" as const,
+      x: 20,
+      y: 20,
+      width: 240,
+      height: 100,
+      rotation: 0,
+      style,
+      label: "Cache Shard B",
+      iconId: "partition",
+      parentId: container.id,
+    };
+    const scene = {
+      ...validDocument.scene,
+      elements: [container, logicalShard],
+    };
+
+    expect(parseBoardScene(scene)).toEqual(scene);
+    expect(() =>
+      parseBoardScene({
+        ...scene,
+        elements: [{ ...logicalShard, parentId: logicalShard.id }],
+      }),
+    ).toThrow(/parentId.*must not reference itself/i);
+  });
+
   it.each([
     ["system title size", { titleFontSize: 0 }],
     ["system body size", { bodyFontSize: 513 }],

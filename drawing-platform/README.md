@@ -45,12 +45,14 @@ npm run generate:designs
 - an infinite SVG canvas where a normal wheel pans, Ctrl/Cmd + wheel zooms at
   the cursor, Space-drag pans, and fit-all/fit-selection use visual content bounds
 - click, Shift-toggle, and empty-canvas marquee selection; connector-aware group
-  movement/resizing; directly selectable wrapped text; shapes; and undo/redo
+  movement/resizing; content-aware width and height; parent-container growth;
+  directly selectable wrapped text; shapes; and undo/redo
 - an explicit-Apply inspector for titles, subtitles, body/explanation, labels,
   font sizes, text alignment, image alt text, width, height, and optional
   architecture metadata; it closes with its button, Escape, or an outside click
 - verified visual provenance in the inspector: actual source/package, icon ID,
-  source file, asset type, category, and semantic reason
+  source file, asset type, category, and semantic reason, including icon-bearing
+  logical partitions and consistent-hash virtual-node tokens
 - element and whole-board locking; the two cache teaching templates start
   unlocked for direct editing, while locked boards can be unlocked one element
   at a time or all at once

@@ -94,9 +94,14 @@ any direction. Background patterns track the camera and remain visually stable.
 Every element may carry a persisted `locked` flag; the editor still permits
 selection and explicit unlocking while blocking accidental mutation.
 Elements may also carry optional runtime/source/ownership metadata. System nodes
-add an optional body below title and subtitle. Deterministic line wrapping sets a
-minimum content height; reducing width can therefore increase the stored height.
-Visual bounds include connector labels and arrow room for fit and export.
+add an optional body below title and subtitle; shapes may carry an optional
+semantic `iconId`; and a child may declare a shape `parentId`. Deterministic text
+measurement supplies both a minimum width and a capped natural width. Defaults
+grow toward the natural width, narrower manual widths rewrap, and stored height
+then grows to contain every line. Resizing moves bound connector endpoints and
+expands declared parent containers. Connector labels independently size their
+plates to capped, wrapped content. Visual bounds include those labels and arrow
+room for fit and export.
 
 The visual vocabulary flow is:
 

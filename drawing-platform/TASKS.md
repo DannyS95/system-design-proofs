@@ -64,6 +64,17 @@ Each task implements one mechanism.
 - [x] Perform overview/detail visual QA and test both cache contracts and the
   source-grounded application architecture independently.
 
+## Phase 6 — content bounds and cache accuracy
+
+- [x] Enforce capped natural width, wrapped minimum height, manual resize floors,
+  connector rerouting, and declared parent-container expansion.
+- [x] Distinguish virtual-node tokens, logical cache shards, and physical cache
+  servers with verified project-owned icon provenance.
+- [x] Correct the financial-cache clockwise-successor stop, interval ownership,
+  replica selection, application boundary, quorum acknowledgement, and durable
+  data destinations without rearranging the board's layer composition.
+- [x] Regenerate and verify the editable board plus deterministic SVG/PNG views.
+
 ## Later mechanisms
 
 - [ ] Asset upload to object storage.

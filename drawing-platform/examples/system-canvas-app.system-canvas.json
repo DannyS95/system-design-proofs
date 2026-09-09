@@ -12,7 +12,7 @@
         "type": "shape",
         "x": 40,
         "y": 90,
-        "width": 410,
+        "width": 416,
         "height": 1350,
         "rotation": 0,
         "style": {
@@ -31,7 +31,7 @@
         "type": "shape",
         "x": 490,
         "y": 90,
-        "width": 1230,
+        "width": 1236,
         "height": 1350,
         "rotation": 0,
         "style": {
@@ -50,7 +50,7 @@
         "type": "shape",
         "x": 535,
         "y": 1030,
-        "width": 1140,
+        "width": 1146,
         "height": 355,
         "rotation": 0,
         "style": {
@@ -69,7 +69,7 @@
         "type": "shape",
         "x": 1760,
         "y": 90,
-        "width": 900,
+        "width": 906,
         "height": 1350,
         "rotation": 0,
         "style": {
@@ -88,7 +88,7 @@
         "type": "shape",
         "x": 2115,
         "y": 1000,
-        "width": 500,
+        "width": 506,
         "height": 385,
         "rotation": 0,
         "style": {
@@ -107,7 +107,7 @@
         "type": "shape",
         "x": 40,
         "y": 1470,
-        "width": 2620,
+        "width": 2626,
         "height": 270,
         "rotation": 0,
         "style": {
@@ -2278,6 +2278,7 @@
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
+        "parentId": "tooling-zone",
         "locked": true
       },
       {
@@ -2301,6 +2302,7 @@
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
+        "parentId": "browser-zone",
         "locked": true
       },
       {
@@ -2324,6 +2326,7 @@
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
+        "parentId": "browser-persistence-zone",
         "locked": true
       },
       {
@@ -2347,6 +2350,7 @@
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
+        "parentId": "server-zone",
         "locked": true
       },
       {
@@ -2370,6 +2374,7 @@
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
+        "parentId": "server-persistence-zone",
         "locked": true
       },
       {
@@ -2531,6 +2536,7 @@
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
+        "parentId": "visual-vocabulary-zone",
         "locked": true
       }
     ],

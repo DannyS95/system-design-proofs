@@ -104,10 +104,6 @@ describe("stencil conversion", () => {
     expect(elements).toHaveLength(1);
     expect(elements[0]).toMatchObject({
       type: "system",
-      x: center.x - STENCIL_WIDTH / 2,
-      y: center.y - STENCIL_HEIGHT / 2,
-      width: STENCIL_WIDTH,
-      height: STENCIL_HEIGHT,
       iconId: "key-value-store",
       title: "Key-Value Store",
       subtitle: "Reads and writes by key",
@@ -118,6 +114,10 @@ describe("stencil conversion", () => {
         stroke: "#0b7285",
       },
     });
+    expect(elements[0].width).toBeGreaterThanOrEqual(STENCIL_WIDTH);
+    expect(elements[0].height).toBeGreaterThanOrEqual(STENCIL_HEIGHT);
+    expect(elements[0].x + elements[0].width / 2).toBe(center.x);
+    expect(elements[0].y + elements[0].height / 2).toBe(center.y);
   });
 
   it("produces a complete semantic node for every category", () => {

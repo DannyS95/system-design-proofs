@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import type { CanvasElementStyle, CanvasSystemElement } from "../shared/contracts.js";
+import type {
+  CanvasElementStyle,
+  CanvasShapeElement,
+  CanvasSystemElement,
+} from "../shared/contracts.js";
 import { getElementVisualProvenance } from "../src/editor/icon-provenance.js";
 
 const style: CanvasElementStyle = {
@@ -58,6 +62,32 @@ describe("canvas icon provenance", () => {
       name: "worker",
       category: "Build tooling",
       why: expect.stringMatching(/processing or transformation.*Vite build \/ dev tool.*metadata/is),
+    });
+  });
+
+  it("preserves registry provenance for an icon-bearing logical shape", () => {
+    const token: CanvasShapeElement = {
+      id: "vnode-b-selected",
+      type: "shape",
+      shape: "ellipse",
+      x: 0,
+      y: 0,
+      width: 64,
+      height: 72,
+      rotation: 0,
+      style,
+      label: "vB2",
+      iconId: "virtual-node",
+      metadata: { layer: "Key placement" },
+    };
+
+    expect(getElementVisualProvenance(token)).toMatchObject({
+      source: expect.stringMatching(/project-owned SystemIcon registry.*no icon package/i),
+      name: "virtual-node",
+      sourceFile: "src/editor/SystemIcon.tsx",
+      kind: "custom SVG",
+      category: "Key placement",
+      why: expect.stringMatching(/token dot on a ring.*vB2/is),
     });
   });
 });

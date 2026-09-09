@@ -68,6 +68,8 @@ export interface CanvasBaseElement {
   locked?: boolean;
   /** Retains legacy tombstones so migration never drops an element silently. */
   deleted?: boolean;
+  /** Optional visual container that must expand when this element grows. */
+  parentId?: string;
   /** Editable detail that would make the overview card too noisy. */
   metadata?: CanvasElementMetadata;
 }
@@ -108,6 +110,8 @@ export interface CanvasShapeElement extends Omit<CanvasBaseElement, "type"> {
   type: "shape";
   shape: CanvasShapeKind;
   label?: string;
+  /** Optional semantic mark drawn inside the editable shape. */
+  iconId?: string;
   fontSize?: number;
   /** Optional so existing shape labels remain centered. */
   align?: CanvasTextAlign;

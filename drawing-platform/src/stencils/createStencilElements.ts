@@ -2,6 +2,10 @@ import type {
   CanvasSystemElement,
   SystemNodeVariant,
 } from "../../shared/contracts";
+import {
+  minimumTextHeight,
+  preferredTextWidth,
+} from "../editor/text-layout";
 import { getStencilById } from "./catalog";
 import type { StencilDefinition, StencilPlacement } from "./types";
 
@@ -52,28 +56,35 @@ export const createStencilElements = (
   center: StencilPlacement = { x: 0, y: 0 },
 ): SystemStencilElement[] => {
   const stencil = resolveStencil(stencilOrId);
-
-  return [
-    {
-      id: nextElementId(stencil.id),
-      type: "system",
-      x: center.x - STENCIL_WIDTH / 2,
-      y: center.y - STENCIL_HEIGHT / 2,
-      width: STENCIL_WIDTH,
-      height: STENCIL_HEIGHT,
-      rotation: 0,
-      style: {
-        fill: CARD_BACKGROUND,
-        stroke: stencil.accent,
-        strokeWidth: 2,
-        strokeStyle: "solid",
-        opacity: 1,
-        textColor: "#1f2937",
-      },
-      iconId: stencil.iconId,
-      title: stencil.name,
-      subtitle: stencil.role,
-      variant: variantForStencil(stencil),
+  const provisional: SystemStencilElement = {
+    id: nextElementId(stencil.id),
+    type: "system",
+    x: 0,
+    y: 0,
+    width: STENCIL_WIDTH,
+    height: STENCIL_HEIGHT,
+    rotation: 0,
+    style: {
+      fill: CARD_BACKGROUND,
+      stroke: stencil.accent,
+      strokeWidth: 2,
+      strokeStyle: "solid",
+      opacity: 1,
+      textColor: "#1f2937",
     },
-  ];
+    iconId: stencil.iconId,
+    title: stencil.name,
+    subtitle: stencil.role,
+    variant: variantForStencil(stencil),
+  };
+  const width = Math.max(STENCIL_WIDTH, preferredTextWidth(provisional));
+  const sized = { ...provisional, width };
+  const height = Math.max(STENCIL_HEIGHT, minimumTextHeight(sized));
+
+  return [{
+    ...sized,
+    x: center.x - width / 2,
+    y: center.y - height / 2,
+    height,
+  }];
 };

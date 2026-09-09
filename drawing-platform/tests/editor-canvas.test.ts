@@ -428,6 +428,7 @@ describe("editable element typography rendering", () => {
         element: {
           ...frame,
           label: "Key placement",
+          iconId: "virtual-node",
           fontSize: 17,
           align: "left",
         },
@@ -453,6 +454,8 @@ describe("editable element typography rendering", () => {
     expect(cardMarkup).toContain('text-anchor="end"');
     expect(shapeMarkup).toContain('font-size="17"');
     expect(shapeMarkup).toContain('text-anchor="start"');
+    expect(shapeMarkup).toContain('viewBox="0 0 24 24"');
+    expect(shapeMarkup).toContain('cx="20" cy="12" r="2.5"');
     expect(textMarkup).toContain('font-size="22"');
     expect(textMarkup).toContain('text-anchor="middle"');
     expect(connectorMarkup).toContain('font-size="14"');

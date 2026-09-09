@@ -38,6 +38,7 @@ export const SYSTEM_ICON_IDS = [
   "distributed-database",
   "message-queue",
   "partition",
+  "virtual-node",
   "replica-group",
   "leader",
   "process",
@@ -364,6 +365,15 @@ function IconArtwork({ iconId }: { iconId: string }) {
         <>
           <rect x="3" y="5" width="18" height="14" rx="2" />
           <path d="M9 5v14m6-14v14M5.5 9h1M11.5 12h1M17.5 9h1M17.5 15h1" />
+        </>
+      );
+    case "virtual-node":
+      return (
+        <>
+          <circle cx="12" cy="12" r="8" />
+          <path d="M12 4a8 8 0 0 1 8 8" />
+          <circle cx="20" cy="12" r="2.5" fill="currentColor" />
+          <path d="m16.5 5.5 1.8.2-.2 1.8" />
         </>
       );
     case "replica-group":

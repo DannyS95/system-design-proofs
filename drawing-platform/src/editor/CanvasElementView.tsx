@@ -130,6 +130,12 @@ export function SceneElementView({
   const shapeTextX = element.type === "shape"
     ? textXForAlign(12, Math.max(0, element.width - 24), shapeAlign)
     : 0;
+  const shapeIconSize = element.type === "shape" && element.iconId
+    ? Math.max(12, Math.min(element.width <= 100 ? 16 : 28, element.width - 16))
+    : 0;
+  const shapeStackHeight = shapeIconSize + (shapeIconSize > 0 ? 4 : 0) +
+    (shapeLayout?.height ?? 0);
+  const shapeStackTop = Math.max(8, (element.height - shapeStackHeight) / 2);
 
   return (
     <g
@@ -257,10 +263,26 @@ export function SceneElementView({
         {element.type === "shape" ? (
           <>
             {renderShape(element)}
+            {element.iconId ? (
+              <SystemIcon
+                iconId={element.iconId}
+                x={(element.width - shapeIconSize) / 2}
+                y={shapeStackTop}
+                width={shapeIconSize}
+                height={shapeIconSize}
+                color={element.style.stroke}
+                aria-hidden="true"
+              />
+            ) : null}
             {element.label && shapeLayout ? (
               <text
                 x={shapeTextX}
-                y={(element.height - shapeLayout.height) / 2 + shapeLayout.fontSize}
+                y={
+                  shapeStackTop +
+                  shapeIconSize +
+                  (shapeIconSize > 0 ? 4 : 0) +
+                  shapeLayout.fontSize
+                }
                 textAnchor={textAnchorForAlign(shapeAlign)}
                 fill={element.style.textColor}
                 fontSize={shapeLayout.fontSize}
@@ -269,7 +291,12 @@ export function SceneElementView({
                 <SvgTextLines
                   block={shapeLayout}
                   x={shapeTextX}
-                  y={(element.height - shapeLayout.height) / 2 + shapeLayout.fontSize}
+                  y={
+                    shapeStackTop +
+                    shapeIconSize +
+                    (shapeIconSize > 0 ? 4 : 0) +
+                    shapeLayout.fontSize
+                  }
                   textAnchor={textAnchorForAlign(shapeAlign)}
                 />
               </text>

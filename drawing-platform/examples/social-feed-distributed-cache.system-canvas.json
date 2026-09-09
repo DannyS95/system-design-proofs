@@ -138,7 +138,7 @@
         "type": "shape",
         "x": 1550,
         "y": 2240,
-        "width": 1900,
+        "width": 1906,
         "height": 650,
         "rotation": 0,
         "style": {
@@ -1817,6 +1817,7 @@
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
+        "parentId": "replica-set-b",
         "locked": false
       }
     ],

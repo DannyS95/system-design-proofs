@@ -26,9 +26,18 @@ optional editable architecture metadata (`runtimeLocation`, `layer`,
 `sourcePath`, `packageName`, `objectType`, `inputs`, `outputs`, `ownership`, and
 `explanation`).
 Connectors store local point sequences and optional bindings to element IDs.
-System nodes store a stable `iconId`, title, optional subtitle and body, and semantic
-variant. The optional `locked` flag prevents accidental mutation while leaving
-the element selectable for inspection and explicit unlocking.
+System nodes store a stable `iconId`, title, optional subtitle and body, and
+semantic variant. Shapes may also store an `iconId` when their geometry is the
+editable object but a semantic mark distinguishes its role. Any child may name
+a shape `parentId`; validation rejects missing, non-shape, self, and cyclic
+parents, and the editor expands that container when the child's content grows.
+The optional `locked` flag prevents accidental mutation while leaving the
+element selectable for inspection and explicit unlocking.
+
+Stored dimensions are content floors as well as geometry. Deterministic
+measurement derives the minimum unbreakable width, capped natural width, and
+wrapped height for each text-bearing element. Connector-label plates derive
+their own capped dimensions from label content.
 
 ## Embedded image
 
@@ -65,8 +74,9 @@ An immutable seed has an identifier, name, description, and schema-v2 scene.
 Creating from a template deep-copies the scene into a new board at revision zero.
 The registered choices are blank, KV store, CDN, Social Feed — Distributed
 Cache, generic Distributed Cache, and System Canvas application architecture.
-Generated teaching scenes start with every
-element locked; the copied board can unlock one element or all elements.
+Generated teaching scenes choose their initial lock state by learning goal; the
+two cache boards start unlocked, while locked boards can unlock one element or
+all elements.
 
 ## Stencil
 
@@ -89,4 +99,5 @@ Board document ──mirrors as──▶ Local snapshot
 Stencil ──creates──▶ semantic system element
 Custom component ──copies──▶ system node | shape | text
 Canvas image ──references──▶ embedded CanvasFile
+Child element ──expands──▶ shape parentId
 ```

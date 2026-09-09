@@ -4,6 +4,13 @@
 
 ### Added
 
+- Content-aware minimum and capped natural widths for system cards, shapes,
+  notes, headings, and labels; manual width changes now rewrap and recalculate
+  height, bound routes move with resized objects, and declared shape parents
+  expand around growing children.
+- Icon-bearing editable shapes plus a project-owned virtual-node token glyph, so
+  the inspector can preserve verified `SystemIcon` provenance for logical
+  partitions and ring tokens as well as system cards.
 - Empty-canvas marquee area selection, Shift-toggle multi-selection, group
   movement/lock/delete/fit actions, direct SVG text targeting, and border-only
   hit behavior for large layer frames.
@@ -51,6 +58,15 @@
 
 ### Changed
 
+- Corrected the financial-cache ring so the marked hash position advances
+  clockwise to `vB2`, states the exact successor stopping rule and owned
+  interval, maps that interval to logical Cache Shard B, and then selects the
+  physical B1/B2/B3 server replicas.
+- Grounded the financial-cache request and consistency claims at their owning
+  layers: the load balancer selects an application instance, the embedded cache
+  client performs key and replica placement, acknowledged financial writes wait
+  for cache `W=2` and Cassandra `CL=QUORUM`, and partial writes invalidate or
+  bypass cache state rather than returning a false success.
 - Rebuilt both distributed-cache boards as open vertical sandwiches: each useful
   layer statement is followed by its own mechanism details, with substantially
   larger horizontal and vertical gaps. Removed the financial board's stage strip
@@ -104,6 +120,9 @@
 
 ### Fixed
 
+- Prevented text-bearing elements from accepting stored dimensions below their
+  wrapped content and prevented generated connector labels from growing beyond
+  the board without wrapping.
 - Eliminated the maximum-update-depth crash by removing the dependency path that
   re-entered React updates and by keeping repo-owned SVG editor callbacks and session
   transitions stable. The error boundary remains fallback recovery, not the fix.

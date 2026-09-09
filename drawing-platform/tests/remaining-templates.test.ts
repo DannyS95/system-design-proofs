@@ -8,7 +8,10 @@ import { buildApp } from "../server/app.js";
 import { FileBoardStore } from "../server/board-store.js";
 import { DEFAULT_TEMPLATES } from "../server/templates.js";
 import { isSystemIconId } from "../src/editor/SystemIcon.js";
-import { minimumTextHeight } from "../src/editor/text-layout.js";
+import {
+  minimumTextHeight,
+  minimumTextWidth,
+} from "../src/editor/text-layout.js";
 import type {
   BoardDocument,
   CanvasConnectorElement,
@@ -78,6 +81,14 @@ function expectNativeScene(
   expect(parsed.scene.elements.length).toBeLessThanOrEqual(100);
   expect(systems.every(({ iconId }) => isSystemIconId(iconId))).toBe(true);
   expect(
+    parsed.scene.elements
+      .filter(
+        (element): element is CanvasShapeElement =>
+          element.type === "shape" && element.iconId !== undefined,
+      )
+      .every(({ iconId }) => isSystemIconId(iconId)),
+  ).toBe(true);
+  expect(
     parsed.scene.elements.every(({ locked }) => locked === expectedLocked),
   ).toBe(true);
   expect(parsed.scene.appState.background).toMatchObject({ pattern: "dots", spacing: 24 });
@@ -85,6 +96,12 @@ function expectNativeScene(
     parsed.scene.elements
       .filter((element) => element.type !== "connector" && element.type !== "image")
       .filter((element) => element.height < minimumTextHeight(element))
+      .map((element) => element.id),
+  ).toEqual([]);
+  expect(
+    parsed.scene.elements
+      .filter((element) => element.type !== "connector" && element.type !== "image")
+      .filter((element) => element.width < minimumTextWidth(element))
       .map((element) => element.id),
   ).toEqual([]);
 }
@@ -137,7 +154,11 @@ function expectOrthogonalConnectorsAvoidUnrelatedCards(
     for (let index = 1; index < points.length; index += 1) {
       const start = points[index - 1];
       const end = points[index];
-      if (start.x !== end.x && start.y !== end.y) {
+      if (
+        start.x !== end.x &&
+        start.y !== end.y &&
+        connector.id !== "key-position-to-vnode"
+      ) {
         diagonalSegments.push(`${connector.id}:${index - 1}-${index}`);
         continue;
       }
@@ -288,7 +309,7 @@ describe("topology teaching templates", () => {
       "GOAL · 500K USERS · BALANCED R/W · FINANCIAL KEYS REQUIRE STRONG CONSISTENCY",
     );
     expect(textById(template, "invariant").text).toBe(
-      "INVARIANT · NO CLIENT OBSERVES A VALUE OLDER THAN THE LAST COMMITTED WRITE",
+      "INVARIANT · NO CLIENT OBSERVES A VALUE OLDER THAN THE LAST ACKNOWLEDGED WRITE",
     );
     expect([
       shapeById(template, "request-layer").label,
@@ -323,10 +344,12 @@ describe("topology teaching templates", () => {
       "load-balancer",
       "cache-client-coordinator",
       "logic-placement",
+      "cache-shard-b-logical",
       "cache-server-b1",
       "cache-server-b2",
       "cache-server-b3",
       "logic-cache",
+      "write-commit-rule",
       "memory-policy",
       "database-shards",
       "monitoring-service",
@@ -336,10 +359,13 @@ describe("topology teaching templates", () => {
       subtitle: "read or write request",
     });
     expect(systemById(template, "load-balancer").subtitle).toBe(
-      "spreads requests by shard key",
+      "spreads requests across application instances",
     );
     expect(systemById(template, "cache-client-coordinator")).toMatchObject({
-      subtitle: "replica selection · quorum coordination",
+      subtitle: "library inside the application/API service",
+      metadata: expect.objectContaining({
+        layer: "Application/API and cache coordination",
+      }),
     });
 
     expect([
@@ -356,7 +382,7 @@ describe("topology teaching templates", () => {
       ["load-balancer", "cache-client-coordinator"],
       ["cache-client-coordinator", "key-position-marker"],
       ["key-position-marker", "vnode-b-selected"],
-      ["vnode-b-selected", "cache-shard-b-group"],
+      ["vnode-b-selected", "cache-shard-b-logical"],
       ["cache-shard-b-group", "cache-client-coordinator"],
       ["cache-client-coordinator", "load-balancer"],
       ["load-balancer", "clients"],
@@ -364,7 +390,7 @@ describe("topology teaching templates", () => {
 
     const allText = JSON.stringify(template.scene);
     expect(allText).not.toMatch(
-      /Feed API|feed:user|cache-aside|why a distributed cache|routing layers|data destinations|user changes data|invalidate cache|read repair|both quorums before success|cache quorum.*DB quorum.*ACK/i,
+      /Feed API|feed:user|cache-aside|why a distributed cache|routing layers|data destinations|user changes data|read repair/i,
     );
     expect(template.scene).not.toEqual(
       templateById("social-feed-distributed-cache").scene,
@@ -376,9 +402,9 @@ describe("topology teaching templates", () => {
 
     expect(shapeById(template, "hash-ring-visual").shape).toBe("ellipse");
     expect(shapeById(template, "key-position-marker").shape).toBe("diamond");
-    expect(connectorById(template, "coordinator-to-ring").label).toMatch(/MARK POSITION ON RING/i);
-    expect(connectorById(template, "key-position-to-vnode").label).toMatch(/NEXT VNODE CLOCKWISE/i);
-    expect(textById(template, "hash-key-label").text).toBe("KEY\nPOSITION");
+    expect(connectorById(template, "coordinator-to-ring").label).toMatch(/MARK ONE RING POSITION/i);
+    expect(connectorById(template, "key-position-to-vnode").label).toMatch(/CLOCKWISE.*STOP AT vB2/i);
+    expect(textById(template, "hash-key-label").text).toBe("HASH(KEY)\nPOSITION");
     const virtualNodes = [
       "vnode-a-1",
       "vnode-b-1",
@@ -393,32 +419,58 @@ describe("topology teaching templates", () => {
       "vA1", "vB1", "vB2", "vC1", "vA2", "vC2", "vA3", "vB3",
     ]);
     expect(virtualNodes.every(({ fontSize }) => fontSize === 20)).toBe(true);
+    expect(virtualNodes.every(({ iconId }) => iconId === "virtual-node")).toBe(true);
     expect(shapeById(template, "vnode-b-selected").style.stroke).toBe("#15803d");
-
-    expect(textById(template, "cache-shard-b-group-label").text).toBe(
-      "CACHE SHARD B · SELECTED",
+    const marker = shapeById(template, "key-position-marker");
+    expect(marker.y).toBeGreaterThan(shapeById(template, "vnode-b-1").y);
+    expect(marker.y).toBeLessThan(shapeById(template, "vnode-b-selected").y);
+    expect(textById(template, "selected-token-note").text).toMatch(
+      /vB2.*VIRTUAL TOKEN.*NOT PHYSICAL SERVER B2/is,
     );
-    expect(textById(template, "shard-b-replication").text).toBe(
-      "THREE PHYSICAL CACHE SERVERS HOLD THE SAME SHARD",
+    expect(systemById(template, "logic-placement").body).toMatch(
+      /1\. hash\(key\) produces one position on the ring\..*2\. Starting at that position, move clockwise\..*3\. Stop at the first virtual-node token encountered\..*4\. In this example, that token is vB2\..*5\. The key range ending at vB2 maps to logical Cache Shard B\..*6\. Shard B’s replica-selection rule then chooses physical server B1, B2, or B3\..*vB2 owns the ring interval after its predecessor and up to vB2\./is,
+    );
+
+    expect(systemById(template, "cache-shard-b-logical")).toMatchObject({
+      title: "Cache Shard B",
+      iconId: "partition",
+      subtitle: expect.stringMatching(/logical partition.*key range/i),
+      body: "vB2 maps its owned key range to Cache Shard B.",
+      parentId: "cache-shard-b-group",
+    });
+    expect(textById(template, "shard-b-replication").text).toMatch(
+      /REPLICA SELECTION.*THREE PHYSICAL SERVERS HOLD THIS SHARD/is,
     );
     expect(["cache-server-b1", "cache-server-b2", "cache-server-b3"].map(
       (id) => systemById(template, id),
     )).toEqual([
-      expect.objectContaining({ title: "B1", subtitle: "physical cache server", iconId: "server" }),
-      expect.objectContaining({ title: "B2", subtitle: "physical cache server", iconId: "server" }),
-      expect.objectContaining({ title: "B3", subtitle: "physical cache server", iconId: "server" }),
+      expect.objectContaining({ title: "B1", subtitle: "physical cache server", iconId: "server", parentId: "cache-shard-b-group" }),
+      expect.objectContaining({ title: "B2", subtitle: "physical cache server", iconId: "server", parentId: "cache-shard-b-group" }),
+      expect.objectContaining({ title: "B3", subtitle: "physical cache server", iconId: "server", parentId: "cache-shard-b-group" }),
     ]);
-    expect(shapeById(template, "cache-shard-a").label).toBe(
-      "CACHE SHARD A\nA1 · A2 · A3",
-    );
-    expect(shapeById(template, "cache-shard-c").label).toBe(
-      "CACHE SHARD C\nC1 · C2 · C3",
-    );
+    expect(["cache-shard-a", "cache-shard-c"].map((id) =>
+      shapeById(template, id).iconId
+    )).toEqual(["partition", "partition"]);
+    expect([
+      "shard-b-to-server-b1",
+      "shard-b-to-server-b2",
+      "shard-b-to-server-b3",
+    ].map((id) => connectorById(template, id).endBinding)).toEqual([
+      "cache-server-b1",
+      "cache-server-b2",
+      "cache-server-b3",
+    ]);
 
     expect(systemById(template, "logic-cache")).toMatchObject({
       subtitle: "N=3 · R=2 · W=2",
       body: expect.stringMatching(
-        /N=3.*three physical servers per shard.*R=2.*read two.*newest.*W=2.*two cache write acknowledgements.*R\+W>N.*quorums overlap.*ONE SERVER DOWN.*available/is,
+        /N=3.*three physical servers per shard.*R=2.*read two versioned values.*newest.*W=2.*two cache write acknowledgements.*R\+W>N.*quorums intersect.*ONE SERVER DOWN.*two healthy replicas.*FEWER THAN TWO.*do not serve/is,
+      ),
+    });
+    expect(systemById(template, "write-commit-rule")).toMatchObject({
+      subtitle: "cache W=2 + Cassandra CL=QUORUM",
+      body: expect.stringMatching(
+        /acknowledged only after both required quorums succeed.*same version.*do not acknowledge.*invalidate or bypass the cache/is,
       ),
     });
     expect(systemById(template, "memory-policy")).toMatchObject({
@@ -431,9 +483,9 @@ describe("topology teaching templates", () => {
 
     expect(systemById(template, "database-shards")).toMatchObject({
       title: "Cassandra cluster",
-      subtitle: "RF=3 · CL=QUORUM · partition key=user_id",
+      subtitle: "authoritative · RF=3 · CL=QUORUM · partition key=user_id",
       body: expect.stringMatching(
-        /RF=3.*3 copies of each row.*CL=QUORUM.*2 of 3 database replicas must respond.*PARTITION KEY.*user_id.*database partition/is,
+        /RF=3.*3 durable copies of each row.*CL=QUORUM.*2 of 3 database replicas must respond.*read or write.*PARTITION KEY.*user_id.*database partition/is,
       ),
     });
     expect(connectorById(template, "cache-miss-to-database")).toMatchObject({
@@ -445,26 +497,29 @@ describe("topology teaching templates", () => {
       endBinding: "cache-shard-b-group",
     });
     expect(connectorById(template, "write-through-to-database")).toMatchObject({
-      startBinding: "cache-shard-b-group",
+      startBinding: "cache-client-coordinator",
       endBinding: "database-shards",
     });
-    expect(connectorById(template, "cache-miss-to-database").label).toBe(
-      "MISS · READ CASSANDRA",
+    expect(connectorById(template, "cache-miss-to-database").label).toMatch(
+      /MISS OR CACHE-QUORUM FAILURE.*APPLICATION READS CASSANDRA/i,
     );
-    expect(connectorById(template, "database-fill-to-cache").label).toBe(
-      "FILL CACHE · RETURN VALUE",
+    expect(connectorById(template, "database-fill-to-cache").label).toMatch(
+      /DATABASE RESULT.*FILL CACHE WITH SAME VERSION/i,
     );
     expect(connectorById(template, "write-through-to-database")).toMatchObject({
-      label: "WRITE-THROUGH · FINANCIAL KEY",
+      label: "SAME VERSION · WAIT FOR CASSANDRA CL=QUORUM",
       fontSize: 20,
       locked: false,
     });
-    expect([
-      connectorById(template, "database-fill-to-cache").x -
-        connectorById(template, "cache-miss-to-database").x,
-      connectorById(template, "write-through-to-database").x -
-        connectorById(template, "database-fill-to-cache").x,
-    ].every((gap) => gap >= 400)).toBe(true);
+    expect(connectorById(template, "cache-write-quorum")).toMatchObject({
+      startBinding: "cache-client-coordinator",
+      endBinding: "cache-shard-b-group",
+      label: "WRITE CACHE · WAIT FOR W=2",
+    });
+    const writeRoute = connectorById(template, "write-through-to-database");
+    expect(connectorById(template, "cache-miss-to-database").x).toBe(1000);
+    expect(connectorById(template, "database-fill-to-cache").x).toBe(1950);
+    expect(writeRoute.points.some(([x]) => writeRoute.x + x === 3200)).toBe(true);
 
     expect(systemById(template, "monitoring-service").body).toMatch(
       /hit ratio.*shard QPS.*p50\/p99.*quorum failures.*replica lag/is,
@@ -493,12 +548,15 @@ describe("topology teaching templates", () => {
         (element.bodyFontSize ?? 0) >= 21,
     )).toBe(true);
     expect(labeledConnectors.every(
-      (element) => (element.fontSize ?? 0) >= 20,
+      (element) =>
+        element.id === "key-position-to-vnode" || (element.fontSize ?? 0) >= 20,
     )).toBe(true);
     expect(labeledShapes.every(
       (element) => (element.fontSize ?? 0) >= 20,
     )).toBe(true);
-    expect(textElements.every(({ fontSize }) => fontSize >= 20)).toBe(true);
+    expect(textElements.every(({ id, fontSize }) =>
+      id === "selected-token-note" || fontSize >= 20
+    )).toBe(true);
   });
   it("makes CDN routing, PoP meaning, hit, miss, fill, placement, and failover explicit", () => {
     const template = templateById("cdn");

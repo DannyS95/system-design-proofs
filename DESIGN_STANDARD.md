@@ -324,6 +324,34 @@ real selectable and editable canvas element. Large background or layer frames
 must not intercept selection of objects inside them, and dragging an empty area
 with the Select tool must support area selection.
 
+## Mandatory content-aware dimensions
+
+Every text-bearing element must derive its minimum bounds from its rendered
+title, body, icon, and padding. This applies to cards, notes, headings, labels,
+panels, groups, and connector labels on every current and future board.
+
+```text
+rendered title + body + icon + padding
+→ required width and height
+→ element bounds
+```
+
+The default width grows with content up to a sensible per-element maximum.
+Text wraps at that maximum and height then grows to contain every wrapped line.
+A manual width change must recalculate the required height. Manual dimensions
+may enlarge an object, but they must never make it smaller than its wrapped
+content. Bound connectors and declared parent containers must recalculate after
+auto-sizing. Fixed heights that clip text are invalid.
+
+## Logical and physical visual identity
+
+Use semantic icons to keep logical placement objects visually distinct from
+physical machines. A shard or key range uses a partition icon; a cache-server
+replica uses a server or rack-machine icon; and a consistent-hash virtual node
+uses a small token/ring-position icon. Similar names do not make these objects
+interchangeable. The inspector must report the icon's verified package or
+project-owned source and stable icon identifier.
+
 ## Required breathing room
 
 Spacing is part of correctness, not decoration. Every component, block, figure,

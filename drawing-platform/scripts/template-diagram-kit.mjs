@@ -89,6 +89,23 @@ const wrapTextLines = (value, maxWidth, fontSize, factor = 0.56) => {
   return wrapped.length ? wrapped : [""];
 };
 
+const widestExplicitLine = (value, fontSize, factor = 0.56) =>
+  Math.max(
+    0,
+    ...String(value).replaceAll("\r\n", "\n").split("\n")
+      .map((line) => line.trim().length * fontSize * factor),
+  );
+
+const widestWord = (value, fontSize, factor = 0.56) =>
+  Math.max(
+    0,
+    ...String(value).split(/\s+/u)
+      .map((word) => word.length * fontSize * factor),
+  );
+
+const clamp = (value, minimum, maximum) =>
+  Math.min(maximum, Math.max(minimum, value));
+
 const pathMidpoint = (points) => {
   const segments = points.slice(1).map((point, index) => {
     const previous = points[index];
@@ -201,6 +218,12 @@ const renderIcon = (iconId, x, y, size, color) => {
     case "cache":
       body = `<rect x="7" y="8" width="34" height="12" rx="3"/><rect x="7" y="28" width="34" height="12" rx="3"/><path d="M26 11l-6 9h6l-5 10 11-13h-7z"/>`;
       break;
+    case "partition":
+      body = `<rect x="6" y="10" width="36" height="28" rx="3"/><path d="M18 10v28m12-28v28M11 18h2M23 24h2M35 18h2M35 31h2"/>`;
+      break;
+    case "virtual-node":
+      body = `<circle cx="24" cy="24" r="16"/><path d="M24 8a16 16 0 0116 16"/>${dot(40, 24, 5)}<path d="m33 11 4 .5-.5 4"/>`;
+      break;
     case "database":
     case "distributed-database":
       body = `<ellipse cx="24" cy="11" rx="16" ry="6"/><path d="M8 11v25c0 4 7 7 16 7s16-3 16-7V11M8 24c0 4 7 7 16 7s16-3 16-7"/>`;
@@ -277,49 +300,68 @@ export class Diagram {
     this.labelElements = [];
   }
 
-  shape({ id, x, y, width, height, shape = "rectangle", label, fontSize, align, fill = palette.white, stroke = palette.line, strokeWidth = 1.5, strokeStyle = "solid", textColor = palette.ink, opacity = 1 }) {
+  shape({ id, x, y, width, height, shape = "rectangle", label, iconId, fontSize, align, metadata, parentId, fill = palette.white, stroke = palette.line, strokeWidth = 1.5, strokeStyle = "solid", textColor = palette.ink, opacity = 1 }) {
     const usesHeaderLabel = Boolean(label) && height > 120;
+    const resolvedFontSize = fontSize ?? 14;
+    const minimumWidth = label && !usesHeaderLabel
+      ? clamp(widestWord(label, resolvedFontSize) + 24, iconId ? 52 : 24, 720)
+      : iconId ? 52 : 24;
+    const fittedWidth = Math.max(width, minimumWidth);
+    const labelHeight = label && !usesHeaderLabel
+      ? wrapTextLines(label, Math.max(20, fittedWidth - 24), resolvedFontSize).length * resolvedFontSize * 1.25
+      : 0;
+    const fittedHeight = Math.max(
+      height,
+      labelHeight + (iconId ? 22 : 0) + (labelHeight ? 24 : 0),
+    );
     this.backdropElements.push({
       id,
       type: "shape",
       x,
       y,
-      width,
-      height,
+      width: fittedWidth,
+      height: fittedHeight,
       rotation: 0,
       style: style({ fill, stroke, strokeWidth, strokeStyle, opacity, textColor }),
       shape,
+      ...(iconId ? { iconId } : {}),
       ...(label && !usesHeaderLabel ? { label } : {}),
       ...(label && !usesHeaderLabel && fontSize !== undefined ? { fontSize } : {}),
       ...(label && !usesHeaderLabel && align !== undefined ? { align } : {}),
+      ...(metadata && Object.keys(metadata).length ? { metadata } : {}),
+      ...(parentId ? { parentId } : {}),
     });
     if (label && usesHeaderLabel) {
       this.text({
         id: `${id}-label`,
         x: x + 18,
         y: y + 12,
-        width: width - 36,
+        width: fittedWidth - 36,
         text: label,
         fontSize: fontSize ?? 15,
         align: align ?? "left",
         color: textColor,
         weight: 700,
+        parentId: id,
       });
     }
     return id;
   }
 
-  text({ id, x, y, width, text, fontSize = 18, align = "left", color = palette.ink, weight = 600 }) {
+  text({ id, x, y, width, text, fontSize = 18, align = "left", color = palette.ink, weight = 600, parentId }) {
+    const minimumWidth = clamp(widestWord(text, fontSize) + 4, 24, 760);
+    const preferredWidth = clamp(widestExplicitLine(text, fontSize) + 4, minimumWidth, 760);
+    const fittedWidth = Math.max(width ?? preferredWidth, minimumWidth);
     const height = Math.max(
       24,
-      Math.ceil(wrapTextLines(text, width, fontSize).length * fontSize * 1.28 + 4),
+      Math.ceil(wrapTextLines(text, fittedWidth, fontSize).length * fontSize * 1.28 + 4),
     );
     this.labelElements.push({
       id,
       type: "text",
       x,
       y,
-      width,
+      width: fittedWidth,
       height,
       rotation: 0,
       style: style({ stroke: "transparent", strokeWidth: 0, textColor: color }),
@@ -328,11 +370,12 @@ export class Diagram {
       fontFamily: "sans",
       fontWeight: weight,
       align,
+      ...(parentId ? { parentId } : {}),
     });
     return id;
   }
 
-  system({ id, x, y, width = 250, height = 94, iconId, title, subtitle, body, titleFontSize, bodyFontSize, align, metadata, accent = palette.blue, fill = palette.white, variant = "neutral" }) {
+  system({ id, x, y, width, height = 94, iconId, title, subtitle, body, titleFontSize, bodyFontSize, align, metadata, parentId, accent = palette.blue, fill = palette.white, variant = "neutral" }) {
     const resolvedTitleFontSize = titleFontSize ?? 15;
     const resolvedBodyFontSize = bodyFontSize ?? 11;
     const subtitleFontSize = bodyFontSize === undefined
@@ -341,7 +384,20 @@ export class Diagram {
     const titleLineHeight = Math.ceil(resolvedTitleFontSize * 1.2);
     const subtitleLineHeight = Math.ceil(subtitleFontSize * 1.4);
     const bodyLineHeight = Math.ceil(resolvedBodyFontSize * 1.36);
-    const textWidth = Math.max(28, width - 94);
+    const minimumTextWidth = Math.max(
+      widestWord(title, resolvedTitleFontSize),
+      widestWord(subtitle ?? "", subtitleFontSize, 0.62),
+      widestWord(body ?? "", resolvedBodyFontSize),
+    );
+    const preferredTextWidth = Math.max(
+      widestExplicitLine(title, resolvedTitleFontSize),
+      widestExplicitLine(subtitle ?? "", subtitleFontSize, 0.62),
+      widestExplicitLine(body ?? "", resolvedBodyFontSize),
+    );
+    const minimumWidth = clamp(94 + minimumTextWidth, 122, 640);
+    const preferredWidth = clamp(94 + preferredTextWidth, minimumWidth, 640);
+    const fittedWidth = Math.max(width ?? preferredWidth, minimumWidth);
+    const textWidth = Math.max(28, fittedWidth - 94);
     const titleHeight = wrapTextLines(title, textWidth, resolvedTitleFontSize).length * titleLineHeight;
     const subtitleHeight = subtitle
       ? wrapTextLines(subtitle, textWidth, subtitleFontSize, 0.62).length * subtitleLineHeight
@@ -356,7 +412,7 @@ export class Diagram {
       type: "system",
       x,
       y,
-      width,
+      width: fittedWidth,
       height: fittedHeight,
       rotation: 0,
       style: style({ fill, stroke: accent, strokeWidth: 2, textColor: palette.ink }),
@@ -368,12 +424,13 @@ export class Diagram {
       ...(bodyFontSize !== undefined ? { bodyFontSize } : {}),
       ...(align !== undefined ? { align } : {}),
       ...(metadata && Object.keys(metadata).length ? { metadata } : {}),
+      ...(parentId ? { parentId } : {}),
       variant,
     });
     return id;
   }
 
-  connector({ id, points, label, labelFontSize, align, color = palette.blue, strokeWidth = 2.5, strokeStyle = "solid", startBinding, endBinding, startArrow = "none", endArrow = "arrow" }) {
+  connector({ id, points, label, labelFontSize, align, parentId, color = palette.blue, strokeWidth = 2.5, strokeStyle = "solid", startBinding, endBinding, startArrow = "none", endArrow = "arrow" }) {
     if (points.length < 2) throw new Error(`Connector ${id} needs at least two points`);
     const xs = points.map(({ x }) => x);
     const ys = points.map(({ y }) => y);
@@ -396,13 +453,44 @@ export class Diagram {
       ...(label && align !== undefined ? { align } : {}),
       ...(startBinding ? { startBinding } : {}),
       ...(endBinding ? { endBinding } : {}),
+      ...(parentId ? { parentId } : {}),
       startArrow,
       endArrow,
     });
     return id;
   }
 
+  fitParentContainers() {
+    const elements = [
+      ...this.backdropElements,
+      ...this.connectorElements,
+      ...this.nodeElements,
+      ...this.labelElements,
+    ];
+    for (let pass = 0; pass < elements.length; pass += 1) {
+      let changed = false;
+      for (const child of elements) {
+        if (!child.parentId) continue;
+        const parent = this.backdropElements.find(({ id }) => id === child.parentId);
+        if (!parent) continue;
+        const width = Math.max(
+          parent.width,
+          child.x + child.width + 24 - parent.x,
+        );
+        const height = Math.max(
+          parent.height,
+          child.y + child.height + 24 - parent.y,
+        );
+        if (width !== parent.width || height !== parent.height) changed = true;
+        parent.width = width;
+        parent.height = height;
+      }
+      if (!changed) break;
+    }
+  }
+
   scene({ camera = { x: 20, y: 20, zoom: 0.72 }, pattern = "dots", spacing = 24 } = {}) {
+    this.fitParentContainers();
     return {
       elements: [
         ...this.backdropElements,
@@ -423,6 +511,7 @@ export class Diagram {
   }
 
   renderSvg() {
+    this.fitParentContainers();
     const elements = [
       ...this.backdropElements,
       ...this.connectorElements,
@@ -458,8 +547,40 @@ export class Diagram {
         : element.shape === "diamond"
           ? `<path d="M ${element.x + element.width / 2} ${element.y} L ${element.x + element.width} ${element.y + element.height / 2} L ${element.x + element.width / 2} ${element.y + element.height} L ${element.x} ${element.y + element.height / 2} Z" fill="${value.fill}" stroke="${value.stroke}" stroke-width="${value.strokeWidth}"${dashArray(value.strokeStyle)} opacity="${value.opacity}"/>`
           : `<rect x="${element.x}" y="${element.y}" width="${element.width}" height="${element.height}" rx="18" fill="${value.fill}" stroke="${value.stroke}" stroke-width="${value.strokeWidth}"${dashArray(value.strokeStyle)} opacity="${value.opacity}"/>`;
-      if (!element.label) return shape;
-      return `${shape}${svgText({ x: element.x, y: element.y + element.height / 2 - 10, width: element.width, text: element.label, fontSize: element.fontSize ?? 15, color: value.textColor, align: element.align ?? "center", weight: 760 })}`;
+      if (!element.label && !element.iconId) return shape;
+      const fontSize = element.fontSize ?? 14;
+      const labelLines = element.label
+        ? wrapTextLines(element.label, Math.max(20, element.width - 24), fontSize)
+        : [];
+      const labelHeight = labelLines.length * fontSize * 1.25;
+      const iconSize = element.iconId
+        ? Math.max(12, Math.min(element.width <= 100 ? 16 : 28, element.width - 16))
+        : 0;
+      const stackHeight = iconSize + (iconSize ? 4 : 0) + labelHeight;
+      const stackTop = element.y + Math.max(8, (element.height - stackHeight) / 2);
+      const icon = element.iconId
+        ? renderIcon(
+            element.iconId,
+            element.x + (element.width - iconSize) / 2,
+            stackTop,
+            iconSize,
+            value.stroke,
+          )
+        : "";
+      const label = element.label
+        ? svgText({
+            x: element.x + 12,
+            y: stackTop + iconSize + (iconSize ? 4 : 0),
+            width: element.width - 24,
+            text: element.label,
+            fontSize,
+            color: value.textColor,
+            align: element.align ?? "center",
+            weight: 760,
+            lineHeight: 1.25,
+          })
+        : "";
+      return `${shape}${icon}${label}`;
     }
 
     if (element.type === "connector") {
@@ -471,7 +592,11 @@ export class Diagram {
       const line = `<path d="${path}" fill="none" stroke="${element.style.stroke}" stroke-width="${element.style.strokeWidth}"${dashArray(element.style.strokeStyle)}${element.startArrow === "arrow" ? ` marker-start="url(#${markerId(element.style.stroke)})"` : ""}${element.endArrow === "arrow" ? ` marker-end="url(#${markerId(element.style.stroke)})"` : ""}/>`;
       if (!element.label) return line;
       const fontSize = element.fontSize ?? 12;
-      const labelWidth = Math.min(element.fontSize === undefined ? 250 : 320, Math.max(100, element.label.length * fontSize * 0.6 + 20));
+      const labelWidth = clamp(
+        widestExplicitLine(element.label, fontSize, 0.62) + 20,
+        90,
+        320,
+      );
       const labelLines = wrapTextLines(element.label, labelWidth - 16, fontSize, 0.62);
       const labelHeight = labelLines.length * fontSize * 1.25 + 8;
       return `${line}<rect x="${labelX - labelWidth / 2}" y="${labelY - 5}" width="${labelWidth}" height="${labelHeight}" rx="10" fill="${this.background}" opacity="0.96"/>${svgText({ x: labelX - labelWidth / 2 + 8, y: labelY - 2, width: labelWidth - 16, text: element.label, fontSize, color: element.style.textColor, align: element.align ?? "center", weight: 720, lineHeight: 1.25 })}`;

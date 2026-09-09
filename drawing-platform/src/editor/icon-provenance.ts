@@ -47,6 +47,7 @@ const SYSTEM_ICON_VISUAL_MEANING: Record<string, string> = {
   "distributed-database": "linked storage cylinders to identify data spread across machines",
   "message-queue": "ordered slots and a forward arrow to identify buffered messages",
   partition: "one store divided into ranges to identify a shard or partition",
+  "virtual-node": "a token dot on a ring to identify one consistent-hash position",
   "replica-group": "linked peer nodes to identify copies of one logical data set",
   leader: "one emphasized node above peers to identify coordination leadership",
   process: "a bounded execution box to identify an operating-system process",
@@ -66,17 +67,25 @@ const SYSTEM_ICON_VISUAL_MEANING: Record<string, string> = {
 export const getElementVisualProvenance = (
   element: CanvasElement,
 ): ElementVisualProvenance => {
-  if (element.type === "system") {
+  if (
+    element.type === "system" ||
+    (element.type === "shape" && element.iconId !== undefined)
+  ) {
+    const iconId = element.iconId!;
     const stencil = STENCIL_CATALOG.find(
-      (candidate) => candidate.iconId === element.iconId,
+      (candidate) => candidate.iconId === iconId,
     );
+    const representedLabel = element.type === "system"
+      ? element.title
+      : element.label ?? element.shape;
     return {
       source: "Project-owned SystemIcon registry (no icon package)",
-      name: element.iconId,
+      name: iconId,
       sourceFile: "src/editor/SystemIcon.tsx",
       kind: "custom SVG",
-      category: element.metadata?.layer ?? stencil?.category ?? element.variant,
-      why: `The ${element.iconId} icon uses ${SYSTEM_ICON_VISUAL_MEANING[element.iconId] ?? "project-owned SVG geometry as a stable visual mnemonic"}; here it represents “${element.title}”. The editable card metadata—not the glyph—defines its runtime role.`,
+      category: element.metadata?.layer ?? stencil?.category ??
+        (element.type === "system" ? element.variant : "shape"),
+      why: `The ${iconId} icon uses ${SYSTEM_ICON_VISUAL_MEANING[iconId] ?? "project-owned SVG geometry as a stable visual mnemonic"}; here it represents “${representedLabel}”. The editable element metadata—not the glyph—defines its runtime role.`,
     };
   }
   if (element.type === "image") {

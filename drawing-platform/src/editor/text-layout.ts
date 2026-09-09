@@ -10,6 +10,10 @@ export const DEFAULT_SYSTEM_SUBTITLE_FONT_SIZE = 10;
 export const DEFAULT_SYSTEM_BODY_FONT_SIZE = 11;
 export const DEFAULT_SHAPE_LABEL_FONT_SIZE = 14;
 export const DEFAULT_CONNECTOR_LABEL_FONT_SIZE = 10;
+export const MAX_SYSTEM_CONTENT_WIDTH = 640;
+export const MAX_SHAPE_CONTENT_WIDTH = 720;
+export const MAX_TEXT_CONTENT_WIDTH = 760;
+export const MAX_CONNECTOR_LABEL_WIDTH = 320;
 
 export interface TextBlockLayout {
   lines: string[];
@@ -20,6 +24,40 @@ export interface TextBlockLayout {
 
 const widthFactor = (family: "sans" | "mono") =>
   family === "mono" ? 0.62 : 0.56;
+
+const normalizedLines = (value: string): string[] =>
+  value.replaceAll("\r\n", "\n").split("\n");
+
+const estimatedLineWidth = (
+  value: string,
+  fontSize: number,
+  family: "sans" | "mono" = "sans",
+): number => value.length * fontSize * widthFactor(family);
+
+const widestExplicitLine = (
+  value: string,
+  fontSize: number,
+  family: "sans" | "mono" = "sans",
+): number => Math.max(
+  0,
+  ...normalizedLines(value).map((line) =>
+    estimatedLineWidth(line.trim(), fontSize, family),
+  ),
+);
+
+const widestWord = (
+  value: string,
+  fontSize: number,
+  family: "sans" | "mono" = "sans",
+): number => Math.max(
+  0,
+  ...value.split(/\s+/u).map((word) =>
+    estimatedLineWidth(word, fontSize, family),
+  ),
+);
+
+const clamp = (value: number, minimum: number, maximum: number): number =>
+  Math.min(maximum, Math.max(minimum, value));
 
 const splitLongWord = (word: string, maxCharacters: number): string[] => {
   const parts: string[] = [];
@@ -194,9 +232,10 @@ export const getConnectorLabelLayout = (
 ): TextBlockLayout & {
   width: number;
 } => {
-  const width = Math.min(
-    240,
-    Math.max(90, label.length * fontSize * 0.61 + 20),
+  const width = clamp(
+    widestExplicitLine(label, fontSize, "mono") + 20,
+    90,
+    MAX_CONNECTOR_LABEL_WIDTH,
   );
   return {
     ...textBlockLayout(label, width - 16, fontSize, fontSize * 1.3, "mono"),
@@ -204,11 +243,85 @@ export const getConnectorLabelLayout = (
   };
 };
 
+/**
+ * Smallest width that can contain content after wrapping. Long indivisible
+ * tokens are capped at the same sensible maximum used by automatic sizing.
+ */
+export const minimumTextWidth = (element: CanvasElement): number => {
+  if (element.type === "system") {
+    const titleFontSize =
+      element.titleFontSize ?? DEFAULT_SYSTEM_TITLE_FONT_SIZE;
+    const bodyFontSize = element.bodyFontSize ?? DEFAULT_SYSTEM_BODY_FONT_SIZE;
+    const subtitleFontSize = element.bodyFontSize === undefined
+      ? DEFAULT_SYSTEM_SUBTITLE_FONT_SIZE
+      : Math.max(1, element.bodyFontSize - 1);
+    const widest = Math.max(
+      widestWord(element.title, titleFontSize),
+      widestWord(element.subtitle ?? "", subtitleFontSize, "mono"),
+      widestWord(element.body ?? "", bodyFontSize),
+    );
+    return clamp(94 + widest, 122, MAX_SYSTEM_CONTENT_WIDTH);
+  }
+  if (element.type === "shape") {
+    if (!element.label) return element.iconId ? 52 : 24;
+    const fontSize = element.fontSize ?? DEFAULT_SHAPE_LABEL_FONT_SIZE;
+    return clamp(
+      widestWord(element.label, fontSize) + 24,
+      element.iconId ? 52 : 24,
+      MAX_SHAPE_CONTENT_WIDTH,
+    );
+  }
+  if (element.type === "text") {
+    return clamp(
+      widestWord(element.text, element.fontSize, element.fontFamily) + 4,
+      24,
+      MAX_TEXT_CONTENT_WIDTH,
+    );
+  }
+  return 0;
+};
+
+/** Natural one-line width, capped so long prose wraps instead of widening forever. */
+export const preferredTextWidth = (element: CanvasElement): number => {
+  if (element.type === "system") {
+    const titleFontSize =
+      element.titleFontSize ?? DEFAULT_SYSTEM_TITLE_FONT_SIZE;
+    const bodyFontSize = element.bodyFontSize ?? DEFAULT_SYSTEM_BODY_FONT_SIZE;
+    const subtitleFontSize = element.bodyFontSize === undefined
+      ? DEFAULT_SYSTEM_SUBTITLE_FONT_SIZE
+      : Math.max(1, element.bodyFontSize - 1);
+    const widest = Math.max(
+      widestExplicitLine(element.title, titleFontSize),
+      widestExplicitLine(element.subtitle ?? "", subtitleFontSize, "mono"),
+      widestExplicitLine(element.body ?? "", bodyFontSize),
+    );
+    return clamp(94 + widest, minimumTextWidth(element), MAX_SYSTEM_CONTENT_WIDTH);
+  }
+  if (element.type === "shape") {
+    if (!element.label) return Math.max(element.iconId ? 52 : 24, element.width);
+    const fontSize = element.fontSize ?? DEFAULT_SHAPE_LABEL_FONT_SIZE;
+    return clamp(
+      widestExplicitLine(element.label, fontSize) + 24,
+      minimumTextWidth(element),
+      MAX_SHAPE_CONTENT_WIDTH,
+    );
+  }
+  if (element.type === "text") {
+    return clamp(
+      widestExplicitLine(element.text, element.fontSize, element.fontFamily) + 4,
+      minimumTextWidth(element),
+      MAX_TEXT_CONTENT_WIDTH,
+    );
+  }
+  return element.width;
+};
+
 export const minimumTextHeight = (element: CanvasElement): number => {
   if (element.type === "system") return getSystemTextLayout(element).minimumHeight;
   if (element.type === "shape") {
     const layout = getShapeTextLayout(element);
-    return Math.max(24, (layout?.height ?? 0) + 24);
+    const iconStackHeight = element.iconId ? 22 : 0;
+    return Math.max(24, (layout?.height ?? 0) + iconStackHeight + 24);
   }
   if (element.type === "text") {
     return Math.max(24, getTextElementLayout(element).height + 4);

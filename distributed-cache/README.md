@@ -11,7 +11,7 @@ from the read-heavy social-feed cache.
 
 - Goal: support 500,000 users with balanced reads and writes.
 - Consistency: financial keys require strong consistency.
-- Invariant: no client observes a value older than the last committed write.
+- Invariant: no client observes a value older than the last acknowledged write.
 
 ## Distributed-cache request path
 
@@ -25,13 +25,23 @@ clients
 → response
 ```
 
-The cache uses three replicas per shard with `R=2`, `W=2`, and `R + W > N`.
-Reads return the newest version observed by the quorum. Financial-key writes use
-synchronous write-through to Cassandra.
+`hash(key)` marks one ring position. Traversal moves clockwise and stops at the
+first virtual-node token; in the worked example that token is `vB2`. Under the
+clockwise-successor convention, `vB2` owns the interval after its predecessor
+and up to `vB2`, and maps that key range to logical Cache Shard B. Shard B then
+selects the physical B1, B2, and B3 server replicas.
 
-A cache miss reads Cassandra at `CL=QUORUM`, fills the selected cache shard, and
-returns through the same cache client and load balancer. The selected Cassandra
-configuration is `RF=3`, `CL=QUORUM`, partitioned by `user_id`.
+The cache uses three physical replicas per shard with `R=2`, `W=2`, and
+`R + W > N`. Reads compare versioned responses and return the newest value.
+Financial-key writes use synchronous write-through and are acknowledged only
+after cache `W=2` and Cassandra `CL=QUORUM` succeed for the same version. A
+partial failure is not acknowledged; the application invalidates or bypasses
+the cache until Cassandra refreshes it.
+
+A cache miss or cache-quorum failure makes the application read Cassandra at
+`CL=QUORUM`, fill the selected cache shard with the returned version, and return
+through the same cache client and load balancer. Cassandra is authoritative;
+its selected configuration is `RF=3`, `CL=QUORUM`, partitioned by `user_id`.
 
 The checked-in [`architecture.png`](./architecture.png) remains the original
 source design. The generated PNG above, SVG, and editable JSON are its corrected

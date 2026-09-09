@@ -54,7 +54,9 @@ import {
   createCanvasId,
   deleteElementAndDetachBindings,
   findElementAt,
+  fitElementToContent,
   fitElementHeightToText,
+  fitSceneToContent,
   getElementBounds,
   getSceneBounds,
   moveBoundConnectors,
@@ -76,6 +78,7 @@ import {
   DEFAULT_SHAPE_LABEL_FONT_SIZE,
   DEFAULT_SYSTEM_BODY_FONT_SIZE,
   DEFAULT_SYSTEM_TITLE_FONT_SIZE,
+  minimumTextWidth,
 } from "./text-layout.js";
 
 export type CanvasTool =
@@ -442,7 +445,10 @@ function EditorCanvasComponent({
   onError,
   onSaveSelectionToLibrary,
 }: EditorCanvasProps) {
-  const initialScene = useMemo(() => cloneScene(board.scene), [board.scene]);
+  const initialScene = useMemo(
+    () => fitSceneToContent(cloneScene(board.scene)),
+    [board.scene],
+  );
   const [scene, setScene] = useState(initialScene);
   const [tool, setTool] = useState<CanvasTool>("select");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -754,21 +760,25 @@ function EditorCanvasComponent({
       replaceScene: (nextScene) => {
         undoRef.current.push(cloneScene(sceneRef.current));
         redoRef.current = [];
-        setSceneLive(cloneScene(nextScene));
+        setSceneLive(fitSceneToContent(cloneScene(nextScene)));
         setSelectedIds([]);
         bumpHistory((version) => version + 1);
       },
       insertElements: (elements) => {
         if (elements.length === 0) return;
         const before = sceneRef.current;
+        const inserted = elements.map((element) => structuredClone(element));
+        const withInserted = {
+          ...before,
+          elements: [...before.elements, ...inserted],
+        };
+        const next = inserted.reduce(
+          (current, element) =>
+            fitElementToContent(current, element.id, { growWidth: true }),
+          withInserted,
+        );
         commit(
-          {
-            ...before,
-            elements: [
-              ...before.elements,
-              ...elements.map((element) => structuredClone(element)),
-            ],
-          },
+          next,
           before,
         );
         setSelectedIds(elements.at(-1) ? [elements.at(-1)!.id] : []);
@@ -1278,7 +1288,7 @@ function EditorCanvasComponent({
         let next = updateElement(before, editingId, (element) =>
           element.type === "text" ? { ...element, text: editingText } : element,
         );
-        next = fitElementHeightToText(next, editingId);
+        next = fitElementToContent(next, editingId, { growWidth: true });
         commit(next, before);
         setLabelDraft(editingText);
         const edited = next.elements.find((element) => element.id === editingId);
@@ -1316,14 +1326,17 @@ function EditorCanvasComponent({
     // axis. Keep that value editable so changing its label never fails
     // validation merely because the line is straight.
     const minimumDimension = selected.type === "connector" ? 0 : 24;
+    const minimumWidth = selected.type === "connector" || selected.type === "image"
+      ? minimumDimension
+      : minimumTextWidth(selected);
     if (
       !Number.isFinite(parsedWidth) ||
       !Number.isFinite(parsedHeight) ||
-      parsedWidth < minimumDimension ||
+      parsedWidth < minimumWidth ||
       parsedHeight < minimumDimension
     ) {
       showError(
-        `Width and height must both be numbers of at least ${minimumDimension}.`,
+        `Width must be at least ${Math.ceil(minimumWidth)} and height at least ${minimumDimension} for this content.`,
       );
       return;
     }
@@ -1333,6 +1346,15 @@ function EditorCanvasComponent({
     const height = heightDraft === dimensionDraft(selected.height)
       ? selected.height
       : parsedHeight;
+    const currentText = getElementTextDraft(selected);
+    const currentTypography = getElementTypographyDraft(selected);
+    const contentSizingChanged =
+      currentText.primary !== labelDraft ||
+      currentText.secondary !== subtitleDraft ||
+      (currentText.body ?? "") !== bodyDraft ||
+      currentTypography.fontSize !== typographyDraft.fontSize ||
+      currentTypography.bodyFontSize !== typographyDraft.bodyFontSize;
+    const widthWasEdited = widthDraft !== dimensionDraft(selected.width);
     const compactMetadata = Object.fromEntries(
       Object.entries(metadataDraft).filter(([, value]) => Boolean(value?.trim())),
     ) as CanvasElementMetadata;
@@ -1355,7 +1377,9 @@ function EditorCanvasComponent({
       width,
       height,
     );
-    next = fitElementHeightToText(next, selected.id);
+    next = contentSizingChanged && !widthWasEdited
+      ? fitElementToContent(next, selected.id, { growWidth: true })
+      : fitElementHeightToText(next, selected.id);
     commit(next, before);
     const applied = next.elements.find((element) => element.id === selected.id);
     if (applied) syncInspectorDrafts(applied);
@@ -1537,6 +1561,11 @@ function EditorCanvasComponent({
   const selectedProvenance = selectedElement
     ? getElementVisualProvenance(selectedElement)
     : undefined;
+  const selectedMinimumWidth = selectedElement &&
+    selectedElement.type !== "connector" &&
+    selectedElement.type !== "image"
+    ? Math.ceil(minimumTextWidth(selectedElement))
+    : selectedElement?.type === "connector" ? 0 : 24;
   const allElementsLocked =
     visibleElements.length > 0 && visibleElements.every((element) => element.locked);
   const allElementsUnlocked = visibleElements.every((element) => !element.locked);
@@ -1889,7 +1918,7 @@ function EditorCanvasComponent({
               Width
               <input
                 type="number"
-                min={selectedElement.type === "connector" ? 0 : 24}
+                min={selectedMinimumWidth}
                 step="1"
                 value={widthDraft}
                 disabled={selectedElement.locked}

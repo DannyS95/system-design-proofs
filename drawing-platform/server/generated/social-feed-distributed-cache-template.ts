@@ -138,7 +138,7 @@ export const SOCIAL_FEED_DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "type": "shape",
         "x": 1550,
         "y": 2240,
-        "width": 1900,
+        "width": 1906,
         "height": 650,
         "rotation": 0,
         "style": {
@@ -1817,6 +1817,7 @@ export const SOCIAL_FEED_DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
+        "parentId": "replica-set-b",
         "locked": false
       }
     ],

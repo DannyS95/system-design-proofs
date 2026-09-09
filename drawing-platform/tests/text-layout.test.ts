@@ -9,6 +9,8 @@ import {
   getShapeTextLayout,
   getSystemTextLayout,
   minimumTextHeight,
+  minimumTextWidth,
+  preferredTextWidth,
   wrapTextLines,
 } from "../src/editor/text-layout.js";
 
@@ -94,5 +96,27 @@ describe("deterministic canvas text layout", () => {
     expect(readableConnector.height).toBeGreaterThanOrEqual(
       smallConnector.height,
     );
+  });
+
+  it("derives bounded natural widths and unbreakable-content floors", () => {
+    const short = { ...system, title: "Cache", subtitle: "RAM copy", body: "" };
+    const long = {
+      ...system,
+      title: "Cache client and integrated consistent-hash routing coordinator",
+    };
+
+    expect(preferredTextWidth(long)).toBeGreaterThan(preferredTextWidth(short));
+    expect(preferredTextWidth(long)).toBeLessThanOrEqual(640);
+    expect(minimumTextWidth(long)).toBeLessThanOrEqual(
+      preferredTextWidth(long),
+    );
+    expect(minimumTextWidth({
+      ...system,
+      type: "shape",
+      shape: "ellipse",
+      label: "vB2",
+      iconId: "virtual-node",
+      fontSize: 20,
+    })).toBeGreaterThanOrEqual(52);
   });
 });

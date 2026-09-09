@@ -50,6 +50,7 @@ export type SystemIconId =
   | "distributed-database"
   | "message-queue"
   | "partition"
+  | "virtual-node"
   | "replica-group"
   | "leader"
   | "process"

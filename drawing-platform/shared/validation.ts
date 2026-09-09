@@ -377,6 +377,7 @@ const BASE_ELEMENT_KEYS = [
   "style",
   "locked",
   "deleted",
+  "parentId",
   "metadata",
 ] as const;
 
@@ -400,6 +401,13 @@ function parseBaseElement(
   }
   if (deleted !== undefined) {
     base.deleted = deleted;
+  }
+  const parentId = parseOptionalString(element.parentId, `${path}.parentId`, {
+    allowEmpty: false,
+    maxLength: MAX_ELEMENT_ID_LENGTH,
+  });
+  if (parentId !== undefined) {
+    base.parentId = parentId;
   }
   const metadata = parseElementMetadata(element.metadata, `${path}.metadata`);
   if (metadata !== undefined) {
@@ -480,7 +488,7 @@ function parseCanvasElement(value: unknown, path: string): CanvasElement {
   if (type === "shape") {
     rejectUnknownKeys(
       element,
-      [...BASE_ELEMENT_KEYS, "shape", "label", "fontSize", "align"],
+      [...BASE_ELEMENT_KEYS, "shape", "label", "iconId", "fontSize", "align"],
       path,
     );
     const result: CanvasShapeElement = {
@@ -501,6 +509,15 @@ function parseCanvasElement(value: unknown, path: string): CanvasElement {
         : parseFiniteNumber(element.fontSize, `${path}.fontSize`, { min: 1, max: 512 });
     if (label !== undefined) {
       result.label = label;
+    }
+    if (element.iconId !== undefined) {
+      const iconId = parseString(element.iconId, `${path}.iconId`, {
+        maxLength: 64,
+      });
+      if (!ICON_ID_PATTERN.test(iconId)) {
+        fail(`${path}.iconId`, "must use lowercase letters, digits, and hyphens");
+      }
+      result.iconId = iconId;
     }
     if (fontSize !== undefined) {
       result.fontSize = fontSize;
@@ -776,6 +793,33 @@ export function parseBoardScene(value: unknown, path = "scene"): BoardScene {
             `references missing element '${target}'`,
           );
         }
+      }
+    }
+    if (element.parentId !== undefined) {
+      const parent = elements.find(({ id }) => id === element.parentId);
+      if (!parent) {
+        fail(
+          `${path}.elements[${index}].parentId`,
+          `references missing element '${element.parentId}'`,
+        );
+      }
+      if (parent.id === element.id) {
+        fail(`${path}.elements[${index}].parentId`, "must not reference itself");
+      }
+      if (parent.type !== "shape") {
+        fail(
+          `${path}.elements[${index}].parentId`,
+          "must reference a shape container",
+        );
+      }
+      const ancestors = new Set([element.id]);
+      let ancestor: CanvasElement | undefined = parent;
+      while (ancestor?.parentId !== undefined) {
+        if (ancestors.has(ancestor.id)) {
+          fail(`${path}.elements[${index}].parentId`, "must not form a cycle");
+        }
+        ancestors.add(ancestor.id);
+        ancestor = elements.find(({ id }) => id === ancestor?.parentId);
       }
     }
   });

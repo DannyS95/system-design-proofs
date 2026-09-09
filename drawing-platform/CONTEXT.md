@@ -85,6 +85,22 @@
   consumes only the already-applied element, never an unvalidated draft.
 - Deterministic wrapping keeps interactive and generated SVG layouts aligned. A
   card can grow above a requested height to avoid clipping its text.
+- Content-aware sizing has two width concepts: a minimum that can contain the
+  longest indivisible token and a capped natural width used for new or edited
+  content. Manual narrowing is allowed down to the minimum and always derives a
+  new wrapped height; manual enlargement is preserved.
+- A visual group becomes a real resizing relationship only when a child declares
+  its shape `parentId`. Growing that child expands the parent and moves any
+  connector bound to the parent; ungrouped nearby objects remain independent.
+- Semantic shape icons use the same project-owned `SystemIcon` registry as cards,
+  so a ring token can stay a small ellipse while still exposing its stable
+  `virtual-node` ID and source provenance in the inspector.
+- In the financial-cache example, a virtual node owns an interval on the ring,
+  maps that interval to a logical shard, and never denotes a physical replica.
+  The shard's replica rule separately selects B1, B2, or B3.
+- Strong-cache wording depends on the acknowledgement boundary: success means
+  cache `W=2` and Cassandra `CL=QUORUM` completed for the same version. A partial
+  outcome is not acknowledged and forces cache invalidation or bypass.
 - Browser wheel cancellation requires a native non-passive listener on the SVG;
   React's delegated wheel event alone cannot guarantee that the page or browser
   zoom remains still.

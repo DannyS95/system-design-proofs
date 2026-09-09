@@ -13,6 +13,7 @@ import {
   deleteElementAndDetachBindings,
   dashArray,
   findElementAt,
+  fitElementToContent,
   fitElementHeightToText,
   getElementBounds,
   getSceneBounds,
@@ -277,6 +278,70 @@ describe("custom canvas model", () => {
     ).toBe(true);
   });
 
+  it("grows natural width, wraps at the maximum, and expands its parent", () => {
+    const container = shape("panel", 100, 100, 260, 160);
+    const note: CanvasTextElement = {
+      id: "child-note",
+      type: "text",
+      x: 140,
+      y: 180,
+      width: 80,
+      height: 24,
+      rotation: 0,
+      style: { ...style, fill: "transparent", stroke: "transparent" },
+      text: "A detailed content-aware explanation that should choose a readable width before wrapping.",
+      fontSize: 18,
+      fontFamily: "sans",
+      fontWeight: 500,
+      align: "left",
+      parentId: container.id,
+    };
+    const fitted = fitElementToContent(
+      { ...createEmptyScene(), elements: [container, note] },
+      note.id,
+      { growWidth: true },
+    );
+    const fittedNote = fitted.elements.find(({ id }) => id === note.id);
+    const fittedParent = fitted.elements.find(({ id }) => id === container.id);
+
+    expect(fittedNote?.width).toBeGreaterThan(note.width);
+    expect(fittedNote?.width).toBeLessThanOrEqual(760);
+    expect(fittedNote?.height).toBeGreaterThanOrEqual(note.height);
+    expect(fittedParent?.width).toBeGreaterThanOrEqual(
+      (fittedNote?.x ?? 0) + (fittedNote?.width ?? 0) + 24 - container.x,
+    );
+    expect(fittedParent?.height).toBeGreaterThanOrEqual(
+      (fittedNote?.y ?? 0) + (fittedNote?.height ?? 0) + 24 - container.y,
+    );
+  });
+
+  it("refuses a manual width below an unbreakable text token", () => {
+    const note: CanvasTextElement = {
+      id: "token-note",
+      type: "text",
+      x: 0,
+      y: 0,
+      width: 300,
+      height: 30,
+      rotation: 0,
+      style,
+      text: "unbreakable-content-token",
+      fontSize: 20,
+      fontFamily: "mono",
+      fontWeight: 500,
+      align: "left",
+    };
+    const resized = resizeElementAndBoundConnectors(
+      { ...createEmptyScene(), elements: [note] },
+      note.id,
+      24,
+      24,
+    ).elements[0];
+
+    expect(resized.width).toBeGreaterThan(24);
+    expect(resized.height).toBeGreaterThanOrEqual(24);
+  });
+
   it("preserves a real zero-height connector and can give it a height", () => {
     const horizontal: CanvasConnectorElement = {
       ...boundConnector,
@@ -316,9 +381,15 @@ describe("custom canvas model", () => {
   });
 
   it("removes dangling bindings when an attached node is deleted", () => {
+    const child = { ...shape("child", 20, 20), parentId: "source" };
     const scene = {
       ...createEmptyScene(),
-      elements: [shape("source", 0, 0), shape("target", 200, 0), boundConnector],
+      elements: [
+        shape("source", 0, 0),
+        child,
+        shape("target", 200, 0),
+        boundConnector,
+      ],
     };
     const deleted = deleteElementAndDetachBindings(scene, "source");
     const connector = deleted.elements.find(
@@ -328,6 +399,9 @@ describe("custom canvas model", () => {
     expect(deleted.elements.some(({ id }) => id === "source")).toBe(false);
     expect(connector).not.toHaveProperty("startBinding");
     expect(connector?.endBinding).toBe("target");
+    expect(deleted.elements.find(({ id }) => id === child.id)).not.toHaveProperty(
+      "parentId",
+    );
   });
 
   it("prunes an image asset only after its final placed image is deleted", () => {

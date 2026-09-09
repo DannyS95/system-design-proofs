@@ -9,6 +9,8 @@ import type { Bounds, Point } from "./camera.js";
 import {
   getConnectorLabelLayout,
   minimumTextHeight,
+  minimumTextWidth,
+  preferredTextWidth,
 } from "./text-layout.js";
 
 export const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
@@ -306,7 +308,7 @@ const scaleBoundPoint = (
 };
 
 /** Resize one element and keep every bound connector endpoint attached. */
-export const resizeElementAndBoundConnectors = (
+const resizeElementAndBoundConnectorsOnce = (
   scene: BoardScene,
   elementId: string,
   requestedWidth: number,
@@ -352,7 +354,11 @@ export const resizeElementAndBoundConnectors = (
     });
   }
 
-  const width = Math.max(MIN_ELEMENT_SIZE, requestedWidth);
+  const width = Math.max(
+    MIN_ELEMENT_SIZE,
+    requestedWidth,
+    minimumTextWidth(oldElement),
+  );
   const provisional = { ...oldElement, width, height: requestedHeight };
   const height = Math.max(
     MIN_ELEMENT_SIZE,
@@ -391,20 +397,102 @@ export const resizeElementAndBoundConnectors = (
   };
 };
 
-/** Increase height only when wrapped text would otherwise leave its object. */
-export const fitElementHeightToText = (
+const expandParentContainers = (
+  scene: BoardScene,
+  childId: string,
+  padding = 24,
+): BoardScene => {
+  let next = scene;
+  let currentId: string | undefined = childId;
+  const visited = new Set<string>();
+
+  while (currentId !== undefined && !visited.has(currentId)) {
+    visited.add(currentId);
+    const child = next.elements.find(({ id }) => id === currentId);
+    const parentId = child?.parentId;
+    if (!child || parentId === undefined) break;
+    const parent = next.elements.find(({ id }) => id === parentId);
+    if (!parent || parent.type !== "shape") break;
+    const childBounds = getElementBounds(child);
+    const requiredWidth = Math.max(
+      parent.width,
+      childBounds.x + childBounds.width + padding - parent.x,
+    );
+    const requiredHeight = Math.max(
+      parent.height,
+      childBounds.y + childBounds.height + padding - parent.y,
+    );
+    next = resizeElementAndBoundConnectorsOnce(
+      next,
+      parent.id,
+      requiredWidth,
+      requiredHeight,
+    );
+    currentId = parent.id;
+  }
+  return next;
+};
+
+/**
+ * Resize one element, enforce its wrapped-content floor, reroute bound
+ * connectors, and enlarge any declared visual container that now needs space.
+ */
+export const resizeElementAndBoundConnectors = (
   scene: BoardScene,
   elementId: string,
+  requestedWidth: number,
+  requestedHeight: number,
+): BoardScene => {
+  const resized = resizeElementAndBoundConnectorsOnce(
+    scene,
+    elementId,
+    requestedWidth,
+    requestedHeight,
+  );
+  const element = resized.elements.find(({ id }) => id === elementId);
+  return !element || element.type === "connector"
+    ? resized
+    : expandParentContainers(resized, elementId);
+};
+
+export interface FitElementToContentOptions {
+  /** Grow toward the natural line width until the per-element maximum. */
+  growWidth?: boolean;
+}
+
+/** Enforce content-aware width/height and keep routes and containers current. */
+export const fitElementToContent = (
+  scene: BoardScene,
+  elementId: string,
+  options: FitElementToContentOptions = {},
 ): BoardScene => {
   const element = scene.elements.find((candidate) => candidate.id === elementId);
   if (!element || element.type === "connector" || element.type === "image") {
     return scene;
   }
-  const minimumHeight = minimumTextHeight(element);
-  return minimumHeight > element.height
-    ? resizeElementAndBoundConnectors(scene, elementId, element.width, minimumHeight)
-    : scene;
+  const width = Math.max(
+    element.width,
+    options.growWidth ? preferredTextWidth(element) : minimumTextWidth(element),
+  );
+  const provisional = { ...element, width };
+  const height = Math.max(element.height, minimumTextHeight(provisional));
+  return width > element.width || height > element.height
+    ? resizeElementAndBoundConnectors(scene, elementId, width, height)
+    : expandParentContainers(scene, elementId);
 };
+
+/** Increase height only when wrapped text would otherwise leave its object. */
+export const fitElementHeightToText = (
+  scene: BoardScene,
+  elementId: string,
+): BoardScene => fitElementToContent(scene, elementId);
+
+/** Repair imported or legacy scenes before their first interactive render. */
+export const fitSceneToContent = (scene: BoardScene): BoardScene =>
+  scene.elements.reduce(
+    (current, element) => fitElementToContent(current, element.id),
+    scene,
+  );
 
 /** Remove an element without leaving connector bindings that fail persistence validation. */
 export const deleteElementAndDetachBindings = (
@@ -414,10 +502,12 @@ export const deleteElementAndDetachBindings = (
   const elements = scene.elements
     .filter((element) => element.id !== elementId)
     .map((element) => {
-      if (element.type !== "connector") return element;
       const detached = { ...element };
-      if (detached.startBinding === elementId) delete detached.startBinding;
-      if (detached.endBinding === elementId) delete detached.endBinding;
+      if (detached.parentId === elementId) delete detached.parentId;
+      if (detached.type === "connector") {
+        if (detached.startBinding === elementId) delete detached.startBinding;
+        if (detached.endBinding === elementId) delete detached.endBinding;
+      }
       return detached;
     });
   const referencedFiles = new Set(

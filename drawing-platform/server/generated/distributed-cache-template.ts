@@ -74,7 +74,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "x": 918,
         "y": 1218,
         "width": 64,
-        "height": 64,
+        "height": 71,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
@@ -85,8 +85,16 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "textColor": "#7c3aed"
         },
         "shape": "ellipse",
+        "iconId": "virtual-node",
         "label": "vA1",
         "fontSize": 20,
+        "metadata": {
+          "layer": "Key placement",
+          "objectType": "consistent-hash virtual-node token / ring position",
+          "inputs": "clockwise predecessor interval",
+          "outputs": "owned key range maps to one logical shard",
+          "ownership": "consistent-hash ring"
+        },
         "locked": false
       },
       {
@@ -95,7 +103,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "x": 1059,
         "y": 1277,
         "width": 64,
-        "height": 64,
+        "height": 71,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
@@ -106,8 +114,16 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "textColor": "#7c3aed"
         },
         "shape": "ellipse",
+        "iconId": "virtual-node",
         "label": "vB1",
         "fontSize": 20,
+        "metadata": {
+          "layer": "Key placement",
+          "objectType": "consistent-hash virtual-node token / ring position",
+          "inputs": "clockwise predecessor interval",
+          "outputs": "owned key range maps to one logical shard",
+          "ownership": "consistent-hash ring"
+        },
         "locked": false
       },
       {
@@ -116,7 +132,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "x": 1118,
         "y": 1418,
         "width": 64,
-        "height": 64,
+        "height": 71,
         "rotation": 0,
         "style": {
           "fill": "#e9f7ed",
@@ -127,8 +143,16 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "textColor": "#15803d"
         },
         "shape": "ellipse",
+        "iconId": "virtual-node",
         "label": "vB2",
         "fontSize": 20,
+        "metadata": {
+          "layer": "Key placement",
+          "objectType": "consistent-hash virtual-node token / ring position",
+          "inputs": "clockwise predecessor interval",
+          "outputs": "owned key range maps to logical Cache Shard B",
+          "ownership": "consistent-hash ring"
+        },
         "locked": false
       },
       {
@@ -137,7 +161,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "x": 1059,
         "y": 1559,
         "width": 64,
-        "height": 64,
+        "height": 71,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
@@ -148,8 +172,16 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "textColor": "#7c3aed"
         },
         "shape": "ellipse",
+        "iconId": "virtual-node",
         "label": "vC1",
         "fontSize": 20,
+        "metadata": {
+          "layer": "Key placement",
+          "objectType": "consistent-hash virtual-node token / ring position",
+          "inputs": "clockwise predecessor interval",
+          "outputs": "owned key range maps to one logical shard",
+          "ownership": "consistent-hash ring"
+        },
         "locked": false
       },
       {
@@ -158,7 +190,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "x": 918,
         "y": 1618,
         "width": 64,
-        "height": 64,
+        "height": 71,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
@@ -169,8 +201,16 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "textColor": "#7c3aed"
         },
         "shape": "ellipse",
+        "iconId": "virtual-node",
         "label": "vA2",
         "fontSize": 20,
+        "metadata": {
+          "layer": "Key placement",
+          "objectType": "consistent-hash virtual-node token / ring position",
+          "inputs": "clockwise predecessor interval",
+          "outputs": "owned key range maps to one logical shard",
+          "ownership": "consistent-hash ring"
+        },
         "locked": false
       },
       {
@@ -179,7 +219,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "x": 777,
         "y": 1559,
         "width": 64,
-        "height": 64,
+        "height": 71,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
@@ -190,8 +230,16 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "textColor": "#7c3aed"
         },
         "shape": "ellipse",
+        "iconId": "virtual-node",
         "label": "vC2",
         "fontSize": 20,
+        "metadata": {
+          "layer": "Key placement",
+          "objectType": "consistent-hash virtual-node token / ring position",
+          "inputs": "clockwise predecessor interval",
+          "outputs": "owned key range maps to one logical shard",
+          "ownership": "consistent-hash ring"
+        },
         "locked": false
       },
       {
@@ -200,7 +248,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "x": 718,
         "y": 1418,
         "width": 64,
-        "height": 64,
+        "height": 71,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
@@ -211,8 +259,16 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "textColor": "#7c3aed"
         },
         "shape": "ellipse",
+        "iconId": "virtual-node",
         "label": "vA3",
         "fontSize": 20,
+        "metadata": {
+          "layer": "Key placement",
+          "objectType": "consistent-hash virtual-node token / ring position",
+          "inputs": "clockwise predecessor interval",
+          "outputs": "owned key range maps to one logical shard",
+          "ownership": "consistent-hash ring"
+        },
         "locked": false
       },
       {
@@ -221,7 +277,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "x": 777,
         "y": 1277,
         "width": 64,
-        "height": 64,
+        "height": 71,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
@@ -232,15 +288,23 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "textColor": "#7c3aed"
         },
         "shape": "ellipse",
+        "iconId": "virtual-node",
         "label": "vB3",
         "fontSize": 20,
+        "metadata": {
+          "layer": "Key placement",
+          "objectType": "consistent-hash virtual-node token / ring position",
+          "inputs": "clockwise predecessor interval",
+          "outputs": "owned key range maps to one logical shard",
+          "ownership": "consistent-hash ring"
+        },
         "locked": false
       },
       {
         "id": "key-position-marker",
         "type": "shape",
-        "x": 1007,
-        "y": 1207,
+        "x": 1118,
+        "y": 1336,
         "width": 38,
         "height": 38,
         "rotation": 0,
@@ -293,8 +357,13 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "textColor": "#66717d"
         },
         "shape": "rectangle",
-        "label": "CACHE SHARD A\nA1 · A2 · A3",
+        "iconId": "partition",
+        "label": "CACHE SHARD A\nLOGICAL KEY RANGE",
         "fontSize": 22,
+        "metadata": {
+          "layer": "Logical key placement",
+          "objectType": "logical partition / key range"
+        },
         "locked": false
       },
       {
@@ -333,8 +402,13 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "textColor": "#66717d"
         },
         "shape": "rectangle",
-        "label": "CACHE SHARD C\nC1 · C2 · C3",
+        "iconId": "partition",
+        "label": "CACHE SHARD C\nLOGICAL KEY RANGE",
         "fontSize": 22,
+        "metadata": {
+          "layer": "Logical key placement",
+          "objectType": "logical partition / key range"
+        },
         "locked": false
       },
       {
@@ -439,7 +513,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
             0
           ]
         ],
-        "label": "ROUTE BY KEY",
+        "label": "FORWARD TO APPLICATION",
         "fontSize": 20,
         "startBinding": "load-balancer",
         "endBinding": "cache-client-coordinator",
@@ -485,7 +559,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
             10
           ]
         ],
-        "label": "CACHE RESULT",
+        "label": "RESULT AFTER REQUIRED RESPONSES",
         "fontSize": 20,
         "startBinding": "cache-client-coordinator",
         "endBinding": "load-balancer",
@@ -542,10 +616,10 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
       {
         "id": "coordinator-to-ring",
         "type": "connector",
-        "x": 1026,
+        "x": 1137,
         "y": 595,
-        "width": 1294,
-        "height": 612,
+        "width": 1583,
+        "height": 741,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -557,27 +631,27 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         },
         "points": [
           [
-            1074,
+            963,
             0
           ],
           [
-            1294,
+            1583,
             0
           ],
           [
-            1294,
-            540
+            1583,
+            485
           ],
           [
             0,
-            540
+            485
           ],
           [
             0,
-            612
+            741
           ]
         ],
-        "label": "HASH(KEY) · MARK POSITION ON RING",
+        "label": "HASH(KEY) · MARK ONE RING POSITION",
         "fontSize": 20,
         "startBinding": "cache-client-coordinator",
         "endBinding": "key-position-marker",
@@ -588,10 +662,10 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
       {
         "id": "key-position-to-vnode",
         "type": "connector",
-        "x": 1045,
-        "y": 1226,
-        "width": 150,
-        "height": 224,
+        "x": 1137,
+        "y": 1374,
+        "width": 25,
+        "height": 76,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -607,20 +681,20 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            150,
-            0
+            16,
+            18
           ],
           [
-            150,
-            224
+            25,
+            42
           ],
           [
-            137,
-            224
+            13,
+            76
           ]
         ],
-        "label": "NEXT VNODE CLOCKWISE",
-        "fontSize": 20,
+        "label": "CLOCKWISE → STOP AT vB2",
+        "fontSize": 16,
         "startBinding": "key-position-marker",
         "endBinding": "vnode-b-selected",
         "startArrow": "none",
@@ -630,10 +704,10 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
       {
         "id": "selected-vnode-to-shard-b",
         "type": "connector",
-        "x": 1182,
+        "x": 960,
         "y": 1450,
-        "width": 1638,
-        "height": 660,
+        "width": 1860,
+        "height": 710,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -645,38 +719,161 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         },
         "points": [
           [
+            222,
+            0
+          ],
+          [
+            490,
+            0
+          ],
+          [
+            490,
+            290
+          ],
+          [
+            1860,
+            290
+          ],
+          [
+            1860,
+            590
+          ],
+          [
+            0,
+            590
+          ],
+          [
+            0,
+            710
+          ]
+        ],
+        "label": "vB2 MAPS ITS OWNED KEY RANGE TO CACHE SHARD B",
+        "fontSize": 20,
+        "startBinding": "vnode-b-selected",
+        "endBinding": "cache-shard-b-logical",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "shard-b-to-server-b1",
+        "type": "connector",
+        "x": 820,
+        "y": 2305,
+        "width": 125,
+        "height": 85,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 2.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
             0,
             0
           ],
           [
-            268,
+            0,
+            45
+          ],
+          [
+            125,
+            45
+          ],
+          [
+            125,
+            85
+          ]
+        ],
+        "startBinding": "cache-shard-b-logical",
+        "endBinding": "cache-server-b1",
+        "parentId": "cache-shard-b-group",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "shard-b-to-server-b2",
+        "type": "connector",
+        "x": 960,
+        "y": 2305,
+        "width": 465,
+        "height": 85,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 2.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
+            0,
             0
           ],
           [
-            268,
-            290
+            0,
+            25
           ],
           [
-            1638,
-            290
+            465,
+            25
           ],
           [
-            1638,
-            590
-          ],
-          [
-            218,
-            590
-          ],
-          [
-            218,
-            660
+            465,
+            85
           ]
         ],
-        "label": "vB2 OWNS CACHE SHARD B",
-        "fontSize": 20,
-        "startBinding": "vnode-b-selected",
-        "endBinding": "cache-shard-b-group",
+        "startBinding": "cache-shard-b-logical",
+        "endBinding": "cache-server-b2",
+        "parentId": "cache-shard-b-group",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
+        "id": "shard-b-to-server-b3",
+        "type": "connector",
+        "x": 1100,
+        "y": 2305,
+        "width": 805,
+        "height": 85,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 2.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            5
+          ],
+          [
+            805,
+            5
+          ],
+          [
+            805,
+            85
+          ]
+        ],
+        "startBinding": "cache-shard-b-logical",
+        "endBinding": "cache-server-b3",
+        "parentId": "cache-shard-b-group",
         "startArrow": "none",
         "endArrow": "arrow",
         "locked": false
@@ -726,7 +923,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
       {
         "id": "cache-miss-to-database",
         "type": "connector",
-        "x": 1150,
+        "x": 1000,
         "y": 2710,
         "width": 0,
         "height": 940,
@@ -749,7 +946,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
             940
           ]
         ],
-        "label": "MISS · READ CASSANDRA",
+        "label": "MISS OR CACHE-QUORUM FAILURE · APPLICATION READS CASSANDRA",
         "fontSize": 20,
         "startBinding": "cache-shard-b-group",
         "endBinding": "database-shards",
@@ -760,7 +957,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
       {
         "id": "database-fill-to-cache",
         "type": "connector",
-        "x": 1550,
+        "x": 1950,
         "y": 2710,
         "width": 0,
         "height": 940,
@@ -783,7 +980,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
             0
           ]
         ],
-        "label": "FILL CACHE · RETURN VALUE",
+        "label": "DATABASE RESULT · FILL CACHE WITH SAME VERSION",
         "fontSize": 20,
         "startBinding": "database-shards",
         "endBinding": "cache-shard-b-group",
@@ -792,12 +989,54 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "locked": false
       },
       {
+        "id": "cache-write-quorum",
+        "type": "connector",
+        "x": 2100,
+        "y": 620,
+        "width": 1000,
+        "height": 1880,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#15803d",
+          "strokeWidth": 3.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#15803d"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            1000,
+            0
+          ],
+          [
+            1000,
+            1880
+          ],
+          [
+            50,
+            1880
+          ]
+        ],
+        "label": "WRITE CACHE · WAIT FOR W=2",
+        "fontSize": 20,
+        "startBinding": "cache-client-coordinator",
+        "endBinding": "cache-shard-b-group",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "locked": false
+      },
+      {
         "id": "write-through-to-database",
         "type": "connector",
-        "x": 2000,
-        "y": 2710,
-        "width": 0,
-        "height": 940,
+        "x": 2100,
+        "y": 650,
+        "width": 1100,
+        "height": 3120,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -813,13 +1052,21 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            0,
-            940
+            1100,
+            0
+          ],
+          [
+            1100,
+            3120
+          ],
+          [
+            250,
+            3120
           ]
         ],
-        "label": "WRITE-THROUGH · FINANCIAL KEY",
+        "label": "SAME VERSION · WAIT FOR CASSANDRA CL=QUORUM",
         "fontSize": 20,
-        "startBinding": "cache-shard-b-group",
+        "startBinding": "cache-client-coordinator",
         "endBinding": "database-shards",
         "startArrow": "none",
         "endArrow": "arrow",
@@ -952,7 +1199,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         },
         "iconId": "load-balancer",
         "title": "Load balancer",
-        "subtitle": "spreads requests by shard key",
+        "subtitle": "spreads requests across application instances",
         "titleFontSize": 24,
         "bodyFontSize": 21,
         "align": "left",
@@ -976,12 +1223,19 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "iconId": "data-router",
-        "title": "Cache client",
-        "subtitle": "replica selection · quorum coordination",
-        "body": "Routes each key and waits for the required cache responses.",
+        "title": "Cache client / coordinator",
+        "subtitle": "library inside the application/API service",
+        "body": "Hashes each key, selects replicas, and waits for the required cache and database responses.",
         "titleFontSize": 24,
         "bodyFontSize": 21,
         "align": "left",
+        "metadata": {
+          "layer": "Application/API and cache coordination",
+          "objectType": "client library inside an application service",
+          "inputs": "read or write plus key and value",
+          "outputs": "consistent-hash position, replica requests, quorum result",
+          "ownership": "application service"
+        },
         "variant": "service",
         "locked": false
       },
@@ -989,9 +1243,9 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "id": "logic-placement",
         "type": "system",
         "x": 1550,
-        "y": 1240,
-        "width": 850,
-        "height": 310,
+        "y": 1160,
+        "width": 980,
+        "height": 500,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
@@ -1002,20 +1256,61 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "iconId": "hash-ring",
-        "title": "Virtual-node selection",
-        "subtitle": "hash(key) → next vnode clockwise",
-        "body": "The hash marks one point on the ring.\nThe next virtual node is vB2.\nvB2 owns Cache Shard B.",
+        "title": "Clockwise-successor stopping rule",
+        "subtitle": "hash(key) → first virtual-node token clockwise",
+        "body": "1. hash(key) produces one position on the ring.\n2. Starting at that position, move clockwise.\n3. Stop at the first virtual-node token encountered.\n4. In this example, that token is vB2.\n5. The key range ending at vB2 maps to logical Cache Shard B.\n6. Shard B’s replica-selection rule then chooses physical server B1, B2, or B3.\n\nvB2 owns the ring interval after its predecessor and up to vB2.",
         "titleFontSize": 24,
         "bodyFontSize": 21,
         "align": "left",
+        "metadata": {
+          "layer": "Key placement",
+          "objectType": "consistent-hash virtual-node successor rule",
+          "inputs": "hash(key) ring position",
+          "outputs": "logical Cache Shard B",
+          "ownership": "cache client / coordinator"
+        },
         "variant": "routing",
+        "locked": false
+      },
+      {
+        "id": "cache-shard-b-logical",
+        "type": "system",
+        "x": 700,
+        "y": 2160,
+        "width": 520,
+        "height": 175,
+        "rotation": 0,
+        "style": {
+          "fill": "#e9f7ed",
+          "stroke": "#15803d",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "partition",
+        "title": "Cache Shard B",
+        "subtitle": "logical partition / key range · selected",
+        "body": "vB2 maps its owned key range to Cache Shard B.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "metadata": {
+          "layer": "Logical key placement",
+          "objectType": "logical partition / key range",
+          "inputs": "owned interval ending at vB2",
+          "outputs": "replica candidates B1, B2, B3",
+          "ownership": "consistent-hash shard map"
+        },
+        "parentId": "cache-shard-b-group",
+        "variant": "cache",
         "locked": false
       },
       {
         "id": "cache-server-b1",
         "type": "system",
         "x": 780,
-        "y": 2350,
+        "y": 2390,
         "width": 330,
         "height": 250,
         "rotation": 0,
@@ -1030,10 +1325,18 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "iconId": "server",
         "title": "B1",
         "subtitle": "physical cache server",
-        "body": "Replica 1 of Cache Shard B.",
+        "body": "Replica 1 stores a temporary RAM copy of Cache Shard B.",
         "titleFontSize": 24,
         "bodyFontSize": 21,
         "align": "left",
+        "metadata": {
+          "layer": "Physical cache-server layer",
+          "objectType": "physical cache server / replica",
+          "inputs": "Shard B read or write",
+          "outputs": "versioned value or acknowledgement",
+          "ownership": "cache replica set"
+        },
+        "parentId": "cache-shard-b-group",
         "variant": "cache",
         "locked": false
       },
@@ -1041,7 +1344,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "id": "cache-server-b2",
         "type": "system",
         "x": 1260,
-        "y": 2350,
+        "y": 2390,
         "width": 330,
         "height": 250,
         "rotation": 0,
@@ -1056,10 +1359,18 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "iconId": "server",
         "title": "B2",
         "subtitle": "physical cache server",
-        "body": "Replica 2 of Cache Shard B.",
+        "body": "Replica 2 stores a temporary RAM copy of Cache Shard B.",
         "titleFontSize": 24,
         "bodyFontSize": 21,
         "align": "left",
+        "metadata": {
+          "layer": "Physical cache-server layer",
+          "objectType": "physical cache server / replica",
+          "inputs": "Shard B read or write",
+          "outputs": "versioned value or acknowledgement",
+          "ownership": "cache replica set"
+        },
+        "parentId": "cache-shard-b-group",
         "variant": "cache",
         "locked": false
       },
@@ -1067,7 +1378,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "id": "cache-server-b3",
         "type": "system",
         "x": 1740,
-        "y": 2350,
+        "y": 2390,
         "width": 330,
         "height": 250,
         "rotation": 0,
@@ -1082,10 +1393,18 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "iconId": "server",
         "title": "B3",
         "subtitle": "physical cache server",
-        "body": "Replica 3 of Cache Shard B.",
+        "body": "Replica 3 stores a temporary RAM copy of Cache Shard B.",
         "titleFontSize": 24,
         "bodyFontSize": 21,
         "align": "left",
+        "metadata": {
+          "layer": "Physical cache-server layer",
+          "objectType": "physical cache server / replica",
+          "inputs": "Shard B read or write",
+          "outputs": "versioned value or acknowledgement",
+          "ownership": "cache replica set"
+        },
+        "parentId": "cache-shard-b-group",
         "variant": "cache",
         "locked": false
       },
@@ -1108,11 +1427,51 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "iconId": "replica-group",
         "title": "Cache quorum + availability",
         "subtitle": "N=3 · R=2 · W=2",
-        "body": "N=3: three physical servers per shard.\nR=2: read two; return the newest value.\nW=2: require two cache write acknowledgements.\nR+W>N: the read and write quorums overlap.\nONE SERVER DOWN: the shard remains available.",
+        "body": "N=3: three physical servers per shard.\nR=2: read two versioned values; return the newest.\nW=2: require two cache write acknowledgements.\nR+W>N: the read and write quorums intersect.\nONE SERVER DOWN: two healthy replicas still form a quorum.\nFEWER THAN TWO: do not serve a single potentially stale copy.",
         "titleFontSize": 24,
         "bodyFontSize": 21,
         "align": "left",
+        "metadata": {
+          "layer": "Replica selection and cache consistency",
+          "objectType": "cache quorum policy",
+          "inputs": "responses from B1, B2, B3",
+          "outputs": "newest version or quorum failure",
+          "ownership": "cache client / coordinator"
+        },
         "variant": "cache",
+        "locked": false
+      },
+      {
+        "id": "write-commit-rule",
+        "type": "system",
+        "x": 1050,
+        "y": 2880,
+        "width": 800,
+        "height": 330,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffe9e6",
+          "stroke": "#d84b43",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "policy-gate",
+        "title": "Acknowledged-write rule",
+        "subtitle": "cache W=2 + Cassandra CL=QUORUM",
+        "body": "A financial write is acknowledged only after both required quorums succeed for the same version. If either side fails, do not acknowledge; invalidate or bypass the cache until Cassandra refreshes it.",
+        "titleFontSize": 24,
+        "bodyFontSize": 21,
+        "align": "left",
+        "metadata": {
+          "layer": "Application/API write coordination",
+          "objectType": "synchronous write-through commit rule",
+          "inputs": "cache W=2 acknowledgements and Cassandra CL=QUORUM acknowledgement",
+          "outputs": "client success or explicit failure plus cache invalidation",
+          "ownership": "cache client / coordinator"
+        },
+        "variant": "service",
         "locked": false
       },
       {
@@ -1159,11 +1518,18 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         },
         "iconId": "distributed-database",
         "title": "Cassandra cluster",
-        "subtitle": "RF=3 · CL=QUORUM · partition key=user_id",
-        "body": "RF=3: Cassandra stores 3 copies of each row.\nCL=QUORUM: 2 of 3 database replicas must respond.\nPARTITION KEY: user_id chooses the database partition.",
+        "subtitle": "authoritative · RF=3 · CL=QUORUM · partition key=user_id",
+        "body": "RF=3: Cassandra stores 3 durable copies of each row.\nCL=QUORUM: 2 of 3 database replicas must respond to the read or write.\nPARTITION KEY: user_id chooses the database partition.",
         "titleFontSize": 24,
         "bodyFontSize": 21,
         "align": "left",
+        "metadata": {
+          "layer": "Persistence",
+          "objectType": "authoritative distributed database",
+          "inputs": "miss reads and synchronous financial writes",
+          "outputs": "quorum result and durable versioned rows",
+          "ownership": "source of truth"
+        },
         "variant": "database",
         "locked": false
       },
@@ -1255,7 +1621,7 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "opacity": 1,
           "textColor": "#d84b43"
         },
-        "text": "INVARIANT · NO CLIENT OBSERVES A VALUE OLDER THAN THE LAST COMMITTED WRITE",
+        "text": "INVARIANT · NO CLIENT OBSERVES A VALUE OLDER THAN THE LAST ACKNOWLEDGED WRITE",
         "fontSize": 24,
         "fontFamily": "sans",
         "fontWeight": 700,
@@ -1265,10 +1631,10 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
       {
         "id": "hash-key-label",
         "type": "text",
-        "x": 875,
-        "y": 1395,
+        "x": 950,
+        "y": 1330,
         "width": 150,
-        "height": 61,
+        "height": 56,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1276,22 +1642,22 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "strokeWidth": 0,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#bd6212"
         },
-        "text": "KEY\nPOSITION",
-        "fontSize": 22,
+        "text": "HASH(KEY)\nPOSITION",
+        "fontSize": 20,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "center",
         "locked": false
       },
       {
-        "id": "cache-shard-b-group-label",
+        "id": "selected-token-note",
         "type": "text",
-        "x": 668,
-        "y": 2122,
-        "width": 1464,
-        "height": 35,
+        "x": 1200,
+        "y": 1490,
+        "width": 250,
+        "height": 45,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1301,8 +1667,8 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "opacity": 1,
           "textColor": "#15803d"
         },
-        "text": "CACHE SHARD B · SELECTED",
-        "fontSize": 24,
+        "text": "vB2 · VIRTUAL TOKEN\nNOT PHYSICAL SERVER B2",
+        "fontSize": 16,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
@@ -1311,10 +1677,10 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
       {
         "id": "shard-b-replication",
         "type": "text",
-        "x": 770,
-        "y": 2200,
-        "width": 1260,
-        "height": 33,
+        "x": 1280,
+        "y": 2175,
+        "width": 800,
+        "height": 56,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1324,11 +1690,12 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "opacity": 1,
           "textColor": "#15803d"
         },
-        "text": "THREE PHYSICAL CACHE SERVERS HOLD THE SAME SHARD",
-        "fontSize": 22,
+        "text": "REPLICA SELECTION\nTHREE PHYSICAL SERVERS HOLD THIS SHARD",
+        "fontSize": 20,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "center",
+        "parentId": "cache-shard-b-group",
         "locked": false
       }
     ],

@@ -16,8 +16,13 @@ newer local scene.
   delete controls.
 - An explicit-Apply inspector with editable title, subtitle, body/explanation,
   labels, image alt text, width, height, and optional architecture metadata.
-- Wrapped text and minimum content height so resizing reflows without clipping;
-  bound connector endpoints remain attached when their object resizes.
+- Content-aware width and height for every text-bearing object: defaults grow to
+  a sensible width cap, narrower manual widths rewrap and increase height, and
+  no manual dimension can undercut wrapped content. Bound connector endpoints
+  and declared shape containers recalculate when their child resizes.
+- Semantic icons on system cards and icon-bearing shapes, including distinct
+  partition, physical-server, and virtual-node token marks with verified source
+  provenance.
 - Verified visual provenance derived from the actual local icon registry or SVG
   primitive source rather than an invented package attribution.
 - Per-element and whole-board lock/unlock controls.
