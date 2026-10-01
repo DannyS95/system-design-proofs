@@ -4,9 +4,9 @@ A CDN is a geographically distributed system that serves content from edge
 locations closer to users. It moves data toward demand instead of sending every
 request to one central origin.
 
-![CDN routing, edge-hit, miss, fill, and failover paths](./system-canvas.png)
+![CDN routing, edge-hit, miss, fill, and failover paths](../../cdn/system-canvas.png)
 
-[Open the editable System Canvas board](../drawing-platform/examples/cdn.system-canvas.json).
+[Open the editable System Canvas board](../../drawing-platform/examples/cdn.system-canvas.json).
 
 ## Problem
 
@@ -62,4 +62,4 @@ path, not the normal path.
 
 See [trade-offs](./trade-offs.md) for push/pull placement, storage tiers, and
 failure behavior. The older draw.io source remains at
-[`architecture_2.drawio`](./architecture_2.drawio).
+[`architecture_2.drawio`](../../cdn/architecture_2.drawio).

@@ -148,12 +148,13 @@ export function applyAppReferenceLinks(elements) {
     "stencil-catalog": "src/stencils/catalog.ts",
     "component-palette": "src/components/StencilShelf.tsx",
   };
+  const docsBase = base.replace("/drawing-platform/", "/md/drawing-platform/");
   for (const element of elements) {
     if (!sources[element.id]) continue;
     element.metadata = { ...element.metadata, referenceLinks: [
       `Implementation · ${sources[element.id]} | ${base}${sources[element.id]}`,
-      `Architecture and responsibilities | ${base}DESIGN.md`,
-      `Board data model | ${base}DATA_MODEL.md`,
+      `Architecture and responsibilities | ${docsBase}DESIGN.md`,
+      `Board data model | ${docsBase}DATA_MODEL.md`,
     ].join("\n") };
   }
 }

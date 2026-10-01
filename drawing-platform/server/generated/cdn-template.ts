@@ -1434,7 +1434,7 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "capacity": "QPS avg 3k · peak 15k · flash 30k\n20 KB objects · 300 MB/s peak",
         "metadata": {
           "explanation": "Requests an object. Routing chooses an edge; cache hits keep the request close to the viewer.",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1464,7 +1464,7 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "capacity": "1 routing host · CPU/network\n10% lookups: 1.5k / safe 50k QPS · 3%",
         "metadata": {
           "explanation": "Directs a viewer to a nearby healthy edge using location, health and available capacity.",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1494,7 +1494,7 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "capacity": "1 host · safe 10k QPS / 200 MB/s\nPeak 5k / 10k · 50%; flash 100% LIMIT",
         "metadata": {
           "explanation": "Serves nearby viewers from cache. A miss goes to the parent proxy, then fills this edge cache.",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1524,7 +1524,7 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "capacity": "Same edge RAM/SSD budget\n20 / 64 GB resident · 90% hits",
         "metadata": {
           "explanation": "Keeps hot objects in RAM and colder objects on SSD, sharing the edge host's storage budget.",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1554,7 +1554,7 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "capacity": "1 host · safe 10k QPS / 200 MB/s\nPeak 5k / 10k · 50%; failover 75%",
         "metadata": {
           "explanation": "Serves nearby viewers and takes redirected traffic when another edge fails.",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1584,7 +1584,7 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "capacity": "Same edge RAM/SSD budget\n20 / 64 GB resident · 90% hits",
         "metadata": {
           "explanation": "Keeps hot objects in RAM and colder objects on SSD, sharing the edge host's storage budget.",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1614,7 +1614,7 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "capacity": "1 host · safe 10k QPS / 200 MB/s\nPeak 5k / 10k · 50%; failover 75%",
         "metadata": {
           "explanation": "Serves nearby viewers and takes redirected traffic when another edge fails.",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1644,7 +1644,7 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "capacity": "Same edge RAM/SSD budget\n20 / 64 GB resident · 90% hits",
         "metadata": {
           "explanation": "Keeps hot objects in RAM and colder objects on SSD, sharing the edge host's storage budget.",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1674,7 +1674,7 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "capacity": "1 host · RAM/network · 80% hits\nPeak 1.5k / safe 10k QPS · 15%",
         "metadata": {
           "explanation": "Shares cached objects across edges and shields the origin from repeated misses.",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1704,7 +1704,7 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "capacity": "1 host · I/O/egress · safe 1k QPS\nPeak 300 / 1k · 30%; flash 60%\nNo parent: 1.5k / 1k OVERLOAD",
         "metadata": {
           "explanation": "Owns the authoritative content. Handles requests that miss both edge and parent caches.",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1734,7 +1734,7 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "capacity": "1 control host · CPU\n100 / safe 1k updates/s · 10%",
         "metadata": {
           "explanation": "Publishes edge health and capacity so routing can avoid unavailable hosts.",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1764,7 +1764,7 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "capacity": "1 placement host · CPU/network\n300 / safe 1k object copies/s · 30%",
         "metadata": {
           "explanation": "Copies objects to edges in the background, ahead of viewer requests.",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1794,7 +1794,7 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "capacity": "1 collector · 2 events/request\nPeak 30k / safe 100k events/s · 30%",
         "metadata": {
           "explanation": "Collects request events to reveal hit rates, latency and overloaded hosts.",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },

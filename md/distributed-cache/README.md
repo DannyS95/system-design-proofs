@@ -3,9 +3,9 @@
 This is the balanced read/write cache design for financial keys. It is separate
 from the read-heavy social-feed cache.
 
-![Distributed cache quorum architecture](./system-canvas.png)
+![Distributed cache quorum architecture](../../distributed-cache/system-canvas.png)
 
-[Open the editable board](../drawing-platform/examples/distributed-cache.system-canvas.json).
+[Open the editable board](../../drawing-platform/examples/distributed-cache.system-canvas.json).
 
 ## Design contract
 
@@ -43,7 +43,7 @@ A cache miss or cache-quorum failure makes the application read Cassandra at
 through the same cache client and load balancer. Cassandra is authoritative;
 its selected configuration is `RF=3`, `CL=QUORUM`, partitioned by `user_id`.
 
-The checked-in [`architecture.png`](./architecture.png) remains the original
+The checked-in [`architecture.png`](../../distributed-cache/architecture.png) remains the original
 source design. The generated PNG above, SVG, and editable JSON are its corrected
 native versions.
 

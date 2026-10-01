@@ -1272,7 +1272,7 @@
         "parentId": "routing-layers-zone",
         "capacity": "1 LB · routing CPU/network\nPeak 4k / safe 50k QPS · 8%",
         "metadata": {
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1301,7 +1301,7 @@
         "parentId": "routing-layers-zone",
         "capacity": "1 gateway · auth CPU/network\nPeak 4k / safe 20k QPS · 20%",
         "metadata": {
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1380,7 +1380,7 @@
         "parentId": "replica-topology-zone",
         "capacity": "QPS avg 1k · peak 4k · flash 8k\n50% GET · 50% PUT",
         "metadata": {
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1409,7 +1409,7 @@
         "parentId": "replica-topology-zone",
         "capacity": "1 host · fan-out CPU/network\nPeak 4k / safe 10k QPS · 40%; flash 80%",
         "metadata": {
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1438,7 +1438,7 @@
         "parentId": "replica-topology-zone",
         "capacity": "Logical decision · same coordinator CPU",
         "metadata": {
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1467,7 +1467,7 @@
         "parentId": "replica-topology-zone",
         "capacity": "I/O + CPU · peak 3.3k / safe 10k ops/s · 33%",
         "metadata": {
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1496,7 +1496,7 @@
         "parentId": "replica-topology-zone",
         "capacity": "I/O + CPU · peak 3.3k / safe 10k ops/s · 33%",
         "metadata": {
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1525,7 +1525,7 @@
         "parentId": "replica-topology-zone",
         "capacity": "I/O + CPU · safe 10k ops/s when up\nDOWN: 0 available; E replaces D",
         "metadata": {
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1554,7 +1554,7 @@
         "parentId": "replica-topology-zone",
         "capacity": "B+C+E: 3 × 10k = 30k ops/s; peak 11k\n2 reads · 3 writes; flash misses headroom",
         "metadata": {
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },
@@ -1583,7 +1583,7 @@
         "parentId": "replica-topology-zone",
         "capacity": "I/O + CPU · peak 4.3k / safe 10k ops/s\n43% HOTTEST · includes 1k handoff/s",
         "metadata": {
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "locked": true
       },

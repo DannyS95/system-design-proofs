@@ -1360,7 +1360,7 @@
           "inputs": "API data, local board data, user actions",
           "outputs": "props and BoardScene updates",
           "ownership": "project-owned components using React",
-          "referenceLinks": "Implementation · src/App.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/App.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
+          "referenceLinks": "Implementation · src/App.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/App.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DATA_MODEL.md"
         },
         "parentId": "browser-zone",
         "variant": "service",
@@ -1399,7 +1399,7 @@
           "inputs": "BoardScene, pointer/keyboard/wheel/resize events, image files",
           "outputs": "updated BoardScene and native SVG DOM",
           "ownership": "project-owned",
-          "referenceLinks": "Implementation · src/editor/EditorCanvas.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/editor/EditorCanvas.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
+          "referenceLinks": "Implementation · src/editor/EditorCanvas.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/editor/EditorCanvas.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DATA_MODEL.md"
         },
         "parentId": "browser-zone",
         "variant": "service",
@@ -1438,7 +1438,7 @@
           "inputs": "compiled catalog data",
           "outputs": "StencilShelfItem choices shown by StencilShelf",
           "ownership": "project-owned",
-          "referenceLinks": "Implementation · src/stencils/catalog.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/stencils/catalog.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
+          "referenceLinks": "Implementation · src/stencils/catalog.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/stencils/catalog.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DATA_MODEL.md"
         },
         "parentId": "browser-zone",
         "variant": "service",
@@ -1477,7 +1477,7 @@
           "inputs": "built-in and custom choices, search text, selected stencil ID",
           "outputs": "onInsertStencil(stencilId)",
           "ownership": "WorkspaceLayout / App",
-          "referenceLinks": "Implementation · src/components/StencilShelf.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/components/StencilShelf.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
+          "referenceLinks": "Implementation · src/components/StencilShelf.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/components/StencilShelf.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DATA_MODEL.md"
         },
         "parentId": "browser-zone",
         "variant": "service",
@@ -1554,7 +1554,7 @@
           "inputs": "loaded board, inserted objects, or editor mutations",
           "outputs": "render input, local JSON, server save payload",
           "ownership": "React App / EditorCanvas",
-          "referenceLinks": "Implementation · shared/contracts.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/shared/contracts.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
+          "referenceLinks": "Implementation · shared/contracts.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/shared/contracts.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DATA_MODEL.md"
         },
         "parentId": "browser-zone",
         "variant": "storage",
@@ -1631,7 +1631,7 @@
           "inputs": "image or board JSON files; current BoardScene",
           "outputs": "embedded CanvasFile data or downloaded JSON/SVG/PNG",
           "ownership": "EditorCanvas",
-          "referenceLinks": "Implementation · src/editor/downloads.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/editor/downloads.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
+          "referenceLinks": "Implementation · src/editor/downloads.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/editor/downloads.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DATA_MODEL.md"
         },
         "parentId": "browser-zone",
         "variant": "storage",
@@ -1670,7 +1670,7 @@
           "inputs": "pointer, keyboard, wheel, form, and resize actions",
           "outputs": "BoardScene element or appState updates",
           "ownership": "EditorCanvas",
-          "referenceLinks": "Implementation · src/editor/EditorCanvas.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/editor/EditorCanvas.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
+          "referenceLinks": "Implementation · src/editor/EditorCanvas.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/editor/EditorCanvas.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DATA_MODEL.md"
         },
         "parentId": "browser-zone",
         "variant": "service",
@@ -1747,7 +1747,7 @@
           "inputs": "JSON.stringify board or custom stencil",
           "outputs": "locally restored JSON",
           "ownership": "browser/user",
-          "referenceLinks": "Implementation · src/data/local-board-store.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/data/local-board-store.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
+          "referenceLinks": "Implementation · src/data/local-board-store.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/data/local-board-store.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DATA_MODEL.md"
         },
         "parentId": "browser-persistence-zone",
         "variant": "storage",
@@ -1786,7 +1786,7 @@
           "inputs": "BoardScene plus expected revision",
           "outputs": "save API requests and revision acknowledgements",
           "ownership": "App.tsx",
-          "referenceLinks": "Implementation · src/data/revision-save-queue.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/data/revision-save-queue.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
+          "referenceLinks": "Implementation · src/data/revision-save-queue.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/data/revision-save-queue.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DATA_MODEL.md"
         },
         "parentId": "browser-persistence-zone",
         "variant": "service",
@@ -1825,7 +1825,7 @@
           "inputs": "HTTP requests and JSON bodies",
           "outputs": "HTML/static files or JSON responses",
           "ownership": "project-owned server using third-party packages",
-          "referenceLinks": "Implementation · server/app.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/server/app.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
+          "referenceLinks": "Implementation · server/app.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/server/app.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DATA_MODEL.md"
         },
         "variant": "service",
         "width": 455.4399999999999,
@@ -1864,7 +1864,7 @@
           "inputs": "validated board ID, name, scene, expected revision",
           "outputs": "BoardDocument or revision conflict",
           "ownership": "server application",
-          "referenceLinks": "Implementation · server/board-store.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/server/board-store.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
+          "referenceLinks": "Implementation · server/board-store.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/server/board-store.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DATA_MODEL.md"
         },
         "variant": "service",
         "width": 390.76,
@@ -2015,7 +2015,7 @@
           "inputs": "iconId",
           "outputs": "SVG paths, circles, rectangles",
           "ownership": "project-owned",
-          "referenceLinks": "Implementation · src/editor/SystemIcon.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/editor/SystemIcon.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
+          "referenceLinks": "Implementation · src/editor/SystemIcon.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/editor/SystemIcon.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DATA_MODEL.md"
         },
         "parentId": "visual-vocabulary-zone",
         "variant": "service",

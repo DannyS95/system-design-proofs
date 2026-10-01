@@ -1247,7 +1247,7 @@
         "height": 229,
         "capacity": "",
         "metadata": {
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "body": "CLIENT TRAFFIC\n  Average: 1,000 requests/s\n  Peak: 4,000 · surge: 8,000 requests/s\n\nREQUEST MIX\n  50% reads · 50% writes\n  10% of reads miss the cache",
         "locked": false
@@ -1275,7 +1275,7 @@
         "align": "left",
         "metadata": {
           "explanation": "Load balancer\nspreads requests across application instances",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "variant": "routing",
         "width": 445.3599999999999,
@@ -1311,7 +1311,7 @@
           "inputs": "read or write plus key and value",
           "outputs": "consistent-hash position, replica requests, quorum result",
           "ownership": "application service",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "variant": "service",
         "width": 458.07999999999976,
@@ -1418,7 +1418,7 @@
           "inputs": "Shard B read or write",
           "outputs": "versioned value or acknowledgement",
           "ownership": "cache replica set",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "parentId": "cache-shard-b-group",
         "variant": "cache",
@@ -1456,7 +1456,7 @@
           "inputs": "Shard B read or write",
           "outputs": "versioned value or acknowledgement",
           "ownership": "cache replica set",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "parentId": "cache-shard-b-group",
         "variant": "cache",
@@ -1494,7 +1494,7 @@
           "inputs": "Shard B read or write",
           "outputs": "versioned value or acknowledgement",
           "ownership": "cache replica set",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "parentId": "cache-shard-b-group",
         "variant": "cache",
@@ -1531,7 +1531,7 @@
           "inputs": "responses from B1, B2, B3",
           "outputs": "newest version or quorum failure",
           "ownership": "cache client / coordinator",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "variant": "cache",
         "width": 416.7999999999999,
@@ -1667,7 +1667,7 @@
           "inputs": "miss reads and synchronous financial writes",
           "outputs": "quorum result and durable versioned rows",
           "ownership": "source of truth",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "variant": "database",
         "width": 398.0399999999999,
@@ -1700,7 +1700,7 @@
         "align": "left",
         "metadata": {
           "explanation": "Monitoring service\nobserve cache servers and Cassandra\nhit ratio · shard QPS · p50/p99\nquorum failures · replica lag",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "variant": "observability",
         "width": 436.40000000000003,
@@ -2025,7 +2025,7 @@
           "objectType": "workload estimate",
           "layer": "Persistence",
           "ownership": "Cassandra",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md",
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md",
           "inputs": "Request rate × work per request",
           "outputs": "Load, spare capacity and first limit",
           "explanation": "Budget\n3 hosts × 5,000 operations/s = 15,000 total (assumed).\n\nPeak work\nWrites: 2,000 × 3 copies = 6,000 ops/s.\nReads: 200 cache misses × 2 copies = 400 ops/s.\nTotal: 6,400 ops/s · 43% used.\n\nConsequence\n2× traffic uses 85%: below the 50% spare-capacity target.\nCassandra reaches its budget first at ≈9,400 client requests/s."
@@ -2086,7 +2086,7 @@
           "objectType": "workload estimate",
           "layer": "Observability",
           "ownership": "Monitoring",
-          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md",
+          "sourcePath": "md/drawing-platform/CAPACITY_ASSUMPTIONS.md",
           "inputs": "Request rate × work per request",
           "outputs": "Load, spare capacity and first limit",
           "explanation": "Work per request\nTwo messages: request started and request finished.\n\nPeak work\n4,000 requests/s × 2 = 8,000 messages/s.\n\nBudget\n1 collector × 50,000 messages/s (assumed). 16% used; 84% free."

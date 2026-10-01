@@ -4,9 +4,9 @@ This board applies distributed caching to a read-heavy social feed of roughly
 500,000 active users. Repeated reads make RAM useful; trending posts create hot
 keys; cache nodes can fail at any time.
 
-![Social-feed distributed-cache architecture](./system-canvas.png)
+![Social-feed distributed-cache architecture](../../social-feed-distributed-cache/system-canvas.png)
 
-[Open the editable board](../drawing-platform/examples/social-feed-distributed-cache.system-canvas.json).
+[Open the editable board](../../drawing-platform/examples/social-feed-distributed-cache.system-canvas.json).
 
 ## Design contract
 

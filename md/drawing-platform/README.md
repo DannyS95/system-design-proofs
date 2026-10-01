@@ -9,7 +9,10 @@ a small Node API stores durable snapshots without blocking edits.
 
 ## Run locally
 
+From the repository root:
+
 ```bash
+cd drawing-platform
 npm ci
 npm run dev
 ```
@@ -79,11 +82,11 @@ npm run generate:designs
 - schema-v2 JSON import/export, SVG/PNG export, and migration of supported
   schema-v1 and Excalidraw JSON
 - independent template copies for the
-  [KV store](./examples/kv-store.system-canvas.json),
-  [CDN](./examples/cdn.system-canvas.json),
-  [Social Feed — Distributed Cache](./examples/social-feed-distributed-cache.system-canvas.json),
-  [balanced-R/W financial distributed cache](./examples/distributed-cache.system-canvas.json), and
-  [System Canvas application architecture](./examples/system-canvas-app.system-canvas.json)
+  [KV store](../../drawing-platform/examples/kv-store.system-canvas.json),
+  [CDN](../../drawing-platform/examples/cdn.system-canvas.json),
+  [Social Feed — Distributed Cache](../../drawing-platform/examples/social-feed-distributed-cache.system-canvas.json),
+  [balanced-R/W financial distributed cache](../../drawing-platform/examples/distributed-cache.system-canvas.json), and
+  [System Canvas application architecture](../../drawing-platform/examples/system-canvas-app.system-canvas.json)
 
 See [STACK.md](./STACK.md) for the technology choices and
 [DESIGN.md](./DESIGN.md) for module boundaries and invariants. Every teaching
@@ -92,7 +95,7 @@ board also follows the repository-wide
 
 Saved and imported boards keep their authored positions on load. Automatic
 placement runs for generated templates and explicit tidy actions. Templates use
-the [shared layout standard](./shared/layout-standard.ts) for spacing,
+the [shared layout standard](../../drawing-platform/shared/layout-standard.ts) for spacing,
 measurement, route clearance, labels, and modest arrowheads; generated previews
 use the same SVG element renderer as the editor.
 
@@ -128,9 +131,9 @@ Details badges are editor controls and are excluded from SVG/PNG artwork.
 
 ## Application architecture
 
-![System Canvas frontend, local-first, and backend architecture](./system-canvas.png)
+![System Canvas frontend, local-first, and backend architecture](../../drawing-platform/system-canvas.png)
 
-The [editable architecture board](./examples/system-canvas-app.system-canvas.json)
+The [editable architecture board](../../drawing-platform/examples/system-canvas-app.system-canvas.json)
 documents **this website itself**, so a development team can recognize its parts
 and their responsibilities. React creates and updates SVG elements from object
 properties; the browser’s SVG renderer draws the canvas. Browser localStorage
@@ -140,14 +143,14 @@ separate build or backend areas. API contracts and implementation rules stay in
 the inspector and [development design](./DESIGN.md).
 
 The custom SVG editor is not a third-party library, server, or database. It is
-the frontend module [`src/editor/EditorCanvas.tsx`](./src/editor/EditorCanvas.tsx),
+the frontend module [`src/editor/EditorCanvas.tsx`](../../drawing-platform/src/editor/EditorCanvas.tsx),
 written in TypeScript and React. Vite compiles it to JavaScript; it runs in the
 user's browser, turns scene data into ordinary SVG DOM elements, handles pointer
 and keyboard input, and emits a changed `BoardScene` back to the React
 application.
 
 System-diagram artwork is hand-authored project SVG in
-[`src/editor/SystemIcon.tsx`](./src/editor/SystemIcon.tsx). The stencil catalog
+[`src/editor/SystemIcon.tsx`](../../drawing-platform/src/editor/SystemIcon.tsx). The stencil catalog
 maps a concept to an `iconId`; the React `StencilShelf` renders those definitions
 as the component palette; and `createStencilElements` turns a selected definition
 into a placed `CanvasSystemElement` in `BoardScene`. The placed element stores the ID.

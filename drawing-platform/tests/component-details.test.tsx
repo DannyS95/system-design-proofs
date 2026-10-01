@@ -49,7 +49,7 @@ describe("readable component reference panel", () => {
     const html = render(editor());
     expect(html).toContain('Component reference');
     expect(html).toContain('Architecture and responsibilities');
-    expect(html).toContain('href="https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md"');
+    expect(html).toContain('href="https://github.com/DannyS95/system-design-proofs/blob/main/md/drawing-platform/DESIGN.md"');
     expect(html).toContain('target="_blank" rel="noopener noreferrer"');
     expect(html).not.toMatch(/<(input|textarea|select)\b/);
   });

@@ -227,3 +227,11 @@
 - When do board counts justify PostgreSQL rather than local snapshots?
 - At what scene size should renderer culling or spatial indexing become a named
   mechanism?
+
+## Documentation organization
+
+All project Markdown now lives under the repository’s `md/` directory, preserving
+project subfolders. The root README introduces the designs and application.
+Documentation links, bundled capacity notes, generated references, preview checks,
+and the Docker build context follow the new paths. Run application commands from
+`drawing-platform/`.

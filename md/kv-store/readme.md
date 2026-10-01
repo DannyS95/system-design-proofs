@@ -2,9 +2,9 @@
 
 A distributed key-value store hides placement, replication, failure handling, and repair behind a small `put(key, value)` / `get(key)` API. This scaffold explains the mechanism, not a production deployment.
 
-![KV-store architecture](./system-canvas.png)
+![KV-store architecture](../../kv-store/system-canvas.png)
 
-[Open the editable System Canvas board](../drawing-platform/examples/kv-store.system-canvas.json).
+[Open the editable System Canvas board](../../drawing-platform/examples/kv-store.system-canvas.json).
 
 ## The 60-second model
 

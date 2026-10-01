@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import capacityNotesUrl from "../../CAPACITY_ASSUMPTIONS.md?url";
+import capacityNotesUrl from "../../../md/drawing-platform/CAPACITY_ASSUMPTIONS.md?url";
 import { capacityMetric } from "./component-brief.js";
 
 export function CapacityBrief({ caption, assumed }: { caption: string; assumed: boolean }) {

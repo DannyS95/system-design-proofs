@@ -1,5 +1,5 @@
 /** Known generated sizing appendix. Keep its derivations in the linked document. */
-export const CAPACITY_SOURCE = "drawing-platform/CAPACITY_ASSUMPTIONS.md";
+export const CAPACITY_SOURCE = "md/drawing-platform/CAPACITY_ASSUMPTIONS.md";
 export const CAPACITY_BOILERPLATE = "BOTEC ASSUMPTIONS, not benchmarks.";
 
 export function splitCapacityExplanation(explanation = ""): { explanation: string; hasCapacityNotes: boolean } {

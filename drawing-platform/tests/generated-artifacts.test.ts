@@ -28,7 +28,7 @@ describe("generated design previews", () => {
       const [svg, png, markdownSource] = await Promise.all([
         readFile(resolve(artifactDirectory, "architecture.svg")),
         readFile(resolve(artifactDirectory, "system-canvas.png")),
-        readFile(resolve(artifactDirectory, markdown), "utf8"),
+        readFile(resolve(repositoryDirectory, "md", directory, markdown), "utf8"),
       ]);
       const expectedPng = await sharp(svg)
         .png({ compressionLevel: 9, adaptiveFiltering: true })
@@ -38,7 +38,7 @@ describe("generated design previews", () => {
         Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
       );
       expect(png.equals(expectedPng)).toBe(true);
-      expect(markdownSource).toContain("](./system-canvas.png)");
+      expect(markdownSource).toContain(`](../../${directory}/system-canvas.png)`);
     },
   );
 });

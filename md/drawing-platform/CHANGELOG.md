@@ -214,3 +214,11 @@
 - Eliminated the maximum-update-depth crash by removing the dependency path that
   re-entered React updates and by keeping repo-owned SVG editor callbacks and session
   transitions stable. The error boundary remains fallback recovery, not the fix.
+
+## Documentation organization
+
+All project Markdown now lives under the repository’s `md/` directory, preserving
+project subfolders. The root README introduces the designs and application.
+Documentation links, bundled capacity notes, generated references, preview checks,
+and the Docker build context follow the new paths. Run application commands from
+`drawing-platform/`.
