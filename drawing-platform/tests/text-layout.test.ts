@@ -3,13 +3,17 @@ import { describe, expect, it } from "vitest";
 import type {
   CanvasElementStyle,
   CanvasSystemElement,
+  CanvasShapeElement,
 } from "../shared/contracts.js";
 import {
   getConnectorLabelLayout,
   getShapeTextLayout,
+  getShapeContentBounds,
+  getShapeIconSize,
   getSystemTextLayout,
   minimumTextHeight,
   minimumTextWidth,
+  measureTextWidth,
   preferredTextWidth,
   wrapTextLines,
 } from "../src/editor/text-layout.js";
@@ -40,6 +44,25 @@ const system: CanvasSystemElement = {
 };
 
 describe("deterministic canvas text layout", () => {
+  it("preserves indentation across wrapping and keeps paragraph gaps", () => {
+    const lines = wrapTextLines("  Started and finished messages\n\nPeak traffic", 100, 14);
+    const paragraphEnd = lines.indexOf("");
+    expect(paragraphEnd).toBeGreaterThan(1);
+    expect(lines.slice(0, paragraphEnd).every(line => line.startsWith("  "))).toBe(true);
+    expect(lines.slice(0, paragraphEnd).map(line => line.trim()).join(" ")).toBe("Started and finished messages");
+    expect(lines.every(line => measureTextWidth(line, 14) <= 100.001)).toBe(true);
+    const narrow = wrapTextLines("                    status", 25, 14);
+    expect(narrow.every(line => measureTextWidth(line, 14) <= 25.001)).toBe(true);
+    expect(narrow.map(line => line.trim()).join("")).toBe("status");
+  });
+
+  it("includes indentation in a card's natural width", () => {
+    const base = { ...system, title: "CPU", subtitle: "", body: "Receive and process messages" };
+    const indented = { ...base, body: "    " + base.body };
+    expect(preferredTextWidth(indented) - preferredTextWidth(base))
+      .toBeCloseTo(measureTextWidth("    ", 11));
+  });
+
   it("wraps text to the requested width while preserving explicit paragraphs", () => {
     const lines = wrapTextLines(
       "database result returns through the API\nthen the cache is refilled",
@@ -50,6 +73,63 @@ describe("deterministic canvas text layout", () => {
     expect(lines.length).toBeGreaterThan(2);
     expect(lines.join(" ")).toContain("database result returns through the API");
     expect(lines.join(" ")).toContain("then the cache is refilled");
+  });
+
+  it("wraps wide capitals and non-Latin glyphs without relying on character counts", () => {
+    for (const value of ["WWWW MMMM", "缓存节点返回数据", "cache→Cassandra→refill"]) {
+      const lines = wrapTextLines(value, 85, 18);
+      expect(lines.length).toBeGreaterThan(1);
+      expect(lines.every((line) => measureTextWidth(line, 18) <= 85)).toBe(true);
+    }
+  });
+
+  it("shrink-wraps short route labels with real padding and no banner-width floor", () => {
+    // Subtracting plate padding can introduce a subpixel rounding difference.
+    expect(getConnectorLabelLayout("request", 14).lines).toEqual(["request"]);
+    const label = getConnectorLabelLayout("HIT", 14);
+    expect(label.width).toBeLessThan(50);
+    expect(label.width).toBeCloseTo(measureTextWidth("HIT", 14, "mono") + 16);
+    expect(label.plateHeight).toBeCloseTo(label.height + 16);
+  });
+
+  it.each(["rectangle", "ellipse", "diamond"] as const)(
+    "fits the entire text and icon stack inside a %s outline", (shape) => {
+      const element: CanvasShapeElement = {
+        ...system, type: "shape", shape, iconId: "partition", label: "Shard B", fontSize: 18,
+      };
+      element.width = preferredTextWidth(element);
+      element.height = minimumTextHeight(element);
+      const inner = getShapeContentBounds(element);
+      const block = getShapeTextLayout(element)!;
+      expect(block.lines.every((line) => measureTextWidth(line, 18) <= inner.width + 0.001)).toBe(true);
+      const stackHeight = getShapeIconSize(element) + 8 + block.height;
+      const cornerX = (inner.x + inner.width - element.width / 2) / (element.width / 2);
+      const cornerY = (stackHeight / 2) / (element.height / 2);
+      if (shape === "ellipse") expect(cornerX ** 2 + cornerY ** 2).toBeLessThan(1);
+      if (shape === "diamond") expect(Math.abs(cornerX) + Math.abs(cornerY)).toBeLessThan(1);
+      expect(element.height - stackHeight).toBeGreaterThanOrEqual(32);
+    },
+  );
+
+  it("allows an unusually large glyph to exceed the usual prose width cap", () => {
+    const element: CanvasShapeElement = {
+      ...system, type: "shape", shape: "diamond", label: "缓存", fontSize: 512,
+    };
+    element.width = preferredTextWidth(element);
+    const block = getShapeTextLayout(element)!;
+    expect(element.width).toBeGreaterThan(720);
+    expect(block.lines.every((line) => measureTextWidth(line, 512) <=
+      getShapeContentBounds(element).width + 0.001)).toBe(true);
+  });
+
+  it("keeps a virtual-node token at its existing 64-unit circle", () => {
+    const token: CanvasShapeElement = {
+      ...system, type: "shape", shape: "ellipse", iconId: "virtual-node",
+      label: "vB2", fontSize: 14, width: 64, height: 64,
+    };
+    expect(preferredTextWidth(token)).toBe(64);
+    expect(minimumTextHeight(token)).toBe(64);
+    expect(getShapeTextLayout(token)?.lines).toEqual(["vB2"]);
   });
 
   it("raises a system card's minimum height when width forces more lines", () => {

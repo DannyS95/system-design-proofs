@@ -4,6 +4,7 @@ import {
   MAX_ZOOM,
   MIN_ZOOM,
   fitCameraToBounds,
+  initialCameraForBounds,
   panCamera,
   screenToWorld,
   viewportCenterInWorld,
@@ -64,5 +65,18 @@ describe("infinite canvas camera", () => {
     expect(wheelDeltaInPixels({ x: 4, y: 10 }, 0, 900)).toEqual({ x: 4, y: 10 });
     expect(wheelDeltaInPixels({ x: 2, y: 3 }, 1, 900)).toEqual({ x: 32, y: 48 });
     expect(wheelDeltaInPixels({ x: 0, y: 1 }, 2, 900)).toEqual({ x: 0, y: 900 });
+  });
+
+  it("opens a large generated board readably without changing explicit Fit", () => {
+    const bounds = { x: -100, y: 80, width: 2800, height: 1800 };
+    const viewport = { width: 1200, height: 800 };
+    const initial = initialCameraForBounds(bounds, viewport);
+    const fitted = fitCameraToBounds(bounds, viewport);
+    expect(initial.zoom).toBe(0.7);
+    expect(fitted.zoom).toBeLessThan(0.5);
+    expect(worldToScreen({ x: bounds.x, y: bounds.y }, initial)).toEqual({ x: 32, y: 32 });
+    const focus = { x: 600, y: 900 };
+    expect(worldToScreen(focus, initialCameraForBounds(bounds, viewport, focus)))
+      .toEqual({ x: 600, y: 400 });
   });
 });

@@ -15,10 +15,10 @@ const diagram = new Diagram({
   height: 1540,
 });
 
-diagram.shape({ id: "routing-layers-zone", x: 40, y: 120, width: 2420, height: 220, label: "ROUTING LAYERS · WHO CHOOSES THE NEXT HOP", fill: "#fbfaf6" });
-diagram.shape({ id: "replica-topology-zone", x: 40, y: 380, width: 2420, height: 590, label: "REQUEST + REPLICA TOPOLOGY · N=3 · W=2 · R=2", fill: palette.blueSoft, stroke: "#b8c9f7" });
-diagram.shape({ id: "version-route-zone", x: 40, y: 1010, width: 1400, height: 470, label: "CONCURRENT VERSION ROUTE", fill: palette.purpleSoft, stroke: "#c7b5f7" });
-diagram.shape({ id: "quorum-boundary-zone", x: 1470, y: 1010, width: 990, height: 470, label: "QUORUM BOUNDARY", fill: palette.amberSoft, stroke: "#e8c38a" });
+diagram.shape({ id: "routing-layers-zone", layoutRole: "container", x: 40, y: 120, width: 2420, height: 220, label: "ROUTING LAYERS · WHO CHOOSES THE NEXT HOP", fill: "#fbfaf6" });
+diagram.shape({ id: "replica-topology-zone", layoutRole: "container", x: 40, y: 380, width: 2420, height: 590, label: "REQUEST + REPLICA TOPOLOGY · N=3 · W=2 · R=2", fill: palette.blueSoft, stroke: "#b8c9f7" });
+diagram.shape({ id: "version-route-zone", layoutRole: "container", x: 40, y: 1010, width: 1400, height: 470, label: "CONCURRENT VERSION ROUTE", fill: palette.purpleSoft, stroke: "#c7b5f7" });
+diagram.shape({ id: "quorum-boundary-zone", layoutRole: "container", x: 1470, y: 1010, width: 990, height: 470, label: "QUORUM BOUNDARY", fill: palette.amberSoft, stroke: "#e8c38a" });
 
 diagram.text({ id: "title", x: 52, y: 38, width: 1550, text: "Key–Value Store · routes, replicas, recovery", fontSize: 34 });
 diagram.text({ id: "title-kicker", x: 1850, y: 50, width: 560, text: "BLUE request · AMBER failure · PURPLE repair", fontSize: 14, align: "right", color: palette.muted });

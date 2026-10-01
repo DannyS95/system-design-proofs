@@ -1,0 +1,75 @@
+.canvas-details-badge { cursor: pointer; outline: none; }
+.canvas-details-badge rect { fill: var(--paper-50, #fffdf7); stroke: var(--paper-300, #cbc6b9); }
+.canvas-details-badge text { fill: var(--ink-700, #373d31); font: 600 11px sans-serif; pointer-events: none; }
+.canvas-details-badge:hover rect, .canvas-details-badge:focus-visible rect { stroke: #627d28; stroke-width: 2; }
+/* Opaque scrolling content avoids backdrop-filter compositor clipping when details expand. */
+.canvas-element-panel.canvas-element-panel--reference { width: min(370px, calc(100% - 32px)); padding: 16px; background: var(--paper-50, #fffdf7); backdrop-filter: none; }
+.canvas-element-panel--reference .canvas-element-panel__header strong { white-space: normal; overflow-wrap: anywhere; font-size: 16px; line-height: 1.35; }
+.component-details { display: grid; gap: 18px; font-size: 12px; line-height: 1.6; color: var(--ink-800); }
+.component-details__intro { display: grid; gap: 10px; }
+.component-details__intro > span { display: flex; align-items: center; gap: 6px; color: var(--ink-500); font-size: 11px; }
+.component-details__intro svg { width: 14px; height: 14px; }
+.component-details__intro > button { justify-self: start; }
+.component-details p, .component-details dl, .component-details ul { margin: 0; }
+.component-details p, .component-details dd { white-space: pre-wrap; overflow-wrap: anywhere; }
+.component-details h3 { margin: 0 0 6px; color: var(--ink-600); font: 600 10px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .06em; }
+.component-details a { color: #426124; text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.component-details a:focus-visible { outline: 2px solid #627d28; outline-offset: 3px; border-radius: 3px; }
+.component-details section { min-width: 0; }
+.component-details__facts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; background: var(--paper-150); border-radius: 8px; }
+.component-details dt { font-size: 10px; color: var(--ink-500); }
+.component-details dd { margin: 2px 0 0; }
+.component-details__links, .component-details__connections { list-style: none; padding: 0; display: grid; gap: 6px; }
+.component-details__links a, .component-details__connections button { display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; padding: 10px; border: 1px solid var(--paper-300); border-radius: 8px; text-align: left; }
+.component-details__links a { text-decoration: none; }
+.component-details__links a:hover { background: var(--paper-150); }
+.component-details__links span, .component-details__connections span { display: grid; min-width: 0; gap: 2px; }
+.component-details__links small, .component-details__connections small { font-size: 10px; color: var(--ink-500); font-weight: 400; overflow-wrap: anywhere; }
+.component-details__connections strong { font-size: 12px; font-weight: 600; overflow-wrap: anywhere; }
+.component-details__links svg, .component-details__connections svg { width: 15px; height: 15px; flex-shrink: 0; }
+.component-details__empty { color: var(--ink-500); font-size: 11px; }
+.canvas-element-panel__field .reference-links-help { text-transform: none; letter-spacing: normal; font: 11px/1.5 sans-serif; }
+
+.component-details__jump { display: flex; flex-wrap: wrap; gap: 6px; }
+.component-details__jump button { color: #426124; }
+
+/* The default view is a quick concept card. Supporting detail is opt-in. */
+.component-details { gap: 16px; }
+.component-details__intro { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.component-details__intro > span { display: flex; flex-wrap: wrap; font-size: 10px; }
+.component-details__intro > button { flex: 0 0 auto; }
+.component-details__layer { display: block; flex-basis: 100%; color: var(--ink-700); font-size: 11px; font-weight: 500; }
+.component-details__summary { font-size: 14px; line-height: 1.55; color: var(--ink-800); }
+.component-details__disclosure { border-top: 1px solid var(--paper-300); padding-top: 10px; }
+.component-details__disclosure > summary { cursor: pointer; font-size: 11px; color: var(--ink-600); font-weight: 600; }
+.component-details__disclosure > summary span { margin-left: 6px; border-radius: 10px; padding: 1px 6px; background: var(--paper-200); }
+.component-details__disclosure > summary:focus-visible { outline: 2px solid #627d28; outline-offset: 3px; }
+.component-details__disclosure[open] > summary { margin-bottom: 12px; }
+.component-details__context-body { display: grid; gap: 14px; }
+.component-details__context-body section p + p { margin-top: 10px; }
+.component-details__connections button { padding: 8px 10px; }
+.capacity-brief { --capacity-accent: #527760; display: grid; gap: 9px; background: #f0f5f0; border: 1px solid #d6e2d5; border-radius: 10px; padding: 12px; }
+.capacity-brief--warning { --capacity-accent: #a3672d; background: #fbf4e9; border-color: #ead6b8; }
+.capacity-brief header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.capacity-brief header > span { color: var(--ink-700); font-size: 11px; font-weight: 600; }
+.capacity-brief header small { font-size: 9px; color: var(--ink-500); }
+.capacity-brief__value { display: flex; align-items: baseline; gap: 5px; font-variant-numeric: tabular-nums; }
+.capacity-brief__value strong { font-size: 25px; font-weight: 650; letter-spacing: -.04em; }
+.capacity-brief__value > span { font-size: 11px; color: var(--ink-600); }
+.capacity-brief__value b { margin-left: auto; font-size: 15px; font-weight: 600; color: var(--capacity-accent); }
+.capacity-brief__track { position: relative; height: 7px; border-radius: 4px; background: #dfe7dc; }
+.capacity-brief__track > span { display: block; width: var(--capacity-used); height: 100%; border-radius: inherit; background: var(--capacity-accent); }
+.capacity-brief__track i { position: absolute; top: -3px; bottom: -3px; left: 50%; border-left: 1px dashed #53634a; }
+.capacity-brief__status { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px; font-size: 10px; color: var(--ink-600); }
+.capacity-brief__status > span:first-child { color: var(--capacity-accent); font-weight: 600; }
+.capacity-brief__source { font-size: 10px; }
+.capacity-brief__scenarios { font-size: 11px; color: var(--ink-600); }
+.capacity-brief__scenarios summary { cursor: pointer; }
+.capacity-brief__scenarios p { padding-top: 8px; }
+.capacity-brief__caption { font-size: 12px; }
+.component-details__notes { display: grid; gap: 12px; }
+.component-details__note { border-left: 2px solid var(--paper-300); padding-left: 10px; }
+.component-details__note h4 { margin: 0 0 5px; font-size: 12px; font-weight: 600; }
+.component-details__note ul { padding-left: 16px; display: grid; gap: 5px; }
+.component-details__note details { margin-top: 5px; }
+.component-details__note summary { color: var(--ink-500); font-size: 10px; cursor: pointer; }

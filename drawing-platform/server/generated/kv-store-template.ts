@@ -10,10 +10,8 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
       {
         "id": "routing-layers-zone",
         "type": "shape",
-        "x": 40,
-        "y": 120,
-        "width": 2420,
-        "height": 220,
+        "x": 32,
+        "y": 203.83999999999997,
         "rotation": 0,
         "style": {
           "fill": "#fbfaf6",
@@ -24,18 +22,19 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "shape": "rectangle",
+        "layoutRole": "container",
+        "width": 2044.6799999999998,
+        "height": 289.00000000000006,
         "locked": true
       },
       {
         "id": "replica-topology-zone",
         "type": "shape",
-        "x": 40,
-        "y": 380,
-        "width": 2420,
-        "height": 590,
+        "x": 32,
+        "y": 493.64,
         "rotation": 0,
         "style": {
-          "fill": "#e8efff",
+          "fill": "#eaf0f4",
           "stroke": "#b8c9f7",
           "strokeWidth": 1.5,
           "strokeStyle": "solid",
@@ -43,18 +42,19 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "shape": "rectangle",
+        "layoutRole": "container",
+        "width": 3117.76,
+        "height": 868.7000000000002,
         "locked": true
       },
       {
         "id": "version-route-zone",
         "type": "shape",
-        "x": 40,
-        "y": 1010,
-        "width": 1400,
-        "height": 470,
+        "x": 32,
+        "y": 1437.3400000000001,
         "rotation": 0,
         "style": {
-          "fill": "#f1ebff",
+          "fill": "#f1edf4",
           "stroke": "#c7b5f7",
           "strokeWidth": 1.5,
           "strokeStyle": "solid",
@@ -62,18 +62,19 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "shape": "rectangle",
+        "layoutRole": "container",
+        "width": 1417.4,
+        "height": 529,
         "locked": true
       },
       {
         "id": "quorum-boundary-zone",
         "type": "shape",
-        "x": 1470,
-        "y": 1010,
-        "width": 990,
-        "height": 470,
+        "x": 1497.8400000000001,
+        "y": 1437.3400000000001,
         "rotation": 0,
         "style": {
-          "fill": "#fff1da",
+          "fill": "#f6f0e4",
           "stroke": "#e8c38a",
           "strokeWidth": 1.5,
           "strokeStyle": "solid",
@@ -81,23 +82,26 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "shape": "rectangle",
+        "layoutRole": "container",
+        "width": 1090.8399999999997,
+        "height": 373,
         "locked": true
       },
       {
         "id": "routing-hop-1",
         "type": "connector",
-        "x": 355,
-        "y": 228,
-        "width": 55,
+        "x": 272.47999999999996,
+        "y": 384.34000000000003,
+        "width": 48.52000000000004,
         "height": 0,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
@@ -105,7 +109,7 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            55,
+            48.52000000000004,
             0
           ]
         ],
@@ -113,23 +117,24 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "endBinding": "route-global",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "routing-hop-2",
         "type": "connector",
-        "x": 695,
-        "y": 228,
-        "width": 55,
+        "x": 587.7199999999999,
+        "y": 384.34000000000003,
+        "width": 48.280000000000086,
         "height": 0,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
@@ -137,7 +142,7 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            55,
+            48.280000000000086,
             0
           ]
         ],
@@ -145,23 +150,24 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "endBinding": "route-edge",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "routing-hop-3",
         "type": "connector",
-        "x": 1035,
-        "y": 228,
-        "width": 55,
+        "x": 850.04,
+        "y": 384.34000000000003,
+        "width": 48.960000000000036,
         "height": 0,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
@@ -169,7 +175,7 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            55,
+            48.960000000000036,
             0
           ]
         ],
@@ -177,23 +183,24 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "endBinding": "route-cluster",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "routing-hop-4",
         "type": "connector",
-        "x": 1375,
-        "y": 228,
-        "width": 55,
+        "x": 1134.64,
+        "y": 384.34000000000003,
+        "width": 48.3599999999999,
         "height": 0,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
@@ -201,7 +208,7 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            55,
+            48.3599999999999,
             0
           ]
         ],
@@ -209,23 +216,24 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "endBinding": "route-service",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "routing-hop-5",
         "type": "connector",
-        "x": 1715,
-        "y": 228,
-        "width": 55,
+        "x": 1422.96,
+        "y": 384.34000000000003,
+        "width": 48.039999999999964,
         "height": 0,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
@@ -233,7 +241,7 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            55,
+            48.039999999999964,
             0
           ]
         ],
@@ -241,23 +249,24 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "endBinding": "route-application",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "routing-hop-6",
         "type": "connector",
-        "x": 2055,
-        "y": 228,
-        "width": 55,
+        "x": 1704.44,
+        "y": 384.34000000000003,
+        "width": 48.559999999999945,
         "height": 0,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
@@ -265,7 +274,7 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            55,
+            48.559999999999945,
             0
           ]
         ],
@@ -273,23 +282,24 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "endBinding": "route-data",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "route-client-coordinator",
         "type": "connector",
-        "x": 315,
-        "y": 623,
-        "width": 90,
+        "x": 314.0799999999999,
+        "y": 984.3400000000001,
+        "width": 145.56000000000006,
         "height": 0,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
@@ -297,32 +307,37 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            90,
+            145.56000000000006,
             0
           ]
         ],
         "label": "PUT / GET",
+        "fontSize": 14,
         "startBinding": "client",
         "endBinding": "coordinator",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          72.78000000000003,
+          -52.369135802469145
+        ],
         "locked": true
       },
       {
         "id": "route-coordinator-placement",
         "type": "connector",
-        "x": 675,
-        "y": 623,
-        "width": 100,
-        "height": 0,
+        "x": 684.76,
+        "y": 959.3029629629631,
+        "width": 145.51999999999998,
+        "height": 59.98456790123464,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
@@ -330,249 +345,287 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            100,
+            121.51999999999998,
             0
+          ],
+          [
+            121.51999999999998,
+            59.98456790123464
+          ],
+          [
+            145.51999999999998,
+            59.98456790123464
           ]
         ],
         "label": "hash(key)",
+        "fontSize": 14,
         "startBinding": "coordinator",
         "endBinding": "hash-placement",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          60.75999999999999,
+          -52.369135802469145
+        ],
         "locked": true
       },
       {
         "id": "route-data-ownership",
         "type": "connector",
-        "x": 925,
-        "y": 280,
-        "width": 1400,
-        "height": 290,
+        "x": 972.28,
+        "y": 424.84000000000003,
+        "width": 926.72,
+        "height": 498.0864197530865,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
-            1400,
+            926.72,
             0
           ],
           [
-            1400,
-            75
+            926.72,
+            60
           ],
           [
             0,
-            75
+            60
           ],
           [
             0,
-            290
+            498.0864197530865
           ]
         ],
         "label": "inside KV · data routing takes over",
+        "fontSize": 14,
         "startBinding": "route-data",
         "endBinding": "hash-placement",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          463.3599999999999,
+          102.19999999999993
+        ],
         "locked": true
       },
       {
         "id": "placement-b",
         "type": "connector",
-        "x": 1075,
-        "y": 579,
-        "width": 205,
-        "height": 36,
+        "x": 1114.28,
+        "y": 792.8400000000001,
+        "width": 276.0600000000002,
+        "height": 151.33641975308637,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
             0,
-            36
+            151.33641975308637
           ],
           [
-            35,
-            36
+            276.0600000000002,
+            151.33641975308637
           ],
           [
-            35,
-            36
-          ],
-          [
-            205,
-            36
-          ],
-          [
-            205,
+            276.0600000000002,
             0
           ]
         ],
         "label": "preferred 1",
+        "fontSize": 14,
         "startBinding": "hash-placement",
         "endBinding": "replica-b",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          138.02999999999997,
+          103.14999999999998
+        ],
         "locked": true
       },
       {
         "id": "placement-c",
         "type": "connector",
-        "x": 1075,
-        "y": 579,
-        "width": 535,
-        "height": 72,
+        "x": 1114.28,
+        "y": 748.3400000000001,
+        "width": 594.0400000000002,
+        "height": 245.9104938271605,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
             0,
-            36
+            245.9104938271605
           ],
           [
-            35,
-            36
+            570.0400000000002,
+            245.9104938271605
           ],
           [
-            35,
-            72
+            570.0400000000002,
+            0
           ],
           [
-            535,
-            72
-          ],
-          [
-            535,
+            594.0400000000002,
             0
           ]
         ],
         "label": "preferred 2",
+        "fontSize": 14,
         "startBinding": "hash-placement",
         "endBinding": "replica-c",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          285.0200000000002,
+          298.27962962962965
+        ],
         "locked": true
       },
       {
         "id": "placement-d",
         "type": "connector",
-        "x": 1075,
-        "y": 579,
-        "width": 865,
-        "height": 108,
+        "x": 1069.03,
+        "y": 575.84,
+        "width": 2073.370000000001,
+        "height": 778.5000000000001,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
             0,
-            36
+            347.0864197530865
           ],
           [
-            35,
-            36
-          ],
-          [
-            35,
-            108
-          ],
-          [
-            865,
-            108
-          ],
-          [
-            865,
+            0,
             0
+          ],
+          [
+            2073.370000000001,
+            0
+          ],
+          [
+            2073.370000000001,
+            778.5000000000001
+          ],
+          [
+            1465.0800000000006,
+            778.5000000000001
+          ],
+          [
+            1465.0800000000006,
+            249.0000000000001
           ]
         ],
         "label": "preferred 3",
+        "fontSize": 14,
         "startBinding": "hash-placement",
         "endBinding": "replica-d",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          1036.6850000000002,
+          -33.10000000000002
+        ],
         "locked": true
       },
       {
         "id": "replica-b-response",
         "type": "connector",
-        "x": 1280,
-        "y": 579,
-        "width": 250,
-        "height": 166,
+        "x": 1506.5900000000001,
+        "y": 647.8400000000001,
+        "width": 476.73,
+        "height": 529.5,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
+          [
+            0,
+            24
+          ],
           [
             0,
             0
           ],
           [
-            0,
-            121
+            476.73,
+            0
           ],
           [
-            250,
-            121
+            476.73,
+            505.5
           ],
           [
-            250,
-            166
+            464.48,
+            505.5
+          ],
+          [
+            464.48,
+            529.5
           ]
         ],
         "label": "ACK / version",
+        "fontSize": 14,
         "startBinding": "replica-b",
         "endBinding": "quorum-result",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          119.18249999999989,
+          26.077777777777783
+        ],
         "locked": true
       },
       {
         "id": "replica-c-response",
         "type": "connector",
-        "x": 1610,
-        "y": 579,
+        "x": 1729.5700000000002,
+        "y": 808.8400000000001,
         "width": 0,
-        "height": 166,
+        "height": 368.5,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
@@ -581,40 +634,49 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
           ],
           [
             0,
-            166
+            368.5
           ]
         ],
         "label": "ACK / version",
+        "fontSize": 14,
         "startBinding": "replica-c",
         "endBinding": "quorum-result",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          74.24000000000001,
+          210.44753086419757
+        ],
         "locked": true
       },
       {
         "id": "quorum-return",
         "type": "connector",
-        "x": 540,
-        "y": 676,
-        "width": 940,
-        "height": 124,
+        "x": 684.76,
+        "y": 1009.3770370370372,
+        "width": 1023.5600000000002,
+        "height": 244.46296296296293,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
-            940,
-            124
+            1023.5600000000002,
+            244.46296296296293
           ],
           [
-            0,
-            124
+            24.879999999999995,
+            244.46296296296293
+          ],
+          [
+            24.879999999999995,
+            0
           ],
           [
             0,
@@ -622,81 +684,91 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
           ]
         ],
         "label": "2 responses → return",
+        "fontSize": 14,
         "startBinding": "quorum-result",
         "endBinding": "coordinator",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          524.22,
+          197.0518518518519
+        ],
         "locked": true
       },
       {
         "id": "sloppy-quorum-route",
         "type": "connector",
-        "x": 1075,
-        "y": 660,
-        "width": 1035,
-        "height": 139,
+        "x": 1093.03,
+        "y": 599.84,
+        "width": 1907.3700000000006,
+        "height": 577.5000000000001,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#bd6212",
+          "stroke": "#9b713c",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#bd6212"
+          "textColor": "#9b713c"
         },
         "points": [
+          [
+            0,
+            323.0864197530865
+          ],
           [
             0,
             0
           ],
           [
-            935,
+            1907.3700000000006,
             0
           ],
           [
-            935,
-            139
-          ],
-          [
-            1035,
-            139
+            1907.3700000000006,
+            577.5000000000001
           ]
         ],
         "label": "D down → sloppy quorum",
+        "fontSize": 14,
         "startBinding": "hash-placement",
         "endBinding": "fallback-e",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          1430.5275000000004,
+          25.100000000000136
+        ],
         "locked": true
       },
       {
         "id": "hinted-handoff-route",
         "type": "connector",
-        "x": 1940,
-        "y": 579,
-        "width": 310,
-        "height": 166,
+        "x": 2555.3600000000006,
+        "y": 784.7011111111112,
+        "width": 279.03999999999996,
+        "height": 432.7777777777778,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#bd6212",
+          "stroke": "#9b713c",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#bd6212"
+          "textColor": "#9b713c"
         },
         "points": [
           [
-            310,
-            166
+            279.03999999999996,
+            432.7777777777778
           ],
           [
-            310,
-            121
+            255.03999999999996,
+            432.7777777777778
           ],
           [
-            0,
-            121
+            255.03999999999996,
+            0
           ],
           [
             0,
@@ -704,113 +776,124 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
           ]
         ],
         "label": "D heals → hinted handoff",
+        "fontSize": 14,
         "startBinding": "fallback-e",
         "endBinding": "replica-d",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          131.51999999999998,
+          234.5864197530865
+        ],
         "locked": true
       },
       {
         "id": "read-repair-route",
         "type": "connector",
-        "x": 1780,
-        "y": 579,
-        "width": 210,
-        "height": 199,
+        "x": 1992.3200000000002,
+        "y": 784.7011111111112,
+        "width": 279.0400000000004,
+        "height": 432.7777777777778,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
             0,
-            199
+            432.7777777777778
           ],
           [
-            210,
-            199
+            24,
+            432.7777777777778
           ],
           [
-            210,
-            41
+            24,
+            0
           ],
           [
-            125,
-            41
-          ],
-          [
-            125,
+            279.0400000000004,
             0
           ]
         ],
         "label": "stale read → read repair",
+        "fontSize": 14,
         "startBinding": "quorum-result",
         "endBinding": "replica-d",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          147.51999999999998,
+          234.5864197530865
+        ],
         "locked": true
       },
       {
         "id": "anti-entropy-route",
         "type": "connector",
-        "x": 1280,
-        "y": 420,
-        "width": 660,
-        "height": 55,
+        "x": 1482.5900000000001,
+        "y": 623.8400000000001,
+        "width": 810.0200000000004,
+        "height": 48,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "dotted",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
             0,
-            55
+            48
           ],
           [
             0,
             0
           ],
           [
-            660,
+            810.0200000000004,
             0
           ],
           [
-            660,
-            55
+            810.0200000000004,
+            48
           ]
         ],
         "label": "background range compare · anti-entropy",
+        "fontSize": 14,
         "startBinding": "replica-b",
         "endBinding": "replica-d",
         "startArrow": "arrow",
         "endArrow": "arrow",
+        "labelPosition": [
+          -168,
+          12
+        ],
         "locked": true
       },
       {
         "id": "writer-a-route",
         "type": "connector",
-        "x": 320,
-        "y": 1160,
-        "width": 105,
-        "height": 80,
+        "x": 164.5,
+        "y": 1622.3400000000001,
+        "width": 342.76,
+        "height": 75,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
@@ -818,40 +901,45 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            55,
-            0
+            0,
+            24
           ],
           [
-            55,
-            80
+            342.76,
+            24
           ],
           [
-            105,
-            80
+            342.76,
+            75
           ]
         ],
         "label": "PUT vA",
+        "fontSize": 14,
         "startBinding": "writer-a",
         "endBinding": "version-compare",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          171.38,
+          -1.099999999999909
+        ],
         "locked": true
       },
       {
         "id": "writer-b-route",
         "type": "connector",
-        "x": 320,
-        "y": 1275,
-        "width": 105,
+        "x": 164.5,
+        "y": 1778.3400000000001,
+        "width": 342.76,
         "height": 75,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
@@ -859,40 +947,45 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
             75
           ],
           [
-            55,
-            75
+            0,
+            51
           ],
           [
-            55,
-            0
+            342.76,
+            51
           ],
           [
-            105,
+            342.76,
             0
           ]
         ],
         "label": "PUT vB",
+        "fontSize": 14,
         "startBinding": "writer-b",
         "endBinding": "version-compare",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          171.38,
+          25.90000000000009
+        ],
         "locked": true
       },
       {
         "id": "incomparable-route",
         "type": "connector",
-        "x": 695,
-        "y": 1257,
-        "width": 100,
+        "x": 631.36,
+        "y": 1737.8400000000001,
+        "width": 171.91999999999996,
         "height": 0,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
@@ -900,32 +993,37 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            100,
+            171.91999999999996,
             0
           ]
         ],
         "label": "incomparable",
+        "fontSize": 14,
         "startBinding": "version-compare",
         "endBinding": "siblings",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          85.95999999999992,
+          -25.09999999999991
+        ],
         "locked": true
       },
       {
         "id": "siblings-to-app",
         "type": "connector",
-        "x": 1045,
-        "y": 1257,
-        "width": 100,
+        "x": 1028.3999999999999,
+        "y": 1737.8400000000001,
+        "width": 163.44000000000028,
         "height": 0,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
@@ -933,45 +1031,50 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            100,
+            163.44000000000028,
             0
           ]
         ],
         "label": "return both",
+        "fontSize": 14,
         "startBinding": "siblings",
         "endBinding": "application-merge",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          81.72000000000003,
+          -25.09999999999991
+        ],
         "locked": true
       },
       {
         "id": "reconciled-put-route",
         "type": "connector",
-        "x": 540,
-        "y": 676,
-        "width": 728,
-        "height": 529,
+        "x": 572.64,
+        "y": 1068.8400000000001,
+        "width": 732.2000000000002,
+        "height": 628.5,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
-            728,
-            529
+            732.2000000000002,
+            628.5
           ],
           [
-            728,
-            404
+            732.2000000000002,
+            604.5
           ],
           [
             0,
-            404
+            604.5
           ],
           [
             0,
@@ -979,27 +1082,32 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
           ]
         ],
         "label": "merged value → new PUT",
+        "fontSize": 14,
         "startBinding": "application-merge",
         "endBinding": "coordinator",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          366.1,
+          579.4000000000001
+        ],
         "locked": true
       },
       {
         "id": "strict-to-sloppy",
         "type": "connector",
-        "x": 1795,
-        "y": 1182,
-        "width": 45,
+        "x": 1746.64,
+        "y": 1581.8400000000001,
+        "width": 48.200000000000045,
         "height": 0,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#bd6212",
+          "stroke": "#9b713c",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#bd6212"
+          "textColor": "#9b713c"
         },
         "points": [
           [
@@ -1007,7 +1115,7 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            45,
+            48.200000000000045,
             0
           ]
         ],
@@ -1015,23 +1123,24 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "endBinding": "sloppy-set",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "sloppy-to-ordering",
         "type": "connector",
-        "x": 2100,
-        "y": 1182,
-        "width": 175,
-        "height": 93,
+        "x": 2044.92,
+        "y": 1581.8400000000001,
+        "width": 253.07999999999993,
+        "height": 156,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#d84b43",
+          "stroke": "#a15f4b",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#d84b43"
+          "textColor": "#a15f4b"
         },
         "points": [
           [
@@ -1039,32 +1148,39 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            175,
+            229.07999999999993,
             0
           ],
           [
-            175,
-            93
+            229.07999999999993,
+            156
+          ],
+          [
+            253.07999999999993,
+            156
           ]
         ],
         "label": "overlap ≠ total order",
+        "fontSize": 14,
         "startBinding": "sloppy-set",
         "endBinding": "ordering-protocol",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          114.53999999999996,
+          -25.09999999999991
+        ],
         "locked": true
       },
       {
         "id": "route-internet",
         "type": "system",
-        "x": 70,
-        "y": 175,
-        "width": 285,
-        "height": 105,
+        "x": 64,
+        "y": 343.84000000000003,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1073,20 +1189,23 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "internet",
         "title": "Internet",
         "subtitle": "client network",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 208.47999999999996,
+        "height": 81,
+        "parentId": "routing-layers-zone",
         "locked": true
       },
       {
         "id": "route-global",
         "type": "system",
-        "x": 410,
-        "y": 175,
-        "width": 285,
-        "height": 105,
+        "x": 321,
+        "y": 343.84000000000003,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1095,20 +1214,23 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "global-routing",
         "title": "Global routing",
         "subtitle": "DNS / anycast · infra",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 266.7199999999999,
+        "height": 81,
+        "parentId": "routing-layers-zone",
         "locked": true
       },
       {
         "id": "route-edge",
         "type": "system",
-        "x": 750,
-        "y": 175,
-        "width": 285,
-        "height": 105,
+        "x": 636,
+        "y": 343.84000000000003,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1117,20 +1239,23 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "edge-pop",
         "title": "Edge routing",
         "subtitle": "PoP · infra",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 214.04,
+        "height": 81,
+        "parentId": "routing-layers-zone",
         "locked": true
       },
       {
         "id": "route-cluster",
         "type": "system",
-        "x": 1090,
-        "y": 175,
-        "width": 285,
-        "height": 105,
+        "x": 899,
+        "y": 307.84000000000003,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1139,20 +1264,27 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "load-balancer",
         "title": "Cluster routing",
         "subtitle": "region LB · infra",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 235.64000000000001,
+        "height": 153,
+        "parentId": "routing-layers-zone",
+        "capacity": "1 LB · routing CPU/network\nPeak 4k / safe 50k QPS · 8%",
+        "metadata": {
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "route-service",
         "type": "system",
-        "x": 1430,
-        "y": 175,
-        "width": 285,
-        "height": 105,
+        "x": 1183,
+        "y": 307.84000000000003,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1161,20 +1293,27 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "service-routing",
         "title": "Service routing",
         "subtitle": "API gateway · you",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 239.96,
+        "height": 153,
+        "parentId": "routing-layers-zone",
+        "capacity": "1 gateway · auth CPU/network\nPeak 4k / safe 20k QPS · 20%",
+        "metadata": {
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "route-application",
         "type": "system",
-        "x": 1770,
-        "y": 175,
-        "width": 285,
-        "height": 105,
+        "x": 1471,
+        "y": 343.84000000000003,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1183,20 +1322,23 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "application-router",
         "title": "App routing",
         "subtitle": "KV endpoint · you",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 233.43999999999994,
+        "height": 81,
+        "parentId": "routing-layers-zone",
         "locked": true
       },
       {
         "id": "route-data",
         "type": "system",
-        "x": 2110,
-        "y": 175,
-        "width": 285,
-        "height": 105,
+        "x": 1753,
+        "y": 343.84000000000003,
         "rotation": 0,
         "style": {
-          "fill": "#f1ebff",
-          "stroke": "#7c3aed",
+          "fill": "#f1edf4",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1205,20 +1347,23 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "data-router",
         "title": "Data routing",
         "subtitle": "partition / replica · KV",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 291.6799999999999,
+        "height": 81,
+        "parentId": "routing-layers-zone",
         "locked": true
       },
       {
         "id": "client",
         "type": "system",
-        "x": 80,
-        "y": 570,
-        "width": 235,
-        "height": 106,
+        "x": 64,
+        "y": 915.8400000000001,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1227,20 +1372,27 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "client",
         "title": "Client",
         "subtitle": "key + context token",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 250.07999999999993,
+        "height": 137,
+        "parentId": "replica-topology-zone",
+        "capacity": "QPS avg 1k · peak 4k · flash 8k\n50% GET · 50% PUT",
+        "metadata": {
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "coordinator",
         "type": "system",
-        "x": 405,
-        "y": 570,
-        "width": 270,
-        "height": 106,
+        "x": 459.64,
+        "y": 899.8400000000001,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1249,20 +1401,27 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "application-server",
         "title": "Coordinator",
         "subtitle": "any request node",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 225.11999999999995,
+        "height": 169,
+        "parentId": "replica-topology-zone",
+        "capacity": "1 host · fan-out CPU/network\nPeak 4k / safe 10k QPS · 40%; flash 80%",
+        "metadata": {
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "hash-placement",
         "type": "system",
-        "x": 775,
-        "y": 570,
-        "width": 300,
-        "height": 106,
+        "x": 830.28,
+        "y": 922.9264197530865,
         "rotation": 0,
         "style": {
-          "fill": "#f1ebff",
-          "stroke": "#7c3aed",
+          "fill": "#f1edf4",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1271,20 +1430,27 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "data-router",
         "title": "Hash placement",
         "subtitle": "token + preference list",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 284,
+        "height": 121,
+        "parentId": "replica-topology-zone",
+        "capacity": "Logical decision · same coordinator CPU",
+        "metadata": {
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "replica-b",
         "type": "system",
-        "x": 1150,
-        "y": 475,
-        "width": 260,
-        "height": 104,
+        "x": 1276.8400000000001,
+        "y": 671.8400000000001,
         "rotation": 0,
         "style": {
-          "fill": "#e9f7ed",
-          "stroke": "#15803d",
+          "fill": "#edf3ee",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1293,20 +1459,27 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "replica-group",
         "title": "Replica B",
         "subtitle": "preferred · owner 1",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 251,
+        "height": 121,
+        "parentId": "replica-topology-zone",
+        "capacity": "I/O + CPU · peak 3.3k / safe 10k ops/s · 33%",
+        "metadata": {
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "replica-c",
         "type": "system",
-        "x": 1480,
-        "y": 475,
-        "width": 260,
-        "height": 104,
+        "x": 1708.3200000000002,
+        "y": 687.8400000000001,
         "rotation": 0,
         "style": {
-          "fill": "#e9f7ed",
-          "stroke": "#15803d",
+          "fill": "#edf3ee",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1315,20 +1488,27 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "replica-group",
         "title": "Replica C",
         "subtitle": "preferred · owner 2",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 250.07999999999993,
+        "height": 121,
+        "parentId": "replica-topology-zone",
+        "capacity": "I/O + CPU · peak 3.3k / safe 10k ops/s · 33%",
+        "metadata": {
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "replica-d",
         "type": "system",
-        "x": 1810,
-        "y": 475,
-        "width": 260,
-        "height": 104,
+        "x": 2271.3600000000006,
+        "y": 671.8400000000001,
         "rotation": 0,
         "style": {
-          "fill": "#ffe9e6",
-          "stroke": "#d84b43",
+          "fill": "#f6ede8",
+          "stroke": "#a15f4b",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1337,20 +1517,27 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "replica-group",
         "title": "Replica D",
         "subtitle": "preferred · unavailable",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 284,
+        "height": 153,
+        "parentId": "replica-topology-zone",
+        "capacity": "I/O + CPU · safe 10k ops/s when up\nDOWN: 0 available; E replaces D",
+        "metadata": {
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "quorum-result",
         "type": "system",
-        "x": 1480,
-        "y": 745,
-        "width": 300,
-        "height": 108,
+        "x": 1708.3200000000002,
+        "y": 1177.3400000000001,
         "rotation": 0,
         "style": {
-          "fill": "#e9f7ed",
-          "stroke": "#15803d",
+          "fill": "#edf3ee",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1359,20 +1546,27 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "replica-group",
         "title": "Quorum result",
         "subtitle": "W=2 ACKs · R=2 versions",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 284,
+        "height": 153,
+        "parentId": "replica-topology-zone",
+        "capacity": "B+C+E: 3 × 10k = 30k ops/s; peak 11k\n2 reads · 3 writes; flash misses headroom",
+        "metadata": {
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "fallback-e",
         "type": "system",
-        "x": 2110,
-        "y": 745,
-        "width": 285,
-        "height": 108,
+        "x": 2834.4000000000005,
+        "y": 1177.3400000000001,
         "rotation": 0,
         "style": {
-          "fill": "#fff1da",
-          "stroke": "#bd6212",
+          "fill": "#f6f0e4",
+          "stroke": "#9b713c",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1381,20 +1575,27 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "server",
         "title": "Fallback E",
         "subtitle": "temporary copy + hint→D",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 283.3599999999999,
+        "height": 153,
+        "parentId": "replica-topology-zone",
+        "capacity": "I/O + CPU · peak 4.3k / safe 10k ops/s\n43% HOTTEST · includes 1k handoff/s",
+        "metadata": {
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "writer-a",
         "type": "system",
-        "x": 85,
-        "y": 1110,
-        "width": 235,
-        "height": 100,
+        "x": 64,
+        "y": 1541.3400000000001,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1403,20 +1604,23 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "client",
         "title": "Writer A",
         "subtitle": "context {A:1}",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 200.15999999999997,
+        "height": 81,
+        "parentId": "version-route-zone",
         "locked": true
       },
       {
         "id": "writer-b",
         "type": "system",
-        "x": 85,
-        "y": 1300,
-        "width": 235,
-        "height": 100,
+        "x": 64,
+        "y": 1853.3400000000001,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1425,20 +1629,23 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "client",
         "title": "Writer B",
         "subtitle": "context {B:1}",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 200.15999999999997,
+        "height": 81,
+        "parentId": "version-route-zone",
         "locked": true
       },
       {
         "id": "version-compare",
         "type": "system",
-        "x": 425,
-        "y": 1205,
-        "width": 270,
-        "height": 104,
+        "x": 382.76,
+        "y": 1697.3400000000001,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1447,20 +1654,23 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "key-value-store",
         "title": "Version compare",
         "subtitle": "partial order",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 248.6,
+        "height": 81,
+        "parentId": "version-route-zone",
         "locked": true
       },
       {
         "id": "siblings",
         "type": "system",
-        "x": 795,
-        "y": 1205,
-        "width": 250,
-        "height": 104,
+        "x": 803.28,
+        "y": 1697.3400000000001,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1469,20 +1679,23 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "key-value-store",
         "title": "Siblings",
         "subtitle": "preserve vA + vB",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 225.11999999999995,
+        "height": 81,
+        "parentId": "version-route-zone",
         "locked": true
       },
       {
         "id": "application-merge",
         "type": "system",
-        "x": 1145,
-        "y": 1205,
-        "width": 245,
-        "height": 104,
+        "x": 1191.8400000000001,
+        "y": 1697.3400000000001,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1491,20 +1704,23 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "application-server",
         "title": "App reconcile",
         "subtitle": "domain merge",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 225.56,
+        "height": 81,
+        "parentId": "version-route-zone",
         "locked": true
       },
       {
         "id": "strict-quorum",
         "type": "system",
-        "x": 1525,
-        "y": 1130,
-        "width": 270,
-        "height": 105,
+        "x": 1529.8400000000001,
+        "y": 1541.3400000000001,
         "rotation": 0,
         "style": {
-          "fill": "#e9f7ed",
-          "stroke": "#15803d",
+          "fill": "#edf3ee",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1513,20 +1729,23 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "replica-group",
         "title": "Strict set",
         "subtitle": "R+W>N · overlap",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 216.79999999999995,
+        "height": 81,
+        "parentId": "quorum-boundary-zone",
         "locked": true
       },
       {
         "id": "sloppy-set",
         "type": "system",
-        "x": 1840,
-        "y": 1130,
-        "width": 260,
-        "height": 105,
+        "x": 1794.8400000000001,
+        "y": 1541.3400000000001,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#bd6212",
+          "stroke": "#9b713c",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1535,20 +1754,23 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "replica-group",
         "title": "Sloppy set",
         "subtitle": "fallback may differ",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 250.07999999999993,
+        "height": 81,
+        "parentId": "quorum-boundary-zone",
         "locked": true
       },
       {
         "id": "ordering-protocol",
         "type": "system",
-        "x": 2145,
-        "y": 1275,
-        "width": 260,
-        "height": 105,
+        "x": 2298,
+        "y": 1697.3400000000001,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#d84b43",
+          "stroke": "#a15f4b",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1557,16 +1779,19 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "iconId": "leader",
         "title": "Ordering protocol",
         "subtitle": "for linearizability",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "variant": "neutral",
+        "width": 258.68,
+        "height": 81,
+        "parentId": "quorum-boundary-zone",
         "locked": true
       },
       {
         "id": "routing-layers-zone-label",
         "type": "text",
-        "x": 58,
-        "y": 132,
-        "width": 2384,
-        "height": 24,
+        "x": 64,
+        "y": 235.83999999999997,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1577,19 +1802,20 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "text": "ROUTING LAYERS · WHO CHOOSES THE NEXT HOP",
-        "fontSize": 15,
+        "fontSize": 18,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
+        "parentId": "routing-layers-zone",
+        "width": 582.4960000000002,
+        "height": 39.04,
         "locked": true
       },
       {
         "id": "replica-topology-zone-label",
         "type": "text",
-        "x": 58,
-        "y": 392,
-        "width": 2384,
-        "height": 24,
+        "x": 64,
+        "y": 599.84,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1600,19 +1826,20 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "text": "REQUEST + REPLICA TOPOLOGY · N=3 · W=2 · R=2",
-        "fontSize": 15,
+        "fontSize": 18,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
+        "parentId": "replica-topology-zone",
+        "width": 604.2688000000002,
+        "height": 39.04,
         "locked": true
       },
       {
         "id": "version-route-zone-label",
         "type": "text",
-        "x": 58,
-        "y": 1022,
-        "width": 1364,
-        "height": 24,
+        "x": 64,
+        "y": 1469.3400000000001,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1623,19 +1850,20 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "text": "CONCURRENT VERSION ROUTE",
-        "fontSize": 15,
+        "fontSize": 18,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
+        "parentId": "version-route-zone",
+        "width": 359.52640000000014,
+        "height": 39.04,
         "locked": true
       },
       {
         "id": "quorum-boundary-zone-label",
         "type": "text",
-        "x": 1488,
-        "y": 1022,
-        "width": 954,
-        "height": 24,
+        "x": 1529.8400000000001,
+        "y": 1469.3400000000001,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1646,19 +1874,20 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "text": "QUORUM BOUNDARY",
-        "fontSize": 15,
+        "fontSize": 18,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
+        "parentId": "quorum-boundary-zone",
+        "width": 242.19520000000009,
+        "height": 39.04,
         "locked": true
       },
       {
         "id": "title",
         "type": "text",
-        "x": 52,
-        "y": 38,
-        "width": 1550,
-        "height": 48,
+        "x": 32,
+        "y": 32,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1673,15 +1902,15 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
         "fontFamily": "sans",
         "fontWeight": 600,
         "align": "left",
+        "width": 760,
+        "height": 103.04,
         "locked": true
       },
       {
         "id": "title-kicker",
         "type": "text",
-        "x": 1850,
-        "y": 50,
-        "width": 560,
-        "height": 24,
+        "x": 1497.8400000000001,
+        "y": 32,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1691,24 +1920,30 @@ export const KV_STORE_TEMPLATE: TemplateDefinition = {
           "opacity": 1,
           "textColor": "#66717d"
         },
-        "text": "BLUE request · AMBER failure · PURPLE repair",
+        "text": "BLUE request · AMBER failure · PURPLE repair\nBOTEC ASSUMPTIONS · peak / safe capacity\nTarget ≥50% spare · flash = 2× peak",
         "fontSize": 14,
         "fontFamily": "sans",
         "fontWeight": 600,
         "align": "right",
+        "width": 426.50239999999997,
+        "height": 69.76,
         "locked": true
       }
     ],
     "appState": {
       "camera": {
-        "x": 20,
-        "y": 20,
-        "zoom": 0.58
+        "x": 6.399999999999999,
+        "y": 70.4,
+        "zoom": 0.8
       },
       "background": {
         "color": "#f7f4ec",
         "pattern": "dots",
         "spacing": 24
+      },
+      "layoutSpacing": {
+        "nodeGap": 32,
+        "edgeClearance": 24
       }
     },
     "files": {}

@@ -18,7 +18,7 @@ import type {
   CanvasElement,
   TemplateSummary,
 } from "../shared/contracts.js";
-import { BOARD_SCHEMA_VERSION } from "../shared/contracts.js";
+import { BOARD_SCHEMA_VERSION, createEmptyScene } from "../shared/contracts.js";
 import {
   AppEmptyState,
   AppErrorState,
@@ -57,6 +57,7 @@ import {
   exportBoardSvg,
 } from "./editor/downloads.js";
 import { parseBoardImport } from "./editor/scene.js";
+import { findDesignTemplate } from "./editor/reset-design.js";
 import {
   STENCIL_CATALOG,
   createStencilElements,
@@ -117,6 +118,7 @@ export function App() {
     useState<PersistenceStatus>("synced");
   const [syncMessage, setSyncMessage] = useState<string>();
   const [isCreating, setIsCreating] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
   const [boardActionError, setBoardActionError] = useState<string>();
   const [deleteTarget, setDeleteTarget] =
     useState<BoardNavigationItem | null>(null);
@@ -132,6 +134,7 @@ export function App() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const editorApiRef = useRef<CanvasEditorApi | null>(null);
   const activeBoardRef = useRef<BoardDocument | null>(null);
+  const resetBaselineRef = useRef<BoardDocument | null>(null);
   const saveQueueRef = useRef<RevisionSaveQueue | null>(null);
   const previewTemplateIdRef = useRef<string | null>(null);
   const localWriteFailedRef = useRef(false);
@@ -199,6 +202,7 @@ export function App() {
       previewTemplateIdRef.current = null;
       setPreviewTemplateId(undefined);
       activeBoardRef.current = document;
+      resetBaselineRef.current = structuredClone(document);
       setActiveBoard(document);
       setEditorSession((value) => value + 1);
       setDraftName(document.name);
@@ -213,6 +217,7 @@ export function App() {
       const boardId = document.id;
       saveQueueRef.current = new RevisionSaveQueue({
         initialRevision: document.revision,
+        manualOnly: true,
         save: (payload, expectedRevision) =>
           apiClient.saveBoard(boardId, {
             ...payload,
@@ -565,7 +570,7 @@ export function App() {
           title: "Board imported",
           description: isPreview
             ? "The imported scene is loaded only in this temporary preview."
-            : "The imported scene is now saved as this board.",
+            : "The imported scene is saved locally. Use Save to update the server copy.",
           tone: "success",
         });
       } catch (error) {
@@ -579,6 +584,68 @@ export function App() {
     },
     [notify, persistLocalChange],
   );
+
+  const clearBoard = useCallback(() => {
+    const api = editorApiRef.current;
+    if (!api) return;
+    const empty = createEmptyScene();
+    empty.appState.background = api.getScene().appState.background;
+    api.replaceScene(empty);
+    persistLocalChange(api.getScene());
+    notify({ title: "Board cleared", description: "Saved server designs are unchanged. Undo restores the canvas." });
+  }, [notify, persistLocalChange]);
+
+  const saveBoardManually = useCallback(async () => {
+    const current = activeBoardRef.current;
+    if (!current || syncStatus === "saving") return;
+    if (previewTemplateIdRef.current) {
+      setSyncStatus("saving");
+      try {
+        const created = await apiClient.createBoard({ name: current.name });
+        const saved = await apiClient.saveBoard(created.id, {
+          name: current.name, scene: structuredClone(current.scene), expectedRevision: created.revision,
+        });
+        const latest = activeBoardRef.current;
+        if (latest?.id === current.id) {
+          const changed = latest !== current;
+          activateBoard(changed ? { ...saved, name: latest.name, scene: latest.scene, updatedAt: latest.updatedAt } : saved,
+            changed ? "saved-locally" : "synced");
+        } else updateBoardSummary(saved);
+      } catch (error) {
+        if (activeBoardRef.current?.id === current.id) setSyncStatus("preview");
+        notify({ title: "Save failed", description: error instanceof Error ? error.message : "Please try again.", tone: "error" });
+      }
+      return;
+    }
+    saveQueueRef.current?.enqueue({ name: current.name, scene: structuredClone(current.scene) });
+    await saveQueueRef.current?.flush();
+  }, [activateBoard, notify, syncStatus, updateBoardSummary]);
+
+  const resetDesign = useCallback(async () => {
+    const api = editorApiRef.current;
+    const current = activeBoardRef.current;
+    if (!api || !current || isResetting) return;
+    setIsResetting(true);
+    try {
+      const definitions = await Promise.all(templates.map(template => apiClient.getTemplate(template.id)));
+      // A late response must never reset a different board or editor session.
+      if (activeBoardRef.current?.id !== current.id || editorApiRef.current !== api) return;
+      const template = findDesignTemplate({ ...current, scene: api.getScene() }, definitions, previewTemplateIdRef.current)
+        ?? (resetBaselineRef.current?.id === current.id
+          ? findDesignTemplate(resetBaselineRef.current, definitions) : undefined);
+      if (!template) {
+        notify({ title: "No matching template", description: "This board has no recognizable built-in design to restore. Choose a template from Boards.", tone: "info" });
+        return;
+      }
+      api.replaceScene(structuredClone(template.scene));
+      persistLocalChange(api.getScene());
+      notify({ title: "Design reset", description: `${template.name} restored. Undo brings back your edits.`, tone: "success" });
+    } catch (error) {
+      notify({ title: "Could not reset design", description: error instanceof Error ? error.message : "Try again when templates are available.", tone: "error" });
+    } finally {
+      setIsResetting(false);
+    }
+  }, [isResetting, notify, persistLocalChange, templates]);
 
   const exportBoard = useCallback(
     async (kind: ExportKind) => {
@@ -669,6 +736,10 @@ export function App() {
       onNewBoard={() => void createBoard()}
       onImport={() => fileInputRef.current?.click()}
       onExport={() => setExportOpen(true)}
+      onResetDesign={() => void resetDesign()}
+      onClearBoard={clearBoard}
+      onSaveBoard={() => void saveBoardManually()}
+      isResetting={isResetting}
       onOpenBoards={() => setBoardDrawerOpen(true)}
       onOpenStencils={() => setStencilDrawerOpen(true)}
       isCreating={isCreating}

@@ -14,6 +14,8 @@ newer local scene.
 - Select with click, Shift-toggle, and empty-canvas marquee area selection;
   hand, rectangle, ellipse, diamond, connector, text, undo, redo, resize, and
   delete controls.
+- A readable component reference inspector with visible Details badges, named
+  web links, and navigation through existing board connections.
 - An explicit-Apply inspector with editable title, subtitle, body/explanation,
   labels, image alt text, width, height, and optional architecture metadata.
 - Content-aware width and height for every text-bearing object: defaults grow to
@@ -34,7 +36,7 @@ newer local scene.
 - PNG, JPEG, WebP, and GIF insertion by file picker, drop, and clipboard paste.
 - Versioned schema-v2 board documents containing typed elements, camera,
   background, and embedded-file state.
-- Immediate local persistence and debounced, serialized API persistence.
+- Immediate local persistence and manual, serialized API persistence.
 - Visible `Template preview`, `Saving`, `Saved locally`, `Synced`, `Offline`,
   and `Conflict` states.
 - JSON import/export, SVG/PNG export, independent template copies, a health
@@ -46,7 +48,7 @@ newer local scene.
 - Selecting a template loads its scene for temporary inspection without creating
   a board, writing browser storage, or starting autosave. Only the template's
   dedicated `+` action creates a persistent independent copy.
-- Every canvas change reaches browser storage before remote sync begins.
+- Every canvas change reaches browser storage. Only an explicit Save sends edits to the server.
 - Remote writes include the revision the client edited; stale writes return a
   conflict and do not overwrite either copy.
 - Panning and zooming change the camera rather than imposing a finite page.

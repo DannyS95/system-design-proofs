@@ -2,8 +2,80 @@
 
 ## Unreleased
 
+- Component inspection now starts with a short concept summary, a capacity graphic
+  and connected components. Context/references stay collapsed and reset between
+  selections. Details badges toggle open/closed; Close and Escape also dismiss.
+- Removed duplicated design-wide sizing essays from generated node metadata;
+  legacy notes are condensed in the reader without rewriting saved boards.
+  Capacity assumptions are available as a bundled Markdown download.
+- Cassandra/monitoring workload cards now contain compact visible summaries.
+  Context uses short titled sections and remains independent of canvas dimensions.
+- Removed background blur from the reference panel after browser screenshots
+  exposed blank content when expanded notes became scrollable.
+
+
+- Component references now open as readable notes, with visible Details badges,
+  explicit Edit details, safe named links, and navigation through actual bound
+  connections. Empty fields are hidden; locked components remain consultable.
+- Optional `metadata.referenceLinks` extends schema v2, preserving local-first
+  Apply/Undo, manual server saves, JSON portability, and reusable components.
+  The app template includes source and Markdown links through its generator;
+  reference-only refreshes leave authored geometry and preview artwork intact.
+
+
+- Layout spacing applies to the whole board without selection; sliders apply on
+  release and locked boards offer an explicit undoable Unlock all and tidy action.
+  Coincident nodes separate correctly, and tidying fits the result into view.
+- Clear board empties the canvas with Undo and preserves server snapshots.
+  Save explicitly writes to the server; edits and failed saves never auto-sync.
+
+
 ### Added
 
+- Clarified the architecture’s memory and localStorage lifecycle: drawing and
+  edits use memory, edits write JSON, opening reads it, and saved data outlives
+  the tab until removed. Lucide is named as the UI icon library, with concrete
+  button and toolbar examples.
+
+- Final website-architecture presentation identifies System Canvas itself,
+  distinguishes React’s SVG element updates from browser SVG rendering, and
+  connects editable properties to browser recovery and server JSON files.
+  Dedicated Build and Backend areas are removed; Vite and Fastify/Node.js each
+  appear once on relevant components. Persistence forms a single compact flow.
+
+- System Canvas architecture identifies technologies by name and role, with
+  short details connecting editable object properties, React/SVG, and JSON
+  storage. API notes, save rules, and the worked coordinate tutorial are removed
+  from the visible board. The design guidance records “Elements identify; details
+  reveal.”
+
+- Consistent section labels, indented details, text sizes, and content-aware
+  spacing across the financial-cache board, following its monitoring workload.
+
+- Explicit chosen safe per-host budgets, average/peak/flash workloads, demand /
+  capacity ratios and a 50% spare-capacity target across relevant diagrams.
+  Cassandra, API, cache, KV, CDN and telemetry now have concrete sizing choices;
+  flash, cold-cache and failover headroom failures are marked in the diagrams.
+- Caption compaction trims both top and bottom slack while retaining side ports
+  and connector topology, including short cards beside taller capacity captions.
+
+- Small editable capacity captions for financial cache, social-feed cache, KV,
+  and CDN templates; physical node budgets, quorum/replication work, conditional
+  bottlenecks, and explicit BOTEC assumptions with source provenance.
+- Caption layout preserves established KV/CDN routes by expanding occupied
+  content bands, then fits cards and frames to content and real connector ports.
+- Browser verification now checks capacity text alongside all architecture text.
+
+- `Reset design` restores the latest matching template in the current board,
+  with undo/redo, immediate local saving, and isolated temporary previews.
+- Persisted `containerPadding` for deliberate section breathing room; the CDN
+  data plane uses 64 units and retains it through compaction and child resizing.
+- Browser checks exercise reset, undo, and redo on all five template previews.
+- Explicit `Layout spacing` controls with node distance and arrow clearance
+  drafts. `Tidy layout` applies and persists the chosen spacing through the
+  existing undo and local-first save path; locked elements require unlocking.
+- Optional schema-v2 layout groups, container/mechanism roles, connector-label
+  positions, and applied spacing profiles, preserving authored geometry on import.
 - Content-aware minimum and capped natural widths for system cards, shapes,
   notes, headings, and labels; manual width changes now rewrap and recalculate
   height, bound routes move with resized objects, and declared shape parents
@@ -58,6 +130,20 @@
 
 ### Changed
 
+- Memory-policy cards on both cache boards now use cache-server green and name
+  physical cache servers as their owner; database-fallback routes retain amber.
+- Compact social-feed shard choices together and place alternate CDN PoPs beside
+  each other, reducing unused board height while preserving all destinations.
+- Keep application-library persistence references local, scan free connector
+  segments for labels, and include label plates in container visual bounds.
+- Remove unused card port capacity after routing and reattach boundary stubs.
+- Replaced the financial-cache successor tutorial with its exact three-line
+  hash-position → `vB2` → Shard B rule, preserving the ring and token topology.
+  Cache cards now show selected configuration and consequence; expanded policy
+  and application-module background remains in inspector metadata.
+- Replaced detached cache section banners with compact editable text headings,
+  retained physical-replica and persistence destinations, and documented hot-key
+  options without changing the financial cache's selected quorums.
 - Corrected the financial-cache ring so the marked hash position advances
   clockwise to `vB2`, states the exact successor stopping rule and owned
   interval, maps that interval to logical Cache Shard B, and then selects the
@@ -120,6 +206,8 @@
 
 ### Fixed
 
+- Deleting a referenced component now detaches surviving local annotations,
+  preserving their geometry and lock state while keeping the next snapshot valid.
 - Prevented text-bearing elements from accepting stored dimensions below their
   wrapped content and prevented generated connector labels from growing beyond
   the board without wrapping.

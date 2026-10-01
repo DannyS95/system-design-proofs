@@ -5,9 +5,10 @@ import type {
   CanvasElementStyle,
   CanvasPoint,
 } from "../../shared/contracts.js";
+import { arrowheadSize, LAYOUT_STANDARD } from "../../shared/layout-standard.js";
 import type { Bounds, Point } from "./camera.js";
 import {
-  getConnectorLabelLayout,
+  getConnectorLabelBounds,
   minimumTextHeight,
   minimumTextWidth,
   preferredTextWidth,
@@ -84,8 +85,8 @@ export const polylineMidpoint = (points: readonly CanvasPoint[]): Point => {
 
 export const getElementBounds = (element: CanvasElement): Bounds => {
   if (element.type !== "connector") {
-    const width = element.width;
-    const height = Math.max(element.height, minimumTextHeight(element));
+    const width = Math.max(element.width, minimumTextWidth(element));
+    const height = Math.max(element.height, minimumTextHeight({ ...element, width }));
     if (!element.rotation) return { x: element.x, y: element.y, width, height };
     const cosine = Math.abs(Math.cos(element.rotation));
     const sine = Math.abs(Math.sin(element.rotation));
@@ -102,22 +103,20 @@ export const getElementBounds = (element: CanvasElement): Bounds => {
   const xs = element.points.map(([x]) => element.x + x);
   const ys = element.points.map(([, y]) => element.y + y);
   const markerPadding =
-    element.startArrow === "arrow" || element.endArrow === "arrow" ? 9 : 3;
+    element.startArrow === "arrow" || element.endArrow === "arrow"
+      ? arrowheadSize(element.style.strokeWidth) / 2 : 0;
   const linePadding = markerPadding + element.style.strokeWidth / 2;
   let x = Math.min(...xs) - linePadding;
   let y = Math.min(...ys) - linePadding;
   let right = Math.max(...xs) + linePadding;
   let bottom = Math.max(...ys) + linePadding;
 
-  if (element.label) {
-    const middle = polylineMidpoint(element.points);
-    const label = getConnectorLabelLayout(element.label, element.fontSize);
-    const labelX = element.x + middle.x - label.width / 2;
-    const labelY = element.y + middle.y - label.height - 12;
-    x = Math.min(x, labelX);
-    y = Math.min(y, labelY);
-    right = Math.max(right, labelX + label.width);
-    bottom = Math.max(bottom, labelY + label.height + 8);
+  const label = getConnectorLabelBounds(element);
+  if (label) {
+    x = Math.min(x, label.x);
+    y = Math.min(y, label.y);
+    right = Math.max(right, label.x + label.width);
+    bottom = Math.max(bottom, label.y + label.height);
   }
   return {
     x,
@@ -194,6 +193,10 @@ export const normalizeConnectorGeometry = (
     width: right - x,
     height: bottom - y,
     points: absolute.map(([pointX, pointY]) => [pointX - x, pointY - y]),
+    ...(connector.labelPosition ? {
+      labelPosition: [connector.x + connector.labelPosition[0] - x,
+        connector.y + connector.labelPosition[1] - y] as CanvasPoint,
+    } : {}),
   };
 };
 
@@ -243,6 +246,40 @@ const moveRouteEndpoint = (
   return points;
 };
 
+/** Keep a persisted label beside its owning straight segment after rerouting. */
+const withConnectorPoints = (
+  connector: CanvasConnectorElement,
+  points: CanvasPoint[],
+): CanvasConnectorElement => {
+  if (!connector.labelPosition) return { ...connector, points };
+  const center = connector.labelPosition;
+  const candidates = connector.points.slice(1).map((end, index) => {
+    const start = connector.points[index];
+    const dx = end[0] - start[0], dy = end[1] - start[1];
+    const lengthSquared = dx * dx + dy * dy;
+    const ratio = lengthSquared === 0 ? 0 : Math.max(0, Math.min(1,
+      ((center[0] - start[0]) * dx + (center[1] - start[1]) * dy) / lengthSquared));
+    const anchor: CanvasPoint = [start[0] + dx * ratio, start[1] + dy * ratio];
+    return { index, ratio, anchor, axis: routeAxis(start, end),
+      distance: Math.hypot(center[0] - anchor[0], center[1] - anchor[1]) };
+  }).sort((a, b) => a.distance - b.distance);
+  const owner = candidates[0];
+  if (!owner) return { ...connector, points };
+  const index = points.length === connector.points.length ? owner.index :
+    points.slice(1).map((end, candidateIndex) => {
+      const start = points[candidateIndex];
+      return { index: candidateIndex, axis: routeAxis(start, end),
+        length: Math.hypot(end[0] - start[0], end[1] - start[1]) };
+    }).sort((a, b) => Number(b.axis === owner.axis) - Number(a.axis === owner.axis) ||
+      b.length - a.length)[0]?.index ?? 0;
+  const start = points[index], end = points[index + 1];
+  if (!start || !end) return { ...connector, points };
+  return { ...connector, points, labelPosition: [
+    start[0] + (end[0] - start[0]) * owner.ratio + center[0] - owner.anchor[0],
+    start[1] + (end[1] - start[1]) * owner.ratio + center[1] - owner.anchor[1],
+  ] };
+};
+
 export const moveBoundConnectors = (
   scene: BoardScene,
   elementId: string,
@@ -258,13 +295,12 @@ export const moveBoundConnectors = (
       element.startBinding === elementId &&
       element.endBinding === elementId
     ) {
-      return normalizeConnectorGeometry({
-        ...element,
-        points: element.points.map(([x, y]) => [
+      return normalizeConnectorGeometry(withConnectorPoints(element,
+        element.points.map(([x, y]) => [
           x + delta.x,
           y + delta.y,
         ]),
-      });
+      ));
     }
 
     let points = element.points.map(([x, y]) => [x, y] as CanvasPoint);
@@ -281,7 +317,7 @@ export const moveBoundConnectors = (
         points[last][1] + delta.y,
       ]);
     }
-    return normalizeConnectorGeometry({ ...element, points });
+    return normalizeConnectorGeometry(withConnectorPoints(element, points));
   }),
 });
 
@@ -339,13 +375,12 @@ const resizeElementAndBoundConnectorsOnce = (
       : value * (nextExtent / oldExtent);
     return updateElement(scene, elementId, (element) => {
       if (element.type !== "connector") return element;
-      const resized = normalizeConnectorGeometry({
-        ...normalized,
-        points: normalized.points.map(([x, y], index) => [
+      const resized = normalizeConnectorGeometry(withConnectorPoints(normalized,
+        normalized.points.map(([x, y], index) => [
           scaleAxis(x, normalized.width, width, index, normalized.points.length),
           scaleAxis(y, normalized.height, height, index, normalized.points.length),
         ] as CanvasPoint),
-      });
+      ));
       if (widthChanged || heightChanged) {
         delete resized.startBinding;
         delete resized.endBinding;
@@ -392,7 +427,7 @@ const resizeElementAndBoundConnectorsOnce = (
       if (element.endBinding === elementId) {
         points = moveRouteEndpoint(points, "end", nextEnd!);
       }
-      return normalizeConnectorGeometry({ ...element, points });
+      return normalizeConnectorGeometry(withConnectorPoints(element, points));
     }),
   };
 };
@@ -400,7 +435,7 @@ const resizeElementAndBoundConnectorsOnce = (
 const expandParentContainers = (
   scene: BoardScene,
   childId: string,
-  padding = 24,
+  padding = LAYOUT_STANDARD.sectionPadding,
 ): BoardScene => {
   let next = scene;
   let currentId: string | undefined = childId;
@@ -413,14 +448,15 @@ const expandParentContainers = (
     if (!child || parentId === undefined) break;
     const parent = next.elements.find(({ id }) => id === parentId);
     if (!parent || parent.type !== "shape") break;
+    const internalPadding = parent.containerPadding ?? padding;
     const childBounds = getElementBounds(child);
     const requiredWidth = Math.max(
       parent.width,
-      childBounds.x + childBounds.width + padding - parent.x,
+      childBounds.x + childBounds.width + internalPadding - parent.x,
     );
     const requiredHeight = Math.max(
       parent.height,
-      childBounds.y + childBounds.height + padding - parent.y,
+      childBounds.y + childBounds.height + internalPadding - parent.y,
     );
     next = resizeElementAndBoundConnectorsOnce(
       next,
@@ -494,7 +530,7 @@ export const fitSceneToContent = (scene: BoardScene): BoardScene =>
     scene,
   );
 
-/** Remove an element without leaving connector bindings that fail persistence validation. */
+/** Remove an element while retaining detached routes, children and local annotations. */
 export const deleteElementAndDetachBindings = (
   scene: BoardScene,
   elementId: string,
@@ -504,6 +540,9 @@ export const deleteElementAndDetachBindings = (
     .map((element) => {
       const detached = { ...element };
       if (detached.parentId === elementId) delete detached.parentId;
+      // A removed destination leaves a plain editable annotation, just as a
+      // removed parent leaves its children and a removed node leaves its route.
+      if (detached.referenceId === elementId) delete detached.referenceId;
       if (detached.type === "connector") {
         if (detached.startBinding === elementId) delete detached.startBinding;
         if (detached.endBinding === elementId) delete detached.endBinding;

@@ -1,5 +1,53 @@
 # Design
 
+## Architecture board presentation
+
+Follow the global rule: **Elements identify; details reveal.** A reader should
+recognize React, the SVG editor, browser graphics, Fastify, and stored board data
+from each element's title, icon, role, and placement. Details reveal the capability
+or connection that makes each part useful; they should not turn cards into API
+instructions or application-rule walkthroughs.
+
+This is the architecture of the **System Canvas website itself**, intended to
+help a development team recognize its components and responsibilities. Keep
+build tooling and server runtime names on their relevant components, with one
+or two visible mentions each. Do not dedicate separate Build or Backend areas
+to them. A shared persistence flow may group browser recovery and server files;
+component labels must still identify where each copy lives.
+
+The main application board should make these relationships visible:
+
+- **Object properties → React → SVG elements → browser SVG renderer:** React
+  creates and updates SVG elements from position, size, color, text, and connection
+  properties. The browser’s SVG renderer draws those elements; JavaScript event
+  handlers update the properties when someone edits the design.
+  The interactive drawing surface uses SVG, while Canvas 2D serves PNG export.
+- **Board data → editable design:** JSON keeps object properties and connections
+  so reopening a saved board reconstructs editable elements, rather than only a
+  picture of them.
+- **Browser localStorage → local recovery:** the user's device keeps a recoverable
+  copy of the board.
+- **Fastify on Node.js → JSON files:** the backend loads and saves the board's
+  data on the server filesystem. It stores the properties used by the editor;
+  rendering belongs to the browser.
+
+Describe the storage lifecycle explicitly: JavaScript objects in memory feed
+rendering and editing; closing the tab discards that memory. Edits write a JSON
+snapshot to localStorage, and opening a board reads saved properties back into
+memory. Local snapshots survive tab closure, are replaced by later saves, and
+are removed by board deletion or clearing the site's browser data. Describe
+Lucide as a **UI icon library**, supplying ready-made SVG icons for buttons and
+toolbar tools such as delete, undo, and zoom.
+
+Use concise, aligned text with consistent type hierarchy, indentation, and
+section spacing. Connector labels should reveal the relationship between named
+parts. Keep source-file inventories, HTTP methods and status codes, revision
+rules, timing constants, helper names, export implementation calls, and worked
+coordinate examples in inspector details or development documentation. The
+sections below document these implementation contracts; they are not a script
+to copy onto the architecture canvas. Preserve the rendering and persistence
+boundaries when simplifying the board.
+
 ## Major modules
 
 ```text
@@ -43,6 +91,16 @@ Fastify TypeScript application
   wrapped content editing, locking, history, image
   ingestion, and scene rendering. It uses browser SVG and DOM APIs, emits
   complete typed scenes, and does not own board identity, HTTP, or persistence.
+- **Shared layout modules** own geometry independently of browser and server
+  processes. `shared/layout-standard.ts` supplies spacing and arrow/label
+  constants; `src/editor/text-layout.ts` measures content;
+  `shared/generated-layout.ts` and `shared/orthogonal-routing.ts` place and route
+  generated or explicitly tidied scenes. `shared/layout-validator.ts` checks
+  content bounds, collisions, route clearance, nesting, and unused space.
+- **Generated preview rendering** in `scripts/render-scene.tsx` uses the same
+  `CanvasElementView` primitives and `SystemIcon` artwork as the editor.
+  `scripts/template-diagram-kit.mjs` constructs scenes and writes their matching
+  template modules, editable JSON, SVG, and PNG artifacts.
 - **Geometric icon registry** maps stable semantic `iconId` values to local SVG
   geometry in `src/editor/SystemIcon.tsx`. Saved boards do not depend on
   component names or vendor assets. `lucide-react` supplies separate interface
@@ -84,7 +142,8 @@ BoardScene
   ├─ elements: system | shape | text | connector | image
   ├─ appState
   │    ├─ camera: x, y, zoom
-  │    └─ background: color, solid | dots | grid, spacing
+  │    ├─ background: color, solid | dots | grid, spacing
+  │    └─ layoutSpacing?: nodeGap, edgeClearance
   └─ files: embedded raster assets
 ```
 
@@ -102,6 +161,29 @@ then grows to contain every line. Resizing moves bound connector endpoints and
 expands declared parent containers. Connector labels independently size their
 plates to capped, wrapped content. Visual bounds include those labels and arrow
 room for fit and export.
+
+Generated scenes follow one pipeline: measure content, place sections and
+elements, route connectors, place labels, resolve collisions, calculate bounds,
+then select a readable initial camera. Compaction removes space that serves
+neither padding, grouping, nor routing. Neighboring-arrow clearance accounts for
+both strokes and arrowhead envelopes. Rendering orders section backgrounds,
+paths, label plates, cards, then interaction controls.
+
+`layoutRole` distinguishes a shape container from preserved mechanism geometry;
+`layoutGroup` keeps related mechanism members together during placement.
+Connector `labelPosition` records the plate center relative to its route origin.
+A local `referenceId` names the canonical component represented by a short
+reference near a destination. For example, a PoP's Monitoring reference denotes
+the existing monitoring service, preserving its logical destination without
+another full-board secondary route or another runtime component.
+
+Loading or importing a user board does not run automatic placement.
+`LayoutControls.tsx` keeps node-distance and arrow-clearance sliders as local
+drafts until release, a spacing key is released, or `Tidy layout` calls
+`tidySceneLayout`. The editor commits resulting
+geometry and `appState.layoutSpacing` together through existing undo and
+local-first persistence. Tidy preserves authored typography and requires locked
+elements to be unlocked.
 
 The visual vocabulary flow is:
 
@@ -135,12 +217,15 @@ Canvas change
   → write local snapshot synchronously
   → mark Saved locally
   → replace pending remote snapshot
+  → wait for explicit Save
   → send one PUT with expected revision
   → update revision and mark Synced
 ```
 
 Only one remote write per board is in flight. A newer edit replaces the pending
-payload and is sent after the current request completes.
+payload and waits for another explicit Save. Failed manual saves do not retry
+automatically. Clear board is an undoable local change; server designs remain
+untouched unless the user explicitly saves the cleared scene.
 
 ## Load and migration flow
 
@@ -194,3 +279,58 @@ Fastify serves the built SPA and `/api/*` from one process. The atomic file
 store is a zero-setup local adapter, not a horizontally scalable database. The
 `BoardStore` interface is the seam for PostgreSQL without changing browser
 contracts.
+
+
+## Component reference reader
+
+Selection opens a read view over the element's applied metadata. A screen-sized
+SVG Details badge opens the same inspector for elements with notes; low-zoom
+views hide unselected badges to keep the overview readable. Badges are marked
+`data-editor-overlay`, so the existing export boundary removes them. Read/edit
+mode, focus, and drafts are transient UI state, not scene data.
+
+`ComponentDetails` owns presentation; `component-details-model` derives names
+and connected components from real connector bindings and canonical references.
+Free-text inputs/outputs never invent topology. Navigation selects the target
+and frames it beside the inspector using the existing camera and local snapshot
+flow. No network calls are needed to consult metadata.
+
+The optional schema-v2 `metadata.referenceLinks` string stores one named HTTP(S)
+reference per line (`Label | URL`, or a bare URL). The shared reference parser is
+used both by scene validation and before inspector Apply. It rejects executable,
+relative, and credential-bearing URLs; React renders notes as text and external
+anchors use `noopener noreferrer`. The app never executes or embeds linked
+content. Full web URLs in existing prose are clickable; ordinary source paths
+remain text. Reference edits retain existing Apply/Undo, library, JSON, and
+manual server-save semantics.
+
+The app template's reference links are owned by `applyAppReferenceLinks` in
+`scripts/app-architecture-details.mjs`. The normal generator applies them;
+`node scripts/refresh-app-references.mjs` refreshes only reference metadata in
+the existing generated module and example JSON without moving the drawing.
+
+
+## Compact inspection and context isolation
+
+The default reference panel is a quick concept brief: ≤200-character summary,
+explicit demand/budget meter when available, and the first three connected routes.
+`More context`, surplus connections, and `References` are native disclosures.
+The reader is keyed by selected element ID so open disclosures do not leak into
+a different component. The Details badge toggles the panel; Close and Escape
+also dismiss it, without committing scene edits.
+
+Capacity meters parse only explicit demand/budget pairs. Resident storage and hit
+rate remain distinct: 20/64 GB is 31% occupancy, while 90% hits describes request
+outcomes. Arbitrary percentages never become utilization. Generated budgets are
+labeled assumed/unmeasured; overload and missed headroom targets are visible.
+The known repeated BOTEC appendix is removed in the read projection for legacy
+boards without changing persisted content. New generators store local role text
+and a source reference instead of copying the design's full arithmetic to every
+node. `CAPACITY_ASSUMPTIONS.md` is bundled by Vite and downloadable from both dev
+and production; it needs no remote repository availability.
+
+Hidden metadata is excluded from text measurement. The Cassandra and monitoring
+workload cards retain only compact visible budgets and consequences. Their short,
+structured notes stay in metadata. Tests compare measured size before/after large
+metadata additions and browser bounds before/after expanding context. Existing
+saved geometry remains authored; Reset design explicitly adopts updated templates.

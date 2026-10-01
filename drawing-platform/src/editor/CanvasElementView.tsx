@@ -6,13 +6,21 @@ import type {
   CanvasShapeElement,
   CanvasTextAlign,
 } from "../../shared/contracts.js";
+import { arrowheadSize, LAYOUT_STANDARD, SPACING } from "../../shared/layout-standard.js";
 import { SystemIcon } from "./SystemIcon.js";
-import { dashArray, getElementBounds, polylineMidpoint } from "./canvas-model.js";
+import { dashArray, getElementBounds } from "./canvas-model.js";
 import {
+  getConnectorLabelBounds,
   getConnectorLabelLayout,
+  getShapeContentBounds,
+  getShapeIconSize,
   getShapeTextLayout,
   getSystemTextLayout,
   getTextElementLayout,
+  minimumTextHeight,
+  minimumTextWidth,
+  shapeIconGap,
+  shapePadding,
   type TextBlockLayout,
 } from "./text-layout.js";
 
@@ -34,6 +42,8 @@ const SvgTextLines = ({
         x={x}
         y={y + index * block.lineHeight}
         textAnchor={textAnchor}
+        xmlSpace={/^\s/.test(line) ? "preserve" : undefined}
+        style={/^\s/.test(line) ? { whiteSpace: "pre" } : undefined}
       >
         {line || " "}
       </tspan>
@@ -119,6 +129,13 @@ export function SceneElementView({
   onResizePointerDown,
 }: SceneElementViewProps) {
   if (element.deleted || element.type === "connector") return null;
+  // Rendering safety also covers direct SVG exports of legacy scenes. Never
+  // mutate saved coordinates or shrink deliberate manual dimensions on load.
+  if (element.type !== "image") {
+    const width = Math.max(element.width, minimumTextWidth(element));
+    element = { ...element, width };
+    element = { ...element, height: Math.max(element.height, minimumTextHeight(element)) };
+  }
   const systemLayout = element.type === "system" ? getSystemTextLayout(element) : undefined;
   const shapeLayout = element.type === "shape" ? getShapeTextLayout(element) : undefined;
   const textLayout = element.type === "text" ? getTextElementLayout(element) : undefined;
@@ -127,15 +144,18 @@ export function SceneElementView({
     ? textXForAlign(systemLayout.x, systemLayout.width, systemAlign)
     : 0;
   const shapeAlign = element.type === "shape" ? element.align ?? "center" : "center";
-  const shapeTextX = element.type === "shape"
-    ? textXForAlign(12, Math.max(0, element.width - 24), shapeAlign)
+  const shapeContent = element.type === "shape" ? getShapeContentBounds(element) : undefined;
+  const shapeTextX = shapeContent
+    ? textXForAlign(shapeContent.x, shapeContent.width, shapeAlign)
     : 0;
   const shapeIconSize = element.type === "shape" && element.iconId
-    ? Math.max(12, Math.min(element.width <= 100 ? 16 : 28, element.width - 16))
+    ? getShapeIconSize(element)
     : 0;
-  const shapeStackHeight = shapeIconSize + (shapeIconSize > 0 ? 4 : 0) +
+  const shapeGap = element.type === "shape" ? shapeIconGap(element) : LAYOUT_STANDARD.textGap;
+  const shapeStackHeight = shapeIconSize + (shapeIconSize > 0 && shapeLayout ? shapeGap : 0) +
     (shapeLayout?.height ?? 0);
-  const shapeStackTop = Math.max(8, (element.height - shapeStackHeight) / 2);
+  const shapeStackTop = Math.max(element.type === "shape" ? shapePadding(element) :
+    LAYOUT_STANDARD.cardPadding, (element.height - shapeStackHeight) / 2);
 
   return (
     <g
@@ -161,10 +181,10 @@ export function SceneElementView({
               vectorEffect="non-scaling-stroke"
             />
             <rect
-              x={12}
-              y={(element.height - 56) / 2}
-              width={56}
-              height={56}
+              x={LAYOUT_STANDARD.cardPadding}
+              y={(element.height - LAYOUT_STANDARD.iconPlateSize) / 2}
+              width={LAYOUT_STANDARD.iconPlateSize}
+              height={LAYOUT_STANDARD.iconPlateSize}
               rx={14}
               fill={element.style.stroke}
               fillOpacity={0.1}
@@ -175,10 +195,10 @@ export function SceneElementView({
             />
             <SystemIcon
               iconId={element.iconId}
-              x={23}
-              y={(element.height - 34) / 2}
-              width={34}
-              height={34}
+              x={LAYOUT_STANDARD.cardPadding + (LAYOUT_STANDARD.iconPlateSize - LAYOUT_STANDARD.iconSize) / 2}
+              y={(element.height - LAYOUT_STANDARD.iconSize) / 2}
+              width={LAYOUT_STANDARD.iconSize}
+              height={LAYOUT_STANDARD.iconSize}
               color={element.style.stroke}
               aria-hidden="true"
             />
@@ -206,7 +226,7 @@ export function SceneElementView({
                 y={
                   systemLayout.top +
                   systemLayout.title.height +
-                  4 +
+                  LAYOUT_STANDARD.textGap +
                   systemLayout.subtitle.fontSize
                 }
                 textAnchor={textAnchorForAlign(systemAlign)}
@@ -221,7 +241,7 @@ export function SceneElementView({
                   y={
                     systemLayout.top +
                     systemLayout.title.height +
-                    4 +
+                    LAYOUT_STANDARD.textGap +
                     systemLayout.subtitle.fontSize
                   }
                   textAnchor={textAnchorForAlign(systemAlign)}
@@ -234,8 +254,8 @@ export function SceneElementView({
                 y={
                   systemLayout.top +
                   systemLayout.title.height +
-                  (systemLayout.subtitle ? systemLayout.subtitle.height + 4 : 0) +
-                  4 +
+                  (systemLayout.subtitle ? systemLayout.subtitle.height + LAYOUT_STANDARD.textGap : 0) +
+                  LAYOUT_STANDARD.textGap +
                   systemLayout.body.fontSize
                 }
                 textAnchor={textAnchorForAlign(systemAlign)}
@@ -249,12 +269,22 @@ export function SceneElementView({
                   y={
                     systemLayout.top +
                     systemLayout.title.height +
-                    (systemLayout.subtitle ? systemLayout.subtitle.height + 4 : 0) +
-                    4 +
+                    (systemLayout.subtitle ? systemLayout.subtitle.height + LAYOUT_STANDARD.textGap : 0) +
+                    LAYOUT_STANDARD.textGap +
                     systemLayout.body.fontSize
                   }
                   textAnchor={textAnchorForAlign(systemAlign)}
                 />
+              </text>
+            ) : null}
+            {systemLayout?.capacity ? (
+              <text x={systemTextX}
+                y={systemLayout.top + systemLayout.naturalHeight - systemLayout.capacity.height + systemLayout.capacity.fontSize}
+                textAnchor={textAnchorForAlign(systemAlign)} fill={element.style.textColor}
+                fillOpacity={0.75} fontSize={systemLayout.capacity.fontSize}>
+                <SvgTextLines block={systemLayout.capacity} x={systemTextX}
+                  y={systemLayout.top + systemLayout.naturalHeight - systemLayout.capacity.height + systemLayout.capacity.fontSize}
+                  textAnchor={textAnchorForAlign(systemAlign)} />
               </text>
             ) : null}
           </>
@@ -280,7 +310,7 @@ export function SceneElementView({
                 y={
                   shapeStackTop +
                   shapeIconSize +
-                  (shapeIconSize > 0 ? 4 : 0) +
+                  (shapeIconSize > 0 ? shapeGap : 0) +
                   shapeLayout.fontSize
                 }
                 textAnchor={textAnchorForAlign(shapeAlign)}
@@ -294,7 +324,7 @@ export function SceneElementView({
                   y={
                     shapeStackTop +
                     shapeIconSize +
-                    (shapeIconSize > 0 ? 4 : 0) +
+                    (shapeIconSize > 0 ? shapeGap : 0) +
                     shapeLayout.fontSize
                   }
                   textAnchor={textAnchorForAlign(shapeAlign)}
@@ -306,8 +336,8 @@ export function SceneElementView({
 
         {element.type === "text" && !editing ? (
           <text
-            x={textXForAlign(0, element.width, element.align)}
-            y={element.fontSize}
+            x={textXForAlign(SPACING.label, element.width - SPACING.label * 2, element.align)}
+            y={SPACING.label + element.fontSize}
             textAnchor={textAnchorForAlign(element.align)}
             fill={element.style.textColor}
             fontSize={element.fontSize}
@@ -317,8 +347,8 @@ export function SceneElementView({
             {textLayout ? (
               <SvgTextLines
                 block={textLayout}
-                x={textXForAlign(0, element.width, element.align)}
-                y={element.fontSize}
+                x={textXForAlign(SPACING.label, element.width - SPACING.label * 2, element.align)}
+                y={SPACING.label + element.fontSize}
                 textAnchor={textAnchorForAlign(element.align)}
               />
             ) : null}
@@ -433,40 +463,64 @@ export function ConnectorView({
   element,
   selected,
   onPointerDown,
+  layer = "all",
 }: {
   element: CanvasConnectorElement;
   selected: boolean;
   onPointerDown: (event: ReactPointerEvent<SVGGElement>, element: CanvasElement) => void;
+  layer?: "all" | "path" | "label";
 }) {
   if (element.deleted) return null;
+  if (layer === "label" && !element.label) return null;
   const points = element.points.map(([x, y]) => `${x},${y}`).join(" ");
-  const middle = polylineMidpoint(element.points);
   const labelLayout = element.label
     ? getConnectorLabelLayout(element.label, element.fontSize)
     : undefined;
-  const visualBounds = getElementBounds(element);
+  const labelBounds = getConnectorLabelBounds(element);
   const labelAlign = element.align ?? "center";
-  const labelTextX = labelLayout
+  const labelTextX = labelLayout && labelBounds
     ? textXForAlign(
-        middle.x - labelLayout.width / 2 + 8,
-        labelLayout.width - 16,
+        labelBounds.x - element.x + LAYOUT_STANDARD.labelPaddingX,
+        labelLayout.width - LAYOUT_STANDARD.labelPaddingX * 2,
         labelAlign,
       )
-    : middle.x;
+    : 0;
+  const labelTextY = labelBounds && labelLayout
+    ? labelBounds.y - element.y + LAYOUT_STANDARD.labelPaddingY + labelLayout.fontSize
+    : 0;
+  const markerId = `canvas-arrow-${encodeURIComponent(element.id)}`;
+  const markerSize = arrowheadSize(element.style.strokeWidth);
   return (
     <g
       className={`canvas-node${element.locked ? " is-locked" : ""}`}
       transform={`translate(${element.x} ${element.y})`}
-      opacity={element.style.opacity}
       onPointerDown={(event) => onPointerDown(event, element)}
       data-element-id={element.id}
+      data-connector-layer={layer}
     >
+      {layer !== "label" ? <g opacity={element.style.opacity}>
+      <defs>
+        <marker
+          id={markerId}
+          viewBox="0 0 10 10"
+          refX="10"
+          refY="5"
+          markerUnits="userSpaceOnUse"
+          markerWidth={markerSize}
+          markerHeight={markerSize}
+          orient="auto-start-reverse"
+        >
+          <path d="M 0 0 L 10 5 L 0 10 z" fill={element.style.stroke} />
+        </marker>
+      </defs>
       <polyline
         points={points}
         fill="none"
         stroke="transparent"
-        strokeWidth={Math.max(14, element.style.strokeWidth + 10)}
-        vectorEffect="non-scaling-stroke"
+        strokeWidth={element.style.strokeWidth}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        pointerEvents="stroke"
       />
       <polyline
         points={points}
@@ -474,31 +528,26 @@ export function ConnectorView({
         stroke={element.style.stroke}
         strokeWidth={element.style.strokeWidth}
         strokeDasharray={dashArray(element.style.strokeStyle)}
-        markerStart={element.startArrow === "arrow" ? "url(#canvas-arrow-start)" : undefined}
-        markerEnd={element.endArrow === "arrow" ? "url(#canvas-arrow-end)" : undefined}
+        markerStart={element.startArrow === "arrow" ? `url(#${markerId})` : undefined}
+        markerEnd={element.endArrow === "arrow" ? `url(#${markerId})` : undefined}
         strokeLinecap="round"
         strokeLinejoin="round"
-        vectorEffect="non-scaling-stroke"
       />
-      {element.label && labelLayout ? (
+      </g> : null}
+      {layer !== "path" && element.label && labelLayout && labelBounds ? (
         <g className="canvas-connector-label">
           <rect
-            x={middle.x - labelLayout.width / 2}
-            y={middle.y - labelLayout.height - 12}
+            x={labelBounds.x - element.x}
+            y={labelBounds.y - element.y}
             width={labelLayout.width}
-            height={labelLayout.height + 8}
+            height={labelLayout.plateHeight}
             rx={8}
             fill="#f8f5ed"
-            fillOpacity={0.94}
+            fillOpacity={1}
           />
           <text
             x={labelTextX}
-            y={
-              middle.y -
-              labelLayout.height -
-              12 +
-              labelLayout.fontSize
-            }
+            y={labelTextY}
             textAnchor={textAnchorForAlign(labelAlign)}
             fill={element.style.textColor}
             fontFamily="ui-monospace, monospace"
@@ -508,26 +557,69 @@ export function ConnectorView({
             <SvgTextLines
               block={labelLayout}
               x={labelTextX}
-              y={
-                middle.y -
-                labelLayout.height -
-                12 +
-                labelLayout.fontSize
-              }
+              y={labelTextY}
               textAnchor={textAnchorForAlign(labelAlign)}
             />
           </text>
         </g>
       ) : null}
-      {selected ? (
+      {selected ? <ConnectorSelectionPath element={element} /> : null}
+    </g>
+  );
+}
+
+/** A selected arrow follows its route, leaving the space between bends empty. */
+function ConnectorSelectionPath({ element }: { element: CanvasConnectorElement }) {
+  return (
+    <polyline
+      data-editor-overlay="true"
+      data-connector-selection={element.id}
+      className="canvas-selection"
+      points={element.points.map(([x, y]) => `${x},${y}`).join(" ")}
+      style={{ strokeWidth: element.style.strokeWidth, vectorEffect: "none" }}
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      pointerEvents="none"
+    />
+  );
+}
+
+/** Selection always sits above the complete scene, including later nodes. */
+export function ElementSelectionView({
+  element,
+  onResizePointerDown,
+}: {
+  element: CanvasElement;
+  onResizePointerDown: SceneElementViewProps["onResizePointerDown"];
+}) {
+  if (element.type === "connector") {
+    return (
+      <g data-editor-overlay="true" transform={`translate(${element.x} ${element.y})`}>
+        <ConnectorSelectionPath element={element} />
+      </g>
+    );
+  }
+  const bounds = getElementBounds(element);
+  return (
+    <g data-editor-overlay="true">
+      <rect
+        className="canvas-selection"
+        x={bounds.x - 6}
+        y={bounds.y - 6}
+        width={bounds.width + 12}
+        height={bounds.height + 12}
+        rx={8}
+      />
+      {!element.locked ? (
         <rect
-          data-editor-overlay="true"
-          className="canvas-selection"
-          x={visualBounds.x - element.x}
-          y={visualBounds.y - element.y}
-          width={visualBounds.width}
-          height={visualBounds.height}
-          rx={7}
+          className="canvas-resize-handle"
+          x={element.x + element.width - 5}
+          y={element.y + element.height - 5}
+          width={11}
+          height={11}
+          rx={2}
+          onPointerDown={(event) => onResizePointerDown(event, element)}
         />
       ) : null}
     </g>

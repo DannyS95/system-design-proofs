@@ -20,6 +20,8 @@ export interface CanvasBackground {
 export interface CanvasAppState {
   camera: CanvasCamera;
   background: CanvasBackground;
+  /** Applied only by an explicit tidy operation or generated constructors. */
+  layoutSpacing?: { nodeGap: number; edgeClearance: number };
 }
 
 export type CanvasStrokeStyle = "solid" | "dashed" | "dotted";
@@ -53,6 +55,8 @@ export interface CanvasElementMetadata {
   outputs?: string;
   ownership?: string;
   explanation?: string;
+  /** One named HTTP(S) reference per line: Label | URL. */
+  referenceLinks?: string;
 }
 
 export interface CanvasBaseElement {
@@ -70,6 +74,10 @@ export interface CanvasBaseElement {
   deleted?: boolean;
   /** Optional visual container that must expand when this element grows. */
   parentId?: string;
+  /** Generated mechanism members translate together; user boards are never regrouped on load. */
+  layoutGroup?: string;
+  /** Local named endpoint for the same logical component drawn elsewhere. */
+  referenceId?: string;
   /** Editable detail that would make the overview card too noisy. */
   metadata?: CanvasElementMetadata;
 }
@@ -95,6 +103,8 @@ export interface CanvasSystemElement extends Omit<CanvasBaseElement, "type"> {
   title: string;
   subtitle?: string;
   body?: string;
+  /** Secondary execution/capacity annotation; assumptions must be labeled. */
+  capacity?: string;
   /** Optional so existing schema-v2 boards retain the original 15 px title. */
   titleFontSize?: number;
   /** Controls both secondary card copy and body copy when present. */
@@ -109,6 +119,9 @@ export type CanvasShapeKind = "rectangle" | "ellipse" | "diamond";
 export interface CanvasShapeElement extends Omit<CanvasBaseElement, "type"> {
   type: "shape";
   shape: CanvasShapeKind;
+  /** Explicit geometry role, independent of an arbitrary area threshold. */
+  layoutRole?: "container" | "mechanism";
+  containerPadding?: number;
   label?: string;
   /** Optional semantic mark drawn inside the editable shape. */
   iconId?: string;
@@ -146,6 +159,8 @@ export interface CanvasConnectorElement extends Omit<CanvasBaseElement, "type"> 
   align?: CanvasTextAlign;
   startBinding?: string;
   endBinding?: string;
+  /** Label plate centre relative to the connector origin, chosen after routing. */
+  labelPosition?: CanvasPoint;
 }
 
 export interface CanvasImageElement extends Omit<CanvasBaseElement, "type"> {

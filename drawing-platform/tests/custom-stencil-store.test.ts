@@ -95,4 +95,14 @@ describe("custom component library", () => {
     );
     expect(store.list()).toEqual([]);
   });
+
+  it("does not copy a scene-bound reference into a standalone library entry", () => {
+    const store = createCustomStencilStore(new MemoryStorage());
+    const existing = store.save(node);
+
+    expect(() => store.save({ ...node, id: "local-cache-reference", referenceId: node.id }))
+      .toThrow(/referenceId.*existing component/i);
+    expect(store.list()).toEqual([existing]);
+    expect(instantiateCustomStencil(existing, { x: 0, y: 0 })).not.toHaveProperty("referenceId");
+  });
 });

@@ -7,9 +7,10 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "generate:kv": "node scripts/generate-kv-template.mjs",
-    "generate:remaining": "node scripts/generate-remaining-templates.mjs",
+    "generate:kv": "node --import tsx scripts/generate-kv-template.mjs",
+    "generate:remaining": "node --import tsx scripts/generate-remaining-templates.mjs",
     "generate:designs": "npm run generate:kv && npm run generate:remaining",
+    "verify:visuals": "node --experimental-websocket --import tsx scripts/verify-layout-visuals.mjs",
     "dev": "concurrently --kill-others-on-fail --names api,web --prefix-colors magenta,cyan \"npm:dev:api\" \"npm:dev:web\"",
     "dev:api": "tsx watch server/index.ts",
     "dev:web": "vite",

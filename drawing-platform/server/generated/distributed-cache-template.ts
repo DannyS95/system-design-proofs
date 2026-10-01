@@ -8,86 +8,46 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
   "scene": {
     "elements": [
       {
-        "id": "request-layer",
-        "type": "shape",
-        "x": 80,
-        "y": 260,
-        "width": 2050,
-        "height": 100,
-        "rotation": 0,
-        "style": {
-          "fill": "#e8efff",
-          "stroke": "#2563eb",
-          "strokeWidth": 1.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#2563eb"
-        },
-        "shape": "rectangle",
-        "label": "REQUEST ROUTING · LOAD BALANCER SPREADS TRAFFIC · CACHE CLIENT COORDINATES REPLICAS",
-        "fontSize": 22,
-        "locked": false
-      },
-      {
-        "id": "placement-layer",
-        "type": "shape",
-        "x": 80,
-        "y": 930,
-        "width": 1900,
-        "height": 100,
-        "rotation": 0,
-        "style": {
-          "fill": "#f1ebff",
-          "stroke": "#7c3aed",
-          "strokeWidth": 1.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#7c3aed"
-        },
-        "shape": "rectangle",
-        "label": "KEY PLACEMENT · HASH THE KEY · SELECT THE NEXT VIRTUAL NODE CLOCKWISE · FIND ITS SHARD",
-        "fontSize": 22,
-        "locked": false
-      },
-      {
         "id": "hash-ring-visual",
         "type": "shape",
-        "x": 750,
-        "y": 1250,
-        "width": 400,
-        "height": 400,
+        "x": 506,
+        "y": 850,
         "rotation": 0,
+        "layoutGroup": "hash-ring",
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 3,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "shape": "ellipse",
+        "layoutRole": "mechanism",
+        "width": 400,
+        "height": 400,
         "locked": false
       },
       {
         "id": "vnode-a-1",
         "type": "shape",
-        "x": 918,
-        "y": 1218,
-        "width": 64,
-        "height": 71,
+        "x": 674,
+        "y": 818,
         "rotation": 0,
+        "layoutGroup": "hash-ring",
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "shape": "ellipse",
+        "layoutRole": "mechanism",
         "iconId": "virtual-node",
         "label": "vA1",
-        "fontSize": 20,
+        "fontSize": 14,
         "metadata": {
           "layer": "Key placement",
           "objectType": "consistent-hash virtual-node token / ring position",
@@ -95,28 +55,31 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "outputs": "owned key range maps to one logical shard",
           "ownership": "consistent-hash ring"
         },
+        "width": 64,
+        "height": 71,
+        "align": "center",
         "locked": false
       },
       {
         "id": "vnode-b-1",
         "type": "shape",
-        "x": 1059,
-        "y": 1277,
-        "width": 64,
-        "height": 71,
+        "x": 815,
+        "y": 877,
         "rotation": 0,
+        "layoutGroup": "hash-ring",
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "shape": "ellipse",
+        "layoutRole": "mechanism",
         "iconId": "virtual-node",
         "label": "vB1",
-        "fontSize": 20,
+        "fontSize": 14,
         "metadata": {
           "layer": "Key placement",
           "objectType": "consistent-hash virtual-node token / ring position",
@@ -124,28 +87,31 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "outputs": "owned key range maps to one logical shard",
           "ownership": "consistent-hash ring"
         },
+        "width": 64,
+        "height": 71,
+        "align": "center",
         "locked": false
       },
       {
         "id": "vnode-b-selected",
         "type": "shape",
-        "x": 1118,
-        "y": 1418,
-        "width": 64,
-        "height": 71,
+        "x": 874,
+        "y": 1018,
         "rotation": 0,
+        "layoutGroup": "hash-ring",
         "style": {
-          "fill": "#e9f7ed",
-          "stroke": "#15803d",
+          "fill": "#edf3ee",
+          "stroke": "#527760",
           "strokeWidth": 3,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "shape": "ellipse",
+        "layoutRole": "mechanism",
         "iconId": "virtual-node",
         "label": "vB2",
-        "fontSize": 20,
+        "fontSize": 14,
         "metadata": {
           "layer": "Key placement",
           "objectType": "consistent-hash virtual-node token / ring position",
@@ -153,28 +119,31 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "outputs": "owned key range maps to logical Cache Shard B",
           "ownership": "consistent-hash ring"
         },
+        "width": 64,
+        "height": 71,
+        "align": "center",
         "locked": false
       },
       {
         "id": "vnode-c-1",
         "type": "shape",
-        "x": 1059,
-        "y": 1559,
-        "width": 64,
-        "height": 71,
+        "x": 815,
+        "y": 1159,
         "rotation": 0,
+        "layoutGroup": "hash-ring",
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "shape": "ellipse",
+        "layoutRole": "mechanism",
         "iconId": "virtual-node",
         "label": "vC1",
-        "fontSize": 20,
+        "fontSize": 14,
         "metadata": {
           "layer": "Key placement",
           "objectType": "consistent-hash virtual-node token / ring position",
@@ -182,28 +151,31 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "outputs": "owned key range maps to one logical shard",
           "ownership": "consistent-hash ring"
         },
+        "width": 64,
+        "height": 71,
+        "align": "center",
         "locked": false
       },
       {
         "id": "vnode-a-2",
         "type": "shape",
-        "x": 918,
-        "y": 1618,
-        "width": 64,
-        "height": 71,
+        "x": 674,
+        "y": 1218,
         "rotation": 0,
+        "layoutGroup": "hash-ring",
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "shape": "ellipse",
+        "layoutRole": "mechanism",
         "iconId": "virtual-node",
         "label": "vA2",
-        "fontSize": 20,
+        "fontSize": 14,
         "metadata": {
           "layer": "Key placement",
           "objectType": "consistent-hash virtual-node token / ring position",
@@ -211,28 +183,31 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "outputs": "owned key range maps to one logical shard",
           "ownership": "consistent-hash ring"
         },
+        "width": 64,
+        "height": 71,
+        "align": "center",
         "locked": false
       },
       {
         "id": "vnode-c-2",
         "type": "shape",
-        "x": 777,
-        "y": 1559,
-        "width": 64,
-        "height": 71,
+        "x": 533,
+        "y": 1159,
         "rotation": 0,
+        "layoutGroup": "hash-ring",
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "shape": "ellipse",
+        "layoutRole": "mechanism",
         "iconId": "virtual-node",
         "label": "vC2",
-        "fontSize": 20,
+        "fontSize": 14,
         "metadata": {
           "layer": "Key placement",
           "objectType": "consistent-hash virtual-node token / ring position",
@@ -240,28 +215,31 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "outputs": "owned key range maps to one logical shard",
           "ownership": "consistent-hash ring"
         },
+        "width": 64,
+        "height": 71,
+        "align": "center",
         "locked": false
       },
       {
         "id": "vnode-a-3",
         "type": "shape",
-        "x": 718,
-        "y": 1418,
-        "width": 64,
-        "height": 71,
+        "x": 474,
+        "y": 1018,
         "rotation": 0,
+        "layoutGroup": "hash-ring",
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "shape": "ellipse",
+        "layoutRole": "mechanism",
         "iconId": "virtual-node",
         "label": "vA3",
-        "fontSize": 20,
+        "fontSize": 14,
         "metadata": {
           "layer": "Key placement",
           "objectType": "consistent-hash virtual-node token / ring position",
@@ -269,28 +247,31 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "outputs": "owned key range maps to one logical shard",
           "ownership": "consistent-hash ring"
         },
+        "width": 64,
+        "height": 71,
+        "align": "center",
         "locked": false
       },
       {
         "id": "vnode-b-2",
         "type": "shape",
-        "x": 777,
-        "y": 1277,
-        "width": 64,
-        "height": 71,
+        "x": 533,
+        "y": 877,
         "rotation": 0,
+        "layoutGroup": "hash-ring",
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "shape": "ellipse",
+        "layoutRole": "mechanism",
         "iconId": "virtual-node",
         "label": "vB3",
-        "fontSize": 20,
+        "fontSize": 14,
         "metadata": {
           "layer": "Key placement",
           "objectType": "consistent-hash virtual-node token / ring position",
@@ -298,55 +279,37 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "outputs": "owned key range maps to one logical shard",
           "ownership": "consistent-hash ring"
         },
+        "width": 64,
+        "height": 71,
+        "align": "center",
         "locked": false
       },
       {
         "id": "key-position-marker",
         "type": "shape",
-        "x": 1118,
-        "y": 1336,
-        "width": 38,
-        "height": 38,
+        "x": 874,
+        "y": 936,
         "rotation": 0,
+        "layoutGroup": "hash-ring",
         "style": {
-          "fill": "#fff1da",
-          "stroke": "#bd6212",
+          "fill": "#f6f0e4",
+          "stroke": "#9b713c",
           "strokeWidth": 3,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "shape": "diamond",
-        "locked": false
-      },
-      {
-        "id": "cache-layer",
-        "type": "shape",
-        "x": 80,
-        "y": 1850,
-        "width": 2050,
-        "height": 100,
-        "rotation": 0,
-        "style": {
-          "fill": "#e9f7ed",
-          "stroke": "#15803d",
-          "strokeWidth": 1.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#15803d"
-        },
-        "shape": "rectangle",
-        "label": "CACHE SERVERS · ONE SHARD HAS THREE PHYSICAL SERVERS · READ AND WRITE QUORUMS OVERLAP",
-        "fontSize": 22,
+        "layoutRole": "mechanism",
+        "width": 38,
+        "height": 38,
         "locked": false
       },
       {
         "id": "cache-shard-a",
         "type": "shape",
-        "x": 100,
-        "y": 2275,
-        "width": 350,
-        "height": 120,
+        "x": 32,
+        "y": 1601,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
@@ -358,40 +321,43 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         },
         "shape": "rectangle",
         "iconId": "partition",
-        "label": "CACHE SHARD A\nLOGICAL KEY RANGE",
-        "fontSize": 22,
+        "label": "Cache Shard A\nLogical key range",
+        "fontSize": 14,
         "metadata": {
           "layer": "Logical key placement",
           "objectType": "logical partition / key range"
         },
+        "width": 167.52000000000004,
+        "height": 99,
+        "align": "center",
         "locked": false
       },
       {
         "id": "cache-shard-b-group",
         "type": "shape",
-        "x": 650,
-        "y": 2110,
-        "width": 1500,
-        "height": 600,
+        "x": 474,
+        "y": 1436,
         "rotation": 0,
+        "layoutGroup": "selected-shard-b",
         "style": {
           "fill": "#f7fcf8",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "shape": "rectangle",
+        "layoutRole": "container",
+        "width": 1481,
+        "height": 523,
         "locked": false
       },
       {
         "id": "cache-shard-c",
         "type": "shape",
-        "x": 2350,
-        "y": 2275,
-        "width": 350,
-        "height": 120,
+        "x": 2003,
+        "y": 1601,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
@@ -403,277 +369,272 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         },
         "shape": "rectangle",
         "iconId": "partition",
-        "label": "CACHE SHARD C\nLOGICAL KEY RANGE",
-        "fontSize": 22,
+        "label": "Cache Shard C\nLogical key range",
+        "fontSize": 14,
         "metadata": {
           "layer": "Logical key placement",
           "objectType": "logical partition / key range"
         },
-        "locked": false
-      },
-      {
-        "id": "database-layer",
-        "type": "shape",
-        "x": 80,
-        "y": 3370,
-        "width": 900,
-        "height": 120,
-        "rotation": 0,
-        "style": {
-          "fill": "#ffe9e6",
-          "stroke": "#d84b43",
-          "strokeWidth": 1.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#d84b43"
-        },
-        "shape": "rectangle",
-        "label": "DATABASE · AUTHORITATIVE CASSANDRA · QUORUM WRITES",
-        "fontSize": 22,
-        "locked": false
-      },
-      {
-        "id": "observability-layer",
-        "type": "shape",
-        "x": 80,
-        "y": 4130,
-        "width": 950,
-        "height": 100,
-        "rotation": 0,
-        "style": {
-          "fill": "#e4f6f7",
-          "stroke": "#087e8b",
-          "strokeWidth": 1.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#2563eb"
-        },
-        "shape": "rectangle",
-        "label": "OBSERVABILITY · PROVE CACHE SPEED AND CONSISTENCY",
-        "fontSize": 22,
+        "width": 167.52000000000004,
+        "height": 99,
+        "align": "center",
         "locked": false
       },
       {
         "id": "client-request",
         "type": "connector",
-        "x": 500,
-        "y": 595,
-        "width": 300,
-        "height": 0,
+        "x": 425.56,
+        "y": 478.5,
+        "width": 198.8400000000001,
+        "height": 8,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
-          "strokeWidth": 3.5,
+          "stroke": "#496b8a",
+          "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
             0,
+            8
+          ],
+          [
+            174.8400000000001,
+            8
+          ],
+          [
+            174.8400000000001,
             0
           ],
           [
-            300,
+            198.8400000000001,
             0
           ]
         ],
         "label": "READ OR WRITE",
-        "fontSize": 20,
+        "fontSize": 14,
         "startBinding": "clients",
         "endBinding": "load-balancer",
         "startArrow": "none",
         "endArrow": "arrow",
+        "align": "center",
+        "labelPosition": [
+          87.42000000000002,
+          -17.100000000000023
+        ],
         "locked": false
       },
       {
         "id": "load-balancer-route",
         "type": "connector",
-        "x": 1200,
-        "y": 595,
-        "width": 350,
-        "height": 0,
+        "x": 1069.76,
+        "y": 487.5,
+        "width": 261.7600000000002,
+        "height": 15,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
-          "strokeWidth": 3.5,
+          "stroke": "#496b8a",
+          "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
             0,
+            15
+          ],
+          [
+            237.76000000000022,
+            15
+          ],
+          [
+            237.76000000000022,
             0
           ],
           [
-            350,
+            261.7600000000002,
             0
           ]
         ],
         "label": "FORWARD TO APPLICATION",
-        "fontSize": 20,
+        "fontSize": 14,
         "startBinding": "load-balancer",
         "endBinding": "cache-client-coordinator",
         "startArrow": "none",
         "endArrow": "arrow",
+        "align": "center",
+        "labelPosition": [
+          118.87999999999988,
+          40.10000000000002
+        ],
         "locked": false
       },
       {
         "id": "coordinator-response",
         "type": "connector",
-        "x": 1000,
-        "y": 680,
-        "width": 550,
-        "height": 100,
+        "x": 1069.76,
+        "y": 463.5,
+        "width": 261.7600000000002,
+        "height": 15,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
-          "strokeWidth": 3.5,
+          "stroke": "#527760",
+          "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
-            550,
+            261.7600000000002,
             0
           ],
           [
-            350,
+            24.6400000000001,
             0
           ],
           [
-            350,
-            100
+            24.6400000000001,
+            15
           ],
           [
             0,
-            100
-          ],
-          [
-            0,
-            10
+            15
           ]
         ],
-        "label": "RESULT AFTER REQUIRED RESPONSES",
-        "fontSize": 20,
+        "label": "QUORUM RESULT",
+        "fontSize": 14,
         "startBinding": "cache-client-coordinator",
         "endBinding": "load-balancer",
         "startArrow": "none",
         "endArrow": "arrow",
+        "align": "center",
+        "labelPosition": [
+          143.20000000000005,
+          -25.100000000000023
+        ],
         "locked": false
       },
       {
         "id": "client-response",
         "type": "connector",
-        "x": 325,
-        "y": 650,
-        "width": 475,
-        "height": 130,
+        "x": 425.56,
+        "y": 502.5,
+        "width": 198.8400000000001,
+        "height": 8,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
-          "strokeWidth": 3.5,
+          "stroke": "#527760",
+          "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
-            475,
+            198.8400000000001,
             0
           ],
           [
-            325,
+            174.8400000000001,
             0
           ],
           [
-            325,
-            130
+            174.8400000000001,
+            8
           ],
           [
             0,
-            130
-          ],
-          [
-            0,
-            40
+            8
           ]
         ],
         "label": "RETURN RESPONSE",
-        "fontSize": 20,
+        "fontSize": 14,
         "startBinding": "load-balancer",
         "endBinding": "clients",
         "startArrow": "none",
         "endArrow": "arrow",
+        "align": "center",
+        "labelPosition": [
+          87.42000000000002,
+          33.10000000000002
+        ],
         "locked": false
       },
       {
         "id": "coordinator-to-ring",
         "type": "connector",
-        "x": 1137,
-        "y": 595,
-        "width": 1583,
-        "height": 741,
+        "x": 909.75,
+        "y": 582,
+        "width": 639.2700000000002,
+        "height": 375.25,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
-          "strokeWidth": 3.5,
+          "stroke": "#775d83",
+          "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
-            963,
+            639.2700000000002,
             0
           ],
           [
-            1583,
-            0
+            639.2700000000002,
+            130
           ],
           [
-            1583,
-            485
+            26.25,
+            130
+          ],
+          [
+            26.25,
+            375.25
           ],
           [
             0,
-            485
-          ],
-          [
-            0,
-            741
+            375.25
           ]
         ],
-        "label": "HASH(KEY) · MARK ONE RING POSITION",
-        "fontSize": 20,
+        "label": "HASH(KEY)",
+        "fontSize": 14,
         "startBinding": "cache-client-coordinator",
         "endBinding": "key-position-marker",
         "startArrow": "none",
         "endArrow": "arrow",
+        "align": "center",
+        "labelPosition": [
+          332.7600000000002,
+          104.89999999999998
+        ],
         "locked": false
       },
       {
         "id": "key-position-to-vnode",
         "type": "connector",
-        "x": 1137,
-        "y": 1374,
+        "x": 893,
+        "y": 974,
         "width": 25,
         "height": 76,
         "rotation": 0,
+        "layoutGroup": "hash-ring",
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
-          "strokeWidth": 3.5,
+          "stroke": "#775d83",
+          "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
@@ -693,100 +654,98 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
             76
           ]
         ],
-        "label": "CLOCKWISE → STOP AT vB2",
-        "fontSize": 16,
         "startBinding": "key-position-marker",
         "endBinding": "vnode-b-selected",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
+        "align": "center",
         "locked": false
       },
       {
         "id": "selected-vnode-to-shard-b",
         "type": "connector",
-        "x": 960,
-        "y": 1450,
-        "width": 1860,
-        "height": 710,
+        "x": 668.5,
+        "y": 1053.5,
+        "width": 269.5,
+        "height": 414.5,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
-          "strokeWidth": 3.5,
+          "stroke": "#775d83",
+          "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
-            222,
+            269.5,
             0
           ],
           [
-            490,
+            131.5,
             0
           ],
           [
-            490,
-            290
-          ],
-          [
-            1860,
-            290
-          ],
-          [
-            1860,
-            590
+            131.5,
+            390.5
           ],
           [
             0,
-            590
+            390.5
           ],
           [
             0,
-            710
+            414.5
           ]
         ],
-        "label": "vB2 MAPS ITS OWNED KEY RANGE TO CACHE SHARD B",
-        "fontSize": 20,
+        "label": "SELECT SHARD B",
+        "fontSize": 14,
         "startBinding": "vnode-b-selected",
         "endBinding": "cache-shard-b-logical",
         "startArrow": "none",
         "endArrow": "arrow",
+        "align": "center",
+        "labelPosition": [
+          210.22000000000003,
+          292.875
+        ],
         "locked": false
       },
       {
         "id": "shard-b-to-server-b1",
         "type": "connector",
-        "x": 820,
-        "y": 2305,
-        "width": 125,
-        "height": 85,
+        "x": 690.875,
+        "y": 1597,
+        "width": 13.625,
+        "height": 101,
         "rotation": 0,
+        "layoutGroup": "selected-shard-b",
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
-            0,
+            13.625,
             0
           ],
           [
+            13.625,
+            77
+          ],
+          [
             0,
-            45
+            77
           ],
           [
-            125,
-            45
-          ],
-          [
-            125,
-            85
+            0,
+            101
           ]
         ],
         "startBinding": "cache-shard-b-logical",
@@ -794,40 +753,55 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "parentId": "cache-shard-b-group",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
+        "align": "center",
         "locked": false
       },
       {
         "id": "shard-b-to-server-b2",
         "type": "connector",
-        "x": 960,
-        "y": 2305,
-        "width": 465,
-        "height": 85,
+        "x": 562,
+        "y": 1597,
+        "width": 504,
+        "height": 354,
         "rotation": 0,
+        "layoutGroup": "selected-shard-b",
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
-            0,
+            118.5,
             0
           ],
           [
+            118.5,
+            77
+          ],
+          [
             0,
-            25
+            77
           ],
           [
-            465,
-            25
+            0,
+            354
           ],
           [
-            465,
-            85
+            480,
+            354
+          ],
+          [
+            480,
+            215.5
+          ],
+          [
+            504,
+            215.5
           ]
         ],
         "startBinding": "cache-shard-b-logical",
@@ -835,23 +809,26 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "parentId": "cache-shard-b-group",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
+        "align": "center",
         "locked": false
       },
       {
         "id": "shard-b-to-server-b3",
         "type": "connector",
-        "x": 1100,
-        "y": 2305,
-        "width": 805,
-        "height": 85,
+        "x": 830.9599999999998,
+        "y": 1532.5,
+        "width": 715.0400000000002,
+        "height": 280,
         "rotation": 0,
+        "layoutGroup": "selected-shard-b",
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
@@ -859,16 +836,24 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            0,
-            5
+            24.04000000000019,
+            0
           ],
           [
-            805,
-            5
+            24.04000000000019,
+            140
           ],
           [
-            805,
-            85
+            691.0400000000002,
+            140
+          ],
+          [
+            691.0400000000002,
+            280
+          ],
+          [
+            715.0400000000002,
+            280
           ]
         ],
         "startBinding": "cache-shard-b-logical",
@@ -876,297 +861,376 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "parentId": "cache-shard-b-group",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
+        "align": "center",
         "locked": false
       },
       {
         "id": "hit-return",
         "type": "connector",
-        "x": 2100,
-        "y": 595,
-        "width": 900,
-        "height": 2035,
+        "x": 1226.5,
+        "y": 582,
+        "width": 510.0200000000002,
+        "height": 854,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
-          "strokeWidth": 3.5,
+          "stroke": "#527760",
+          "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
-            50,
-            2035
-          ],
-          [
-            900,
-            2035
-          ],
-          [
-            900,
-            0
+            0,
+            854
           ],
           [
             0,
+            830
+          ],
+          [
+            510.0200000000002,
+            830
+          ],
+          [
+            510.0200000000002,
+            24
+          ],
+          [
+            370.5200000000002,
+            24
+          ],
+          [
+            370.5200000000002,
             0
           ]
         ],
-        "label": "HIT · RETURN NEWEST CACHE VALUE",
-        "fontSize": 20,
+        "label": "HIT · NEWEST VERSION",
+        "fontSize": 14,
         "startBinding": "cache-shard-b-group",
         "endBinding": "cache-client-coordinator",
         "startArrow": "none",
         "endArrow": "arrow",
+        "align": "center",
+        "labelPosition": [
+          404.4200000000001,
+          427
+        ],
         "locked": false
       },
       {
         "id": "cache-miss-to-database",
         "type": "connector",
-        "x": 1000,
-        "y": 2710,
-        "width": 0,
-        "height": 940,
+        "x": 430.0399999999999,
+        "y": 1959,
+        "width": 760.46,
+        "height": 903.5,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#bd6212",
-          "strokeWidth": 3.5,
+          "stroke": "#9b713c",
+          "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#bd6212"
+          "textColor": "#9b713c"
         },
         "points": [
           [
-            0,
+            760.46,
             0
           ],
           [
+            760.46,
+            903.5
+          ],
+          [
             0,
-            940
+            903.5
           ]
         ],
-        "label": "MISS OR CACHE-QUORUM FAILURE · APPLICATION READS CASSANDRA",
-        "fontSize": 20,
+        "label": "MISS / QUORUM FAILURE · READ CASSANDRA",
+        "fontSize": 14,
         "startBinding": "cache-shard-b-group",
         "endBinding": "database-shards",
         "startArrow": "none",
         "endArrow": "arrow",
+        "align": "center",
+        "labelPosition": [
+          592.46,
+          451.75
+        ],
         "locked": false
       },
       {
         "id": "database-fill-to-cache",
         "type": "connector",
-        "x": 1950,
-        "y": 2710,
-        "width": 0,
-        "height": 940,
+        "x": 430.0399999999999,
+        "y": 1959,
+        "width": 784.46,
+        "height": 927.5,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
-          "strokeWidth": 3.5,
+          "stroke": "#527760",
+          "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
             0,
-            940
+            927.5
           ],
           [
-            0,
+            784.46,
+            927.5
+          ],
+          [
+            784.46,
             0
           ]
         ],
-        "label": "DATABASE RESULT · FILL CACHE WITH SAME VERSION",
-        "fontSize": 20,
+        "label": "FILL CACHE · SAME VERSION",
+        "fontSize": 14,
         "startBinding": "database-shards",
         "endBinding": "cache-shard-b-group",
         "startArrow": "none",
         "endArrow": "arrow",
+        "align": "center",
+        "labelPosition": [
+          912.46,
+          834.75
+        ],
         "locked": false
       },
       {
         "id": "cache-write-quorum",
         "type": "connector",
-        "x": 2100,
-        "y": 620,
-        "width": 1000,
-        "height": 1880,
+        "x": 1202.5,
+        "y": 582,
+        "width": 370.5200000000002,
+        "height": 854,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
-          "strokeWidth": 3.5,
+          "stroke": "#527760",
+          "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
+            370.5200000000002,
+            0
+          ],
+          [
+            370.5200000000002,
+            154
+          ],
+          [
+            64.01000000000022,
+            154
+          ],
+          [
+            64.01000000000022,
+            806
+          ],
+          [
+            3.5,
+            806
+          ],
+          [
+            3.5,
+            830
+          ],
+          [
             0,
-            0
+            830
           ],
           [
-            1000,
-            0
-          ],
-          [
-            1000,
-            1880
-          ],
-          [
-            50,
-            1880
+            0,
+            854
           ]
         ],
         "label": "WRITE CACHE · WAIT FOR W=2",
-        "fontSize": 20,
+        "fontSize": 14,
         "startBinding": "cache-client-coordinator",
         "endBinding": "cache-shard-b-group",
         "startArrow": "none",
         "endArrow": "arrow",
+        "align": "center",
+        "labelPosition": [
+          -68.4699999999998,
+          480
+        ],
         "locked": false
       },
       {
         "id": "write-through-to-database",
         "type": "connector",
-        "x": 2100,
-        "y": 650,
-        "width": 1100,
-        "height": 3120,
+        "x": -48,
+        "y": 582,
+        "width": 1573.0200000000002,
+        "height": 2256.5,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#d84b43",
-          "strokeWidth": 3.5,
+          "stroke": "#a15f4b",
+          "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#d84b43"
+          "textColor": "#a15f4b"
         },
         "points": [
           [
+            1573.0200000000002,
+            0
+          ],
+          [
+            1573.0200000000002,
+            82
+          ],
+          [
             0,
-            0
+            82
           ],
           [
-            1100,
-            0
+            0,
+            2044
           ],
           [
-            1100,
-            3120
+            695.7248000000003,
+            2044
           ],
           [
-            250,
-            3120
+            695.7248000000003,
+            2256.5
+          ],
+          [
+            478.0399999999999,
+            2256.5
           ]
         ],
-        "label": "SAME VERSION · WAIT FOR CASSANDRA CL=QUORUM",
-        "fontSize": 20,
+        "label": "WRITE-THROUGH · CL=QUORUM",
+        "fontSize": 14,
         "startBinding": "cache-client-coordinator",
         "endBinding": "database-shards",
         "startArrow": "none",
         "endArrow": "arrow",
+        "align": "center",
+        "labelPosition": [
+          -128.00000000000006,
+          1091
+        ],
         "locked": false
       },
       {
         "id": "cache-signals",
         "type": "connector",
-        "x": 2100,
-        "y": 2550,
-        "width": 700,
-        "height": 1910,
+        "x": 1238.5,
+        "y": 1959,
+        "width": 1115.48,
+        "height": 799,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#087e8b",
-          "strokeWidth": 3.5,
+          "stroke": "#477d80",
+          "strokeWidth": 2.5,
           "strokeStyle": "dotted",
           "opacity": 1,
-          "textColor": "#087e8b"
+          "textColor": "#477d80"
         },
         "points": [
           [
-            50,
+            0,
             0
-          ],
-          [
-            700,
-            0
-          ],
-          [
-            700,
-            1910
           ],
           [
             0,
-            1910
+            24
+          ],
+          [
+            1115.48,
+            24
+          ],
+          [
+            1115.48,
+            799
           ]
         ],
         "label": "CACHE SIGNALS",
-        "fontSize": 20,
+        "fontSize": 14,
         "startBinding": "cache-shard-b-group",
         "endBinding": "monitoring-service",
         "startArrow": "none",
         "endArrow": "arrow",
+        "align": "center",
+        "labelPosition": [
+          557.74,
+          49.09999999999991
+        ],
         "locked": false
       },
       {
         "id": "database-signals",
         "type": "connector",
-        "x": 2100,
-        "y": 3760,
-        "width": 780,
-        "height": 770,
+        "x": 430.0399999999999,
+        "y": 2874.5,
+        "width": 1705.44,
+        "height": 36,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#087e8b",
-          "strokeWidth": 3.5,
+          "stroke": "#477d80",
+          "strokeWidth": 2.5,
           "strokeStyle": "dotted",
           "opacity": 1,
-          "textColor": "#087e8b"
+          "textColor": "#477d80"
         },
         "points": [
           [
-            250,
-            0
-          ],
-          [
-            780,
-            0
-          ],
-          [
-            780,
-            770
-          ],
-          [
             0,
-            770
+            36
+          ],
+          [
+            1681.44,
+            36
+          ],
+          [
+            1681.44,
+            0
+          ],
+          [
+            1705.44,
+            0
           ]
         ],
         "label": "DATABASE SIGNALS",
-        "fontSize": 20,
+        "fontSize": 14,
         "startBinding": "database-shards",
         "endBinding": "monitoring-service",
         "startArrow": "none",
         "endArrow": "arrow",
+        "align": "center",
+        "labelPosition": [
+          840.72,
+          61.09999999999991
+        ],
         "locked": false
       },
       {
         "id": "clients",
         "type": "system",
-        "x": 150,
-        "y": 500,
-        "width": 350,
-        "height": 190,
+        "x": 32,
+        "y": 384,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1174,24 +1238,29 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         },
         "iconId": "client",
         "title": "Clients",
-        "subtitle": "read or write request",
-        "titleFontSize": 24,
-        "bodyFontSize": 21,
+        "subtitle": "Read and write requests",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "align": "left",
         "variant": "client",
+        "width": 393.56,
+        "height": 229,
+        "capacity": "",
+        "metadata": {
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
+        "body": "CLIENT TRAFFIC\n  Average: 1,000 requests/s\n  Peak: 4,000 · surge: 8,000 requests/s\n\nREQUEST MIX\n  50% reads · 50% writes\n  10% of reads miss the cache",
         "locked": false
       },
       {
         "id": "load-balancer",
         "type": "system",
-        "x": 800,
-        "y": 500,
-        "width": 400,
-        "height": 190,
+        "x": 624.4000000000001,
+        "y": 384,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1199,24 +1268,30 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         },
         "iconId": "load-balancer",
         "title": "Load balancer",
-        "subtitle": "spreads requests across application instances",
-        "titleFontSize": 24,
-        "bodyFontSize": 21,
+        "subtitle": "Application request routing",
+        "body": "ROUTE REQUESTS\n  Spread reads and writes across app instances\n\nCPU + NETWORK · 1 host\n  Chosen budget: 50,000 requests/s",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "align": "left",
+        "metadata": {
+          "explanation": "Load balancer\nspreads requests across application instances",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "variant": "routing",
+        "width": 445.3599999999999,
+        "height": 213,
+        "capacity": "Peak: 4,000 / 50,000 = 8% used · 92% free",
         "locked": false
       },
       {
         "id": "cache-client-coordinator",
         "type": "system",
-        "x": 1550,
-        "y": 485,
-        "width": 550,
-        "height": 220,
+        "x": 1331.5200000000002,
+        "y": 369,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1224,45 +1299,49 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         },
         "iconId": "data-router",
         "title": "Cache client / coordinator",
-        "subtitle": "library inside the application/API service",
-        "body": "Hashes each key, selects replicas, and waits for the required cache and database responses.",
-        "titleFontSize": 24,
-        "bodyFontSize": 21,
+        "subtitle": "Library inside the application / API service",
+        "body": "COORDINATE\n  Place key · select replicas · await quorums\n\nCPU + QUORUM WORK · 1 app host\n  Chosen budget: 10,000 requests/s",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "align": "left",
         "metadata": {
+          "explanation": "Cache client / coordinator\nlibrary inside the application/API service\nHashes each key, selects replicas, and waits for the required cache and database responses.",
           "layer": "Application/API and cache coordination",
           "objectType": "client library inside an application service",
           "inputs": "read or write plus key and value",
           "outputs": "consistent-hash position, replica requests, quorum result",
-          "ownership": "application service"
+          "ownership": "application service",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "variant": "service",
+        "width": 458.07999999999976,
+        "height": 213,
+        "capacity": "Peak: 4,000 / 10,000 = 40% used · 60% free",
         "locked": false
       },
       {
         "id": "logic-placement",
         "type": "system",
-        "x": 1550,
-        "y": 1160,
-        "width": 980,
-        "height": 500,
+        "x": 1331.5200000000002,
+        "y": 760,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "hash-ring",
-        "title": "Clockwise-successor stopping rule",
-        "subtitle": "hash(key) → first virtual-node token clockwise",
-        "body": "1. hash(key) produces one position on the ring.\n2. Starting at that position, move clockwise.\n3. Stop at the first virtual-node token encountered.\n4. In this example, that token is vB2.\n5. The key range ending at vB2 maps to logical Cache Shard B.\n6. Shard B’s replica-selection rule then chooses physical server B1, B2, or B3.\n\nvB2 owns the ring interval after its predecessor and up to vB2.",
-        "titleFontSize": 24,
-        "bodyFontSize": 21,
+        "title": "hash(key) → ring position",
+        "subtitle": "Consistent-hash placement",
+        "body": "FIND THE OWNER\n  Start at hash(key) · move clockwise\n  First token: vB2 → Cache Shard B",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "align": "left",
         "metadata": {
+          "explanation": "Clockwise-successor stopping rule\nhash(key) → first virtual-node token clockwise\n1. hash(key) produces one position on the ring.\n2. Starting at that position, move clockwise.\n3. Stop at the first virtual-node token encountered.\n4. In this example, that token is vB2.\n5. The key range ending at vB2 maps to logical Cache Shard B.\n6. Shard B’s replica-selection rule then chooses physical server B1, B2, or B3.\n\nvB2 owns the ring interval after its predecessor and up to vB2.",
           "layer": "Key placement",
           "objectType": "consistent-hash virtual-node successor rule",
           "inputs": "hash(key) ring position",
@@ -1270,19 +1349,20 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "ownership": "cache client / coordinator"
         },
         "variant": "routing",
+        "width": 380.68,
+        "height": 149,
         "locked": false
       },
       {
         "id": "cache-shard-b-logical",
         "type": "system",
-        "x": 700,
-        "y": 2160,
-        "width": 520,
-        "height": 175,
+        "x": 506,
+        "y": 1468,
         "rotation": 0,
+        "layoutGroup": "selected-shard-b",
         "style": {
-          "fill": "#e9f7ed",
-          "stroke": "#15803d",
+          "fill": "#edf3ee",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1290,12 +1370,13 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         },
         "iconId": "partition",
         "title": "Cache Shard B",
-        "subtitle": "logical partition / key range · selected",
-        "body": "vB2 maps its owned key range to Cache Shard B.",
-        "titleFontSize": 24,
-        "bodyFontSize": 21,
+        "subtitle": "Logical key range · selected",
+        "body": "REPLICA CANDIDATES\n  vB2 interval → B1 / B2 / B3",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "align": "left",
         "metadata": {
+          "explanation": "Cache Shard B\nlogical partition / key range · selected\nvB2 maps its owned key range to Cache Shard B.",
           "layer": "Logical key placement",
           "objectType": "logical partition / key range",
           "inputs": "owned interval ending at vB2",
@@ -1304,19 +1385,20 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         },
         "parentId": "cache-shard-b-group",
         "variant": "cache",
+        "width": 324.95999999999987,
+        "height": 129,
         "locked": false
       },
       {
         "id": "cache-server-b1",
         "type": "system",
-        "x": 780,
-        "y": 2390,
-        "width": 330,
-        "height": 250,
+        "x": 586,
+        "y": 1698,
         "rotation": 0,
+        "layoutGroup": "selected-shard-b",
         "style": {
           "fill": "#ffffff",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1324,33 +1406,37 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         },
         "iconId": "server",
         "title": "B1",
-        "subtitle": "physical cache server",
-        "body": "Replica 1 stores a temporary RAM copy of Cache Shard B.",
-        "titleFontSize": 24,
-        "bodyFontSize": 21,
+        "subtitle": "Physical cache server",
+        "body": "STORED DATA\n  Shard B · temporary RAM copy\n\nRAM + NETWORK\n  Chosen budget: 50,000 operations/s",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "align": "left",
         "metadata": {
+          "explanation": "B1\nphysical cache server\nReplica 1 stores a temporary RAM copy of Cache Shard B.",
           "layer": "Physical cache-server layer",
           "objectType": "physical cache server / replica",
           "inputs": "Shard B read or write",
           "outputs": "versioned value or acknowledgement",
-          "ownership": "cache replica set"
+          "ownership": "cache replica set",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "parentId": "cache-shard-b-group",
         "variant": "cache",
+        "width": 376.76,
+        "height": 229,
+        "capacity": "Peak: ≈3,500 / 50,000 operations/s\n≈7% used · 93% free",
         "locked": false
       },
       {
         "id": "cache-server-b2",
         "type": "system",
-        "x": 1260,
-        "y": 2390,
-        "width": 330,
-        "height": 250,
+        "x": 1066,
+        "y": 1698,
         "rotation": 0,
+        "layoutGroup": "selected-shard-b",
         "style": {
           "fill": "#ffffff",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1358,33 +1444,37 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         },
         "iconId": "server",
         "title": "B2",
-        "subtitle": "physical cache server",
-        "body": "Replica 2 stores a temporary RAM copy of Cache Shard B.",
-        "titleFontSize": 24,
-        "bodyFontSize": 21,
+        "subtitle": "Physical cache server",
+        "body": "STORED DATA\n  Shard B · temporary RAM copy\n\nRAM + NETWORK\n  Chosen budget: 50,000 operations/s",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "align": "left",
         "metadata": {
+          "explanation": "B2\nphysical cache server\nReplica 2 stores a temporary RAM copy of Cache Shard B.",
           "layer": "Physical cache-server layer",
           "objectType": "physical cache server / replica",
           "inputs": "Shard B read or write",
           "outputs": "versioned value or acknowledgement",
-          "ownership": "cache replica set"
+          "ownership": "cache replica set",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "parentId": "cache-shard-b-group",
         "variant": "cache",
+        "width": 376.76,
+        "height": 229,
+        "capacity": "Peak: ≈3,500 / 50,000 operations/s\n≈7% used · 93% free",
         "locked": false
       },
       {
         "id": "cache-server-b3",
         "type": "system",
-        "x": 1740,
-        "y": 2390,
-        "width": 330,
-        "height": 250,
+        "x": 1546,
+        "y": 1698,
         "rotation": 0,
+        "layoutGroup": "selected-shard-b",
         "style": {
           "fill": "#ffffff",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1392,79 +1482,86 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         },
         "iconId": "server",
         "title": "B3",
-        "subtitle": "physical cache server",
-        "body": "Replica 3 stores a temporary RAM copy of Cache Shard B.",
-        "titleFontSize": 24,
-        "bodyFontSize": 21,
+        "subtitle": "Physical cache server",
+        "body": "STORED DATA\n  Shard B · temporary RAM copy\n\nRAM + NETWORK\n  Chosen budget: 50,000 operations/s",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "align": "left",
         "metadata": {
+          "explanation": "B3\nphysical cache server\nReplica 3 stores a temporary RAM copy of Cache Shard B.",
           "layer": "Physical cache-server layer",
           "objectType": "physical cache server / replica",
           "inputs": "Shard B read or write",
           "outputs": "versioned value or acknowledgement",
-          "ownership": "cache replica set"
+          "ownership": "cache replica set",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "parentId": "cache-shard-b-group",
         "variant": "cache",
+        "width": 376.76,
+        "height": 229,
+        "capacity": "Peak: ≈3,500 / 50,000 operations/s\n≈7% used · 93% free",
         "locked": false
       },
       {
         "id": "logic-cache",
         "type": "system",
-        "x": 100,
-        "y": 2880,
-        "width": 850,
-        "height": 330,
+        "x": 32,
+        "y": 2034,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "replica-group",
-        "title": "Cache quorum + availability",
+        "title": "Cache quorum",
         "subtitle": "N=3 · R=2 · W=2",
-        "body": "N=3: three physical servers per shard.\nR=2: read two versioned values; return the newest.\nW=2: require two cache write acknowledgements.\nR+W>N: the read and write quorums intersect.\nONE SERVER DOWN: two healthy replicas still form a quorum.\nFEWER THAN TWO: do not serve a single potentially stale copy.",
-        "titleFontSize": 24,
-        "bodyFontSize": 21,
+        "body": "OVERLAPPING QUORUMS\n  3 copies · read 2 · await 2 write replies\n  R + W > N · tolerates one failed server\n\nWORK PER REQUEST\n  Read: 2 operations · write / refill: 3\n\nCOMBINED CHOSEN BUDGET\n  3 × 50,000 = 150,000 node operations/s\n  Read-only limit: 75,000 client requests/s",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "align": "left",
         "metadata": {
+          "explanation": "Cache quorum + availability\nN=3 · R=2 · W=2\nN=3: three physical servers per shard.\nR=2: read two versioned values; return the newest.\nW=2: require two cache write acknowledgements.\nR+W>N: the read and write quorums intersect.\nONE SERVER DOWN: two healthy replicas still form a quorum.\nFEWER THAN TWO: do not serve a single potentially stale copy.",
           "layer": "Replica selection and cache consistency",
           "objectType": "cache quorum policy",
           "inputs": "responses from B1, B2, B3",
           "outputs": "newest version or quorum failure",
-          "ownership": "cache client / coordinator"
+          "ownership": "cache client / coordinator",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "variant": "cache",
+        "width": 416.7999999999999,
+        "height": 313,
+        "capacity": "Peak: 10,600 / 150,000 ≈ 7% used · 93% free",
         "locked": false
       },
       {
         "id": "write-commit-rule",
         "type": "system",
-        "x": 1050,
-        "y": 2880,
-        "width": 800,
-        "height": 330,
+        "x": 624.4000000000001,
+        "y": 2034,
         "rotation": 0,
         "style": {
-          "fill": "#ffe9e6",
-          "stroke": "#d84b43",
+          "fill": "#f6ede8",
+          "stroke": "#a15f4b",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "policy-gate",
-        "title": "Acknowledged-write rule",
-        "subtitle": "cache W=2 + Cassandra CL=QUORUM",
-        "body": "A financial write is acknowledged only after both required quorums succeed for the same version. If either side fails, do not acknowledge; invalidate or bypass the cache until Cassandra refreshes it.",
-        "titleFontSize": 24,
-        "bodyFontSize": 21,
+        "title": "Acknowledged write",
+        "subtitle": "Synchronous write-through",
+        "body": "BOTH MUST SUCCEED\n  Cache W=2 + Cassandra CL=QUORUM\n\nCLIENT SUCCESS\n  Acknowledge only after both quorums",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "align": "left",
         "metadata": {
+          "explanation": "Acknowledged-write rule\ncache W=2 + Cassandra CL=QUORUM\nA financial write is acknowledged only after both required quorums succeed for the same version. If either side fails, do not acknowledge; invalidate or bypass the cache until Cassandra refreshes it.",
           "layer": "Application/API write coordination",
           "objectType": "synchronous write-through commit rule",
           "inputs": "cache W=2 acknowledgements and Cassandra CL=QUORUM acknowledgement",
@@ -1472,19 +1569,19 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "ownership": "cache client / coordinator"
         },
         "variant": "service",
+        "width": 389.35999999999996,
+        "height": 189,
         "locked": false
       },
       {
         "id": "memory-policy",
         "type": "system",
-        "x": 2050,
-        "y": 2880,
-        "width": 700,
-        "height": 230,
+        "x": 1331.5200000000002,
+        "y": 2034,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#bd6212",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1493,79 +1590,130 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
         "iconId": "policy-gate",
         "title": "Memory policy",
         "subtitle": "LFU eviction · TTL expiry",
-        "body": "Evicted or expired keys follow the MISS path to Cassandra and then refill the cache.",
-        "titleFontSize": 24,
-        "bodyFontSize": 21,
+        "body": "REMOVE ENTRIES\n  LFU: least frequently used\n  TTL: expired entries\n\nNEXT READ\n  Miss → Cassandra → refill",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "align": "left",
+        "metadata": {
+          "layer": "Cache-server memory",
+          "ownership": "Physical cache servers",
+          "explanation": "LFU eviction removes the least frequently used entries; TTL expiry removes aged entries. Both produce a MISS, followed by an authoritative Cassandra read and cache refill."
+        },
+        "variant": "cache",
+        "width": 303.4000000000001,
+        "height": 209,
+        "locked": false
+      },
+      {
+        "id": "financial-hot-key",
+        "type": "system",
+        "x": 1331.5200000000002,
+        "y": 2422,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#9b713c",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "request-coalescer",
+        "title": "Hot-key options",
+        "subtitle": "Application load protection",
+        "body": "REDUCE REPEATED WORK\n  Coalesce misses for the same key\n  Spread reads across healthy replicas\n\nKEEP CONSISTENCY\n  R=2 / W=2 · no stale single-copy fallback",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "align": "left",
+        "metadata": {
+          "layer": "Application/API load protection",
+          "objectType": "hot-key mitigation options",
+          "inputs": "concentrated requests for one financial key",
+          "outputs": "coalesced authoritative reads or reads spread across the existing replica set",
+          "ownership": "cache client / coordinator",
+          "explanation": "These are load-protection options, not a change to the selected topology. Single-flight database fallback can combine concurrent cache misses. Reads remain versioned R=2 quorums; writes still require cache W=2 plus Cassandra CL=QUORUM. Increasing the replica factor requires reevaluating N, R and W before adoption."
+        },
         "variant": "service",
+        "width": 431.08,
+        "height": 209,
         "locked": false
       },
       {
         "id": "database-shards",
         "type": "system",
-        "x": 750,
-        "y": 3650,
-        "width": 1600,
-        "height": 240,
+        "x": 32,
+        "y": 2758,
         "rotation": 0,
+        "layoutGroup": "persistence",
         "style": {
           "fill": "#ffffff",
-          "stroke": "#d84b43",
+          "stroke": "#a15f4b",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "distributed-database",
-        "title": "Cassandra cluster",
-        "subtitle": "authoritative · RF=3 · CL=QUORUM · partition key=user_id",
-        "body": "RF=3: Cassandra stores 3 durable copies of each row.\nCL=QUORUM: 2 of 3 database replicas must respond to the read or write.\nPARTITION KEY: user_id chooses the database partition.",
-        "titleFontSize": 24,
-        "bodyFontSize": 21,
+        "title": "Cassandra",
+        "subtitle": "Authoritative source of truth",
+        "body": "REPLICATION + QUORUM\n  RF=3: three durable copies\n  CL=QUORUM: two of three must respond\n\nPARTITION KEY\n  user_id chooses the database partition",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "align": "left",
         "metadata": {
+          "explanation": "Cassandra cluster\nauthoritative · RF=3 · CL=QUORUM · partition key=user_id\nRF=3: Cassandra stores 3 durable copies of each row.\nCL=QUORUM: 2 of 3 database replicas must respond to the read or write.\nPARTITION KEY: user_id chooses the database partition.",
           "layer": "Persistence",
           "objectType": "authoritative distributed database",
           "inputs": "miss reads and synchronous financial writes",
           "outputs": "quorum result and durable versioned rows",
-          "ownership": "source of truth"
+          "ownership": "source of truth",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
         },
         "variant": "database",
+        "width": 398.0399999999999,
+        "height": 233,
+        "capacity": "Workload and chosen budget below",
+        "parentId": "database-workload-area",
         "locked": false
       },
       {
         "id": "monitoring-service",
         "type": "system",
-        "x": 1100,
-        "y": 4380,
-        "width": 1000,
-        "height": 210,
+        "x": 2135.48,
+        "y": 2758,
         "rotation": 0,
+        "layoutGroup": "observability",
         "style": {
-          "fill": "#e4f6f7",
-          "stroke": "#087e8b",
+          "fill": "#eaf2f2",
+          "stroke": "#477d80",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "telemetry",
-        "title": "Monitoring service",
-        "subtitle": "observe cache servers and Cassandra",
-        "body": "hit ratio · shard QPS · p50/p99\nquorum failures · replica lag",
-        "titleFontSize": 24,
-        "bodyFontSize": 21,
+        "title": "Monitoring",
+        "subtitle": "Cache and database signals",
+        "body": "TRAFFIC + LATENCY\n  Hit ratio · requests/s per shard\n  p50 / p99: median / 99th-percentile latency\n\nHEALTH\n  Quorum failures · replica lag",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "align": "left",
+        "metadata": {
+          "explanation": "Monitoring service\nobserve cache servers and Cassandra\nhit ratio · shard QPS · p50/p99\nquorum failures · replica lag",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "variant": "observability",
+        "width": 436.40000000000003,
+        "height": 233,
+        "capacity": "Workload and chosen budget below",
+        "parentId": "monitoring-workload-area",
         "locked": false
       },
       {
         "id": "title",
         "type": "text",
-        "x": 70,
-        "y": 38,
-        "width": 1100,
-        "height": 51,
+        "x": 32,
+        "y": 32,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1576,19 +1724,19 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "text": "Distributed Cache · financial quorum path",
-        "fontSize": 36,
+        "fontSize": 34,
         "fontFamily": "sans",
         "fontWeight": 600,
         "align": "left",
+        "width": 760,
+        "height": 103.04,
         "locked": false
       },
       {
         "id": "goal",
         "type": "text",
-        "x": 1380,
-        "y": 48,
-        "width": 1520,
-        "height": 30,
+        "x": 840,
+        "y": 32,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1598,20 +1746,20 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "opacity": 1,
           "textColor": "#66717d"
         },
-        "text": "GOAL · 500K USERS · BALANCED R/W · FINANCIAL KEYS REQUIRE STRONG CONSISTENCY",
-        "fontSize": 20,
+        "text": "WORKLOAD · 500,000 users\n  Balanced reads / writes · strong consistency for financial keys\n\nCHOSEN BUDGETS · unmeasured\n  Target: keep ≥50% free · surge (flash) = 2× peak",
+        "fontSize": 14,
         "fontFamily": "sans",
-        "fontWeight": 700,
-        "align": "right",
+        "fontWeight": 400,
+        "align": "left",
+        "width": 536.2903999999997,
+        "height": 105.60000000000001,
         "locked": false
       },
       {
         "id": "invariant",
         "type": "text",
-        "x": 70,
-        "y": 120,
-        "width": 2830,
-        "height": 35,
+        "x": 32,
+        "y": 170,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1619,45 +1767,116 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "strokeWidth": 0,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#d84b43"
+          "textColor": "#a15f4b"
         },
-        "text": "INVARIANT · NO CLIENT OBSERVES A VALUE OLDER THAN THE LAST ACKNOWLEDGED WRITE",
-        "fontSize": 24,
+        "text": "CONSISTENCY RULE\n  No client sees a value older than the last acknowledged write",
+        "fontSize": 14,
+        "fontFamily": "sans",
+        "fontWeight": 400,
+        "align": "left",
+        "width": 512.8431999999998,
+        "height": 51.84,
+        "locked": false
+      },
+      {
+        "id": "request-layer",
+        "type": "text",
+        "x": 32,
+        "y": 297,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "transparent",
+          "strokeWidth": 0,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#496b8a"
+        },
+        "text": "REQUEST ROUTING · LOAD BALANCER → APPLICATION",
+        "fontSize": 18,
         "fontFamily": "sans",
         "fontWeight": 700,
-        "align": "center",
+        "align": "left",
+        "width": 632.8960000000002,
+        "height": 39.04,
+        "locked": false
+      },
+      {
+        "id": "placement-layer",
+        "type": "text",
+        "x": 32,
+        "y": 688,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "transparent",
+          "strokeWidth": 0,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#775d83"
+        },
+        "text": "KEY PLACEMENT · HASH → CLOCKWISE SUCCESSOR → SHARD",
+        "fontSize": 18,
+        "fontFamily": "sans",
+        "fontWeight": 700,
+        "align": "left",
+        "width": 716.7615999999999,
+        "height": 39.04,
         "locked": false
       },
       {
         "id": "hash-key-label",
         "type": "text",
-        "x": 950,
-        "y": 1330,
-        "width": 150,
-        "height": 56,
+        "x": 644,
+        "y": 1024,
         "rotation": 0,
+        "layoutGroup": "hash-ring",
         "style": {
           "fill": "transparent",
           "stroke": "transparent",
           "strokeWidth": 0,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#bd6212"
+          "textColor": "#9b713c"
         },
         "text": "HASH(KEY)\nPOSITION",
-        "fontSize": 20,
+        "fontSize": 14,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "center",
+        "width": 124,
+        "height": 52,
         "locked": false
       },
       {
         "id": "selected-token-note",
         "type": "text",
-        "x": 1200,
-        "y": 1490,
-        "width": 250,
-        "height": 45,
+        "x": 956,
+        "y": 1090,
+        "rotation": 0,
+        "layoutGroup": "hash-ring",
+        "style": {
+          "fill": "transparent",
+          "stroke": "transparent",
+          "strokeWidth": 0,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#527760"
+        },
+        "text": "vB2 · VIRTUAL TOKEN",
+        "fontSize": 14,
+        "fontFamily": "sans",
+        "fontWeight": 700,
+        "align": "left",
+        "width": 214,
+        "height": 34,
+        "locked": false
+      },
+      {
+        "id": "cache-layer",
+        "type": "text",
+        "x": 32,
+        "y": 1364,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1665,50 +1884,229 @@ export const DISTRIBUTED_CACHE_TEMPLATE: TemplateDefinition = {
           "strokeWidth": 0,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
-        "text": "vB2 · VIRTUAL TOKEN\nNOT PHYSICAL SERVER B2",
-        "fontSize": 16,
+        "text": "CACHE SERVERS · THREE REPLICAS · OVERLAPPING QUORUMS",
+        "fontSize": 18,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
+        "width": 743.7759999999998,
+        "height": 39.04,
         "locked": false
       },
       {
         "id": "shard-b-replication",
         "type": "text",
-        "x": 1280,
-        "y": 2175,
-        "width": 800,
-        "height": 56,
+        "x": 1086,
+        "y": 1483,
         "rotation": 0,
+        "layoutGroup": "selected-shard-b",
         "style": {
           "fill": "transparent",
           "stroke": "transparent",
           "strokeWidth": 0,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
-        "text": "REPLICA SELECTION\nTHREE PHYSICAL SERVERS HOLD THIS SHARD",
-        "fontSize": 20,
+        "text": "REPLICA SELECTION\n  Three physical servers",
+        "fontSize": 14,
         "fontFamily": "sans",
         "fontWeight": 700,
-        "align": "center",
+        "align": "left",
         "parentId": "cache-shard-b-group",
+        "width": 221.0944000000001,
+        "height": 51.84,
         "locked": false
+      },
+      {
+        "id": "database-layer",
+        "type": "text",
+        "x": 32,
+        "y": 2706,
+        "rotation": 0,
+        "layoutGroup": "persistence",
+        "style": {
+          "fill": "transparent",
+          "stroke": "transparent",
+          "strokeWidth": 0,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#a15f4b"
+        },
+        "text": "PERSISTENCE · AUTHORITATIVE CASSANDRA",
+        "fontSize": 18,
+        "fontFamily": "sans",
+        "fontWeight": 700,
+        "align": "left",
+        "width": 535.7248000000003,
+        "height": 39.04,
+        "parentId": "database-workload-area",
+        "locked": false
+      },
+      {
+        "id": "observability-layer",
+        "type": "text",
+        "x": 2135.48,
+        "y": 2706,
+        "rotation": 0,
+        "layoutGroup": "observability",
+        "style": {
+          "fill": "transparent",
+          "stroke": "transparent",
+          "strokeWidth": 0,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#496b8a"
+        },
+        "text": "OBSERVABILITY",
+        "fontSize": 18,
+        "fontFamily": "sans",
+        "fontWeight": 700,
+        "align": "left",
+        "width": 200.66560000000004,
+        "height": 39.04,
+        "parentId": "monitoring-workload-area",
+        "locked": false
+      },
+      {
+        "id": "database-workload-area",
+        "type": "shape",
+        "shape": "rectangle",
+        "layoutRole": "container",
+        "containerPadding": 32,
+        "layoutGroup": "persistence",
+        "x": 0,
+        "y": 2674,
+        "width": 599.7248000000003,
+        "height": 566,
+        "rotation": 0,
+        "style": {
+          "fill": "#fbf5f2",
+          "stroke": "#a15f4b",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "locked": false
+      },
+      {
+        "id": "database-workload",
+        "type": "system",
+        "x": 32,
+        "y": 3023,
+        "width": 431.0799999999999,
+        "height": 185,
+        "rotation": 0,
+        "parentId": "database-workload-area",
+        "layoutGroup": "persistence",
+        "referenceId": "database-shards",
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#a15f4b",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "file-snapshot",
+        "title": "Cassandra workload",
+        "subtitle": "Chosen budget · 3 machines · unmeasured",
+        "body": "3 hosts × 5,000 = 15,000 operations/s\nPeak work: 6,000 + 400 = 6,400 operations/s",
+        "capacity": "Peak: 6,400 / 15,000 ops/s ≈ 43% used · 57% free\n2× traffic: ≈ 85% used · below spare-capacity target",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "align": "left",
+        "variant": "neutral",
+        "locked": false,
+        "metadata": {
+          "objectType": "workload estimate",
+          "layer": "Persistence",
+          "ownership": "Cassandra",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md",
+          "inputs": "Request rate × work per request",
+          "outputs": "Load, spare capacity and first limit",
+          "explanation": "Budget\n3 hosts × 5,000 operations/s = 15,000 total (assumed).\n\nPeak work\nWrites: 2,000 × 3 copies = 6,000 ops/s.\nReads: 200 cache misses × 2 copies = 400 ops/s.\nTotal: 6,400 ops/s · 43% used.\n\nConsequence\n2× traffic uses 85%: below the 50% spare-capacity target.\nCassandra reaches its budget first at ≈9,400 client requests/s."
+        }
+      },
+      {
+        "id": "monitoring-workload-area",
+        "type": "shape",
+        "shape": "rectangle",
+        "layoutRole": "container",
+        "containerPadding": 32,
+        "layoutGroup": "observability",
+        "x": 2103.48,
+        "y": 2674,
+        "width": 522.7999999999997,
+        "height": 534,
+        "rotation": 0,
+        "style": {
+          "fill": "#f1f8f7",
+          "stroke": "#477d80",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "locked": false
+      },
+      {
+        "id": "monitoring-workload",
+        "type": "system",
+        "x": 2135.48,
+        "y": 3023,
+        "width": 458.79999999999984,
+        "height": 153,
+        "rotation": 0,
+        "parentId": "monitoring-workload-area",
+        "layoutGroup": "observability",
+        "referenceId": "monitoring-service",
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#477d80",
+          "strokeWidth": 2,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#17212b"
+        },
+        "iconId": "file-snapshot",
+        "title": "Monitoring workload",
+        "subtitle": "Chosen budget · 1 collector · unmeasured",
+        "body": "2 messages per request → 8,000 messages/s\n1 collector · chosen budget: 50,000 messages/s",
+        "capacity": "Peak: 8,000 / 50,000 = 16% used · 84% free",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "align": "left",
+        "variant": "neutral",
+        "locked": false,
+        "metadata": {
+          "objectType": "workload estimate",
+          "layer": "Observability",
+          "ownership": "Monitoring",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md",
+          "inputs": "Request rate × work per request",
+          "outputs": "Load, spare capacity and first limit",
+          "explanation": "Work per request\nTwo messages: request started and request finished.\n\nPeak work\n4,000 requests/s × 2 = 8,000 messages/s.\n\nBudget\n1 collector × 50,000 messages/s (assumed). 16% used; 84% free."
+        }
       }
     ],
     "appState": {
       "camera": {
-        "x": 18,
-        "y": 18,
-        "zoom": 0.52
+        "x": 224.0000000000001,
+        "y": 70.4,
+        "zoom": 0.8
       },
       "background": {
         "color": "#f7f4ec",
         "pattern": "dots",
         "spacing": 24
+      },
+      "layoutSpacing": {
+        "nodeGap": 32,
+        "edgeClearance": 24
       }
     },
     "files": {}

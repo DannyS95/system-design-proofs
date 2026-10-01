@@ -8,6 +8,7 @@ import {
   type CanvasShapeElement,
   type CanvasTextElement,
 } from "../shared/contracts.js";
+import { parseBoardScene, parseSaveBoardInput } from "../shared/validation.js";
 import {
   cloneScene,
   deleteElementAndDetachBindings,
@@ -15,6 +16,7 @@ import {
   findElementAt,
   fitElementToContent,
   fitElementHeightToText,
+  fitSceneToContent,
   getElementBounds,
   getSceneBounds,
   moveBoundConnectors,
@@ -115,7 +117,39 @@ describe("custom canvas model", () => {
         y: 50,
         points: [[20, -10], [-30, 40], [60, 15]],
       }),
-    ).toEqual({ x: 60, y: 30, width: 110, height: 70 });
+    ).toEqual({ x: 64, y: 34, width: 102, height: 62 });
+  });
+
+  it("preserves saved node positions and camera while repairing undersized text", () => {
+    const original = {
+      ...createEmptyScene(),
+      elements: [{ ...shape("choice", -300, 180, 30, 24),
+        label: "LFU eviction · TTL expiry", fontSize: 18 }],
+      appState: { ...createEmptyScene().appState, camera: { x: 100, y: 45, zoom: 0.41 } },
+    };
+    const repaired = fitSceneToContent(original);
+    expect(repaired.elements[0]).toMatchObject({ x: -300, y: 180 });
+    expect(repaired.elements[0].height).toBeGreaterThan(24);
+    expect(repaired.appState.camera).toEqual(original.appState.camera);
+    expect(original.elements[0].width).toBe(30);
+  });
+
+  it("preserves a persisted label's world position during route normalization", () => {
+    const normalized = normalizeConnectorGeometry({
+      ...boundConnector, x: 100, y: 50, points: [[-20, 10], [160, 10]],
+      label: "read", labelPosition: [80, -20],
+    });
+    expect(normalized.labelPosition).toEqual([100, -30]);
+    expect(normalized.x + normalized.labelPosition![0]).toBe(180);
+    expect(normalized.y + normalized.labelPosition![1]).toBe(30);
+  });
+
+  it("keeps a persisted label beside its segment when a route is resized", () => {
+    const scene = { ...createEmptyScene(), elements: [{
+      ...boundConnector, label: "read", labelPosition: [50, -24] as [number, number],
+    }] };
+    const resized = resizeElementAndBoundConnectors(scene, boundConnector.id, 200, 0);
+    expect(resized.elements[0]).toMatchObject({ labelPosition: [100, -24] });
   });
 
   it("selects the topmost visible node and ignores connectors and tombstones", () => {
@@ -402,6 +436,64 @@ describe("custom canvas model", () => {
     expect(deleted.elements.find(({ id }) => id === child.id)).not.toHaveProperty(
       "parentId",
     );
+  });
+
+  it("detaches deleted canonical destinations while retaining locked local annotations and their routes", () => {
+    const destination = shape("target", 1000, 0);
+    const localReference = {
+      ...shape("local-target", 200, 0), referenceId: destination.id,
+      label: "↗ Monitoring", locked: true,
+    };
+    const localRoute = { ...boundConnector, id: "local-route", endBinding: localReference.id };
+    const scene = {
+      ...createEmptyScene(),
+      elements: [shape("source", 0, 0), destination, localReference, boundConnector, localRoute],
+    };
+    const before = cloneScene(scene);
+    const deleted = deleteElementAndDetachBindings(scene, destination.id);
+    const retainedReference = deleted.elements.find(({ id }) => id === localReference.id);
+
+    expect(retainedReference).toMatchObject({
+      label: "↗ Monitoring", x: 200, y: 0, width: 100, height: 60, locked: true,
+    });
+    expect(retainedReference).not.toHaveProperty("referenceId");
+    expect(deleted.elements.find(({ id }) => id === localRoute.id)).toEqual(localRoute);
+    expect(deleted.elements.find(({ id }) => id === boundConnector.id)).not.toHaveProperty("endBinding");
+    expect(parseSaveBoardInput({ name: "Edited board", expectedRevision: 0, scene: deleted }).scene).toEqual(deleted);
+    expect(scene).toEqual(before);
+    expect(parseBoardScene(before)).toEqual(before);
+  });
+
+  it("deletes a local reference without removing its canonical component or sibling references", () => {
+    const destination = shape("target", 1000, 0);
+    const first = { ...shape("first-reference", 200, 0), referenceId: destination.id };
+    const second = { ...shape("second-reference", 200, 200), referenceId: destination.id };
+    const attached = { ...boundConnector, endBinding: first.id };
+    const scene = {
+      ...createEmptyScene(),
+      elements: [shape("source", 0, 0), destination, first, second, attached],
+    };
+    const deleted = deleteElementAndDetachBindings(scene, first.id);
+
+    expect(deleted.elements.find(({ id }) => id === destination.id)).toEqual(destination);
+    expect(deleted.elements.find(({ id }) => id === second.id)).toEqual(second);
+    expect(deleted.elements.find(({ id }) => id === attached.id)).not.toHaveProperty("endBinding");
+    expect(parseBoardScene(deleted)).toEqual(deleted);
+  });
+
+  it("keeps local references attached to the cloned canonical component in independent scene copies", () => {
+    const canonical = shape("target", 1000, 0);
+    const reference = { ...shape("local-target", 200, 0), referenceId: canonical.id };
+    const scene = { ...createEmptyScene(), elements: [canonical, reference] };
+    const copy = cloneScene(scene);
+    const copiedReference = copy.elements.find(({ id }) => id === reference.id)!;
+    const copiedDestination = copy.elements.find(({ id }) => id === copiedReference.referenceId)!;
+
+    expect(copiedDestination.id).toBe(canonical.id);
+    expect(copiedDestination).not.toBe(canonical);
+    copiedDestination.x = -500;
+    expect(canonical.x).toBe(1000);
+    expect(parseBoardScene(copy)).toEqual(copy);
   });
 
   it("prunes an image asset only after its final placed image is deleted", () => {

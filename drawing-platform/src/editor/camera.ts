@@ -1,3 +1,5 @@
+import { LAYOUT_STANDARD, SPACING } from "../../shared/layout-standard.js";
+
 export interface Point {
   x: number;
   y: number;
@@ -67,7 +69,7 @@ export const viewportCenterInWorld = (
 export const fitCameraToBounds = (
   bounds: Bounds,
   viewport: { width: number; height: number },
-  padding = 28,
+  padding: number = SPACING.sibling,
 ): Camera => {
   const availableWidth = Math.max(1, viewport.width - padding * 2);
   const availableHeight = Math.max(1, viewport.height - padding * 2);
@@ -81,6 +83,30 @@ export const fitCameraToBounds = (
   return {
     x: viewport.width / 2 - (bounds.x + bounds.width / 2) * zoom,
     y: viewport.height / 2 - (bounds.y + bounds.height / 2) * zoom,
+    zoom,
+  };
+};
+
+/** Generated scenes open at a readable scale; explicit Fit still fits all. */
+export const initialCameraForBounds = (
+  bounds: Bounds,
+  viewport: { width: number; height: number },
+  focus?: Point,
+  padding: number = SPACING.sibling,
+): Camera => {
+  const fitted = fitCameraToBounds(bounds, viewport, padding);
+  const zoom = Math.min(LAYOUT_STANDARD.maxInitialZoom,
+    Math.max(LAYOUT_STANDARD.minInitialZoom, fitted.zoom));
+  if (focus) {
+    return { x: viewport.width / 2 - focus.x * zoom, y: viewport.height / 2 - focus.y * zoom, zoom };
+  }
+  return {
+    x: bounds.width * zoom + padding * 2 > viewport.width
+      ? padding - bounds.x * zoom
+      : viewport.width / 2 - (bounds.x + bounds.width / 2) * zoom,
+    y: bounds.height * zoom + padding * 2 > viewport.height
+      ? padding - bounds.y * zoom
+      : viewport.height / 2 - (bounds.y + bounds.height / 2) * zoom,
     zoom,
   };
 };

@@ -10,13 +10,11 @@ export const CDN_TEMPLATE: TemplateDefinition = {
       {
         "id": "cdn-data-plane",
         "type": "shape",
-        "x": 40,
-        "y": 120,
-        "width": 1816,
-        "height": 1380,
+        "x": 32,
+        "y": 143.84000000000003,
         "rotation": 0,
         "style": {
-          "fill": "#e8efff",
+          "fill": "#eaf0f4",
           "stroke": "#b8c9f7",
           "strokeWidth": 1.5,
           "strokeStyle": "solid",
@@ -24,18 +22,20 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "shape": "rectangle",
+        "layoutRole": "container",
+        "containerPadding": 64,
+        "width": 2909.4600000000005,
+        "height": 1888.52,
         "locked": true
       },
       {
         "id": "cdn-control-plane",
         "type": "shape",
-        "x": 1930,
-        "y": 120,
-        "width": 536,
-        "height": 1380,
+        "x": 3061.2800000000007,
+        "y": 159.84,
         "rotation": 0,
         "style": {
-          "fill": "#f1ebff",
+          "fill": "#f1edf4",
           "stroke": "#c7b5f7",
           "strokeWidth": 1.5,
           "strokeStyle": "solid",
@@ -43,34 +43,37 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "shape": "rectangle",
+        "layoutRole": "container",
+        "width": 588.6399999999994,
+        "height": 681.0000000000001,
         "locked": true
       },
       {
         "id": "pop-lisbon-hull",
         "type": "shape",
-        "x": 760,
-        "y": 175,
-        "width": 736,
-        "height": 365,
+        "x": 894.32,
+        "y": 295.84000000000003,
         "rotation": 0,
         "style": {
           "fill": "#f3fbf5",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "shape": "rectangle",
+        "layoutRole": "container",
+        "parentId": "cdn-data-plane",
+        "width": 1262.3599999999997,
+        "height": 514.3400000000001,
         "locked": true
       },
       {
         "id": "pop-frankfurt-hull",
         "type": "shape",
-        "x": 760,
-        "y": 610,
-        "width": 736,
-        "height": 365,
+        "x": 96,
+        "y": 1159.8400000000001,
         "rotation": 0,
         "style": {
           "fill": "#fcfcfa",
@@ -81,15 +84,17 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "shape": "rectangle",
+        "layoutRole": "container",
+        "parentId": "cdn-data-plane",
+        "width": 851.36,
+        "height": 413.5,
         "locked": true
       },
       {
         "id": "pop-virginia-hull",
         "type": "shape",
-        "x": 760,
-        "y": 1045,
-        "width": 736,
-        "height": 365,
+        "x": 1091.44,
+        "y": 1159.8400000000001,
         "rotation": 0,
         "style": {
           "fill": "#fcfcfa",
@@ -100,48 +105,234 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "shape": "rectangle",
+        "layoutRole": "container",
+        "parentId": "cdn-data-plane",
+        "width": 851.3599999999999,
+        "height": 413.5,
+        "locked": true
+      },
+      {
+        "id": "placement-reference-lisbon",
+        "type": "shape",
+        "x": 1996.08,
+        "y": 441.84000000000015,
+        "rotation": 0,
+        "style": {
+          "fill": "#f1edf4",
+          "stroke": "#775d83",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#775d83"
+        },
+        "shape": "rectangle",
+        "referenceId": "content-placement",
+        "label": "↗ Placement",
+        "fontSize": 14,
+        "metadata": {
+          "layer": "Control / placement",
+          "objectType": "reference",
+          "explanation": "Reference to the canonical Control + placement system (content-placement) in the control plane. The same service pushes selected content and expiry rules to this PoP; this label is not an additional runtime component."
+        },
+        "parentId": "pop-lisbon-hull",
+        "width": 123.00000000000003,
+        "height": 49.5,
+        "locked": true
+      },
+      {
+        "id": "monitoring-reference-lisbon",
+        "type": "shape",
+        "x": 1996.08,
+        "y": 701.3400000000001,
+        "rotation": 0,
+        "style": {
+          "fill": "#eaf2f2",
+          "stroke": "#477d80",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#477d80"
+        },
+        "shape": "rectangle",
+        "referenceId": "cdn-telemetry",
+        "label": "↗ Monitoring",
+        "fontSize": 14,
+        "metadata": {
+          "layer": "Observability",
+          "objectType": "reference",
+          "explanation": "Reference to the canonical Monitoring service (cdn-telemetry) in the control plane. This PoP sends hit ratio, queue, origin-traffic and fetch-failure signals to that service; this label is not an additional runtime component."
+        },
+        "parentId": "pop-lisbon-hull",
+        "width": 128.6,
+        "height": 49.5,
+        "locked": true
+      },
+      {
+        "id": "placement-reference-frankfurt",
+        "type": "shape",
+        "x": 786.76,
+        "y": 1265.8400000000001,
+        "rotation": 0,
+        "style": {
+          "fill": "#f1edf4",
+          "stroke": "#775d83",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#775d83"
+        },
+        "shape": "rectangle",
+        "referenceId": "content-placement",
+        "label": "↗ Placement",
+        "fontSize": 14,
+        "metadata": {
+          "layer": "Control / placement",
+          "objectType": "reference",
+          "explanation": "Reference to the canonical Control + placement system (content-placement) in the control plane. The same service pushes selected content and expiry rules to this PoP; this label is not an additional runtime component."
+        },
+        "parentId": "pop-frankfurt-hull",
+        "width": 123.00000000000003,
+        "height": 49.5,
+        "locked": true
+      },
+      {
+        "id": "monitoring-reference-frankfurt",
+        "type": "shape",
+        "x": 786.76,
+        "y": 1491.8400000000001,
+        "rotation": 0,
+        "style": {
+          "fill": "#eaf2f2",
+          "stroke": "#477d80",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#477d80"
+        },
+        "shape": "rectangle",
+        "referenceId": "cdn-telemetry",
+        "label": "↗ Monitoring",
+        "fontSize": 14,
+        "metadata": {
+          "layer": "Observability",
+          "objectType": "reference",
+          "explanation": "Reference to the canonical Monitoring service (cdn-telemetry) in the control plane. This PoP sends hit ratio, queue, origin-traffic and fetch-failure signals to that service; this label is not an additional runtime component."
+        },
+        "parentId": "pop-frankfurt-hull",
+        "width": 128.6,
+        "height": 49.5,
+        "locked": true
+      },
+      {
+        "id": "placement-reference-virginia",
+        "type": "shape",
+        "x": 1782.2,
+        "y": 1265.8400000000001,
+        "rotation": 0,
+        "style": {
+          "fill": "#f1edf4",
+          "stroke": "#775d83",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#775d83"
+        },
+        "shape": "rectangle",
+        "referenceId": "content-placement",
+        "label": "↗ Placement",
+        "fontSize": 14,
+        "metadata": {
+          "layer": "Control / placement",
+          "objectType": "reference",
+          "explanation": "Reference to the canonical Control + placement system (content-placement) in the control plane. The same service pushes selected content and expiry rules to this PoP; this label is not an additional runtime component."
+        },
+        "parentId": "pop-virginia-hull",
+        "width": 123.00000000000003,
+        "height": 49.5,
+        "locked": true
+      },
+      {
+        "id": "monitoring-reference-virginia",
+        "type": "shape",
+        "x": 1782.2,
+        "y": 1491.8400000000001,
+        "rotation": 0,
+        "style": {
+          "fill": "#eaf2f2",
+          "stroke": "#477d80",
+          "strokeWidth": 1.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#477d80"
+        },
+        "shape": "rectangle",
+        "referenceId": "cdn-telemetry",
+        "label": "↗ Monitoring",
+        "fontSize": 14,
+        "metadata": {
+          "layer": "Observability",
+          "objectType": "reference",
+          "explanation": "Reference to the canonical Monitoring service (cdn-telemetry) in the control plane. This PoP sends hit ratio, queue, origin-traffic and fetch-failure signals to that service; this label is not an additional runtime component."
+        },
+        "parentId": "pop-virginia-hull",
+        "width": 128.6,
+        "height": 49.5,
         "locked": true
       },
       {
         "id": "pop-lisbon-lookup",
         "type": "connector",
-        "x": 1075,
-        "y": 347,
-        "width": 85,
-        "height": 0,
+        "x": 1251.28,
+        "y": 473.09000000000015,
+        "width": 117.79999999999995,
+        "height": 7.25,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
             0,
+            7.25
+          ],
+          [
+            93.79999999999995,
+            7.25
+          ],
+          [
+            93.79999999999995,
             0
           ],
           [
-            85,
+            117.79999999999995,
             0
           ]
         ],
         "label": "lookup",
+        "fontSize": 14,
         "startBinding": "pop-lisbon-edge",
         "endBinding": "pop-lisbon-cache",
+        "parentId": "pop-lisbon-hull",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          46.899999999999864,
+          -17.850000000000023
+        ],
         "locked": true
       },
       {
         "id": "pop-frankfurt-lookup",
         "type": "connector",
-        "x": 1075,
-        "y": 782,
-        "width": 85,
-        "height": 0,
+        "x": 104,
+        "y": 1167.8400000000001,
+        "width": 451.135,
+        "height": 117.25,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -153,27 +344,45 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         },
         "points": [
           [
+            24,
+            117.25
+          ],
+          [
+            0,
+            117.25
+          ],
+          [
             0,
             0
           ],
           [
-            85,
+            451.135,
             0
+          ],
+          [
+            451.135,
+            96
           ]
         ],
         "label": "lookup",
+        "fontSize": 14,
         "startBinding": "pop-frankfurt-edge",
         "endBinding": "pop-frankfurt-cache",
+        "parentId": "pop-frankfurt-hull",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          494.015,
+          48
+        ],
         "locked": true
       },
       {
         "id": "pop-virginia-lookup",
         "type": "connector",
-        "x": 1075,
-        "y": 1217,
-        "width": 85,
+        "x": 1356.88,
+        "y": 1304.3400000000001,
+        "width": 118.31999999999994,
         "height": 0,
         "rotation": 0,
         "style": {
@@ -190,180 +399,254 @@ export const CDN_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            85,
+            118.31999999999994,
             0
           ]
         ],
         "label": "lookup",
+        "fontSize": 14,
         "startBinding": "pop-virginia-edge",
         "endBinding": "pop-virginia-cache",
+        "parentId": "pop-virginia-hull",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          59.159999999999854,
+          -25.09999999999991
+        ],
         "locked": true
       },
       {
         "id": "viewer-to-routing",
         "type": "connector",
-        "x": 310,
-        "y": 362,
-        "width": 100,
-        "height": 0,
+        "x": 221.5,
+        "y": 446.84000000000015,
+        "width": 252.22000000000003,
+        "height": 100.101226993865,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
+          [
+            0,
+            24
+          ],
           [
             0,
             0
           ],
           [
-            100,
+            228.22000000000003,
             0
+          ],
+          [
+            228.22000000000003,
+            100.101226993865
+          ],
+          [
+            252.22000000000003,
+            100.101226993865
           ]
         ],
         "label": "request",
+        "fontSize": 14,
         "startBinding": "viewer",
         "endBinding": "global-routing",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          114.11000000000001,
+          -25.10000000000008
+        ],
         "locked": true
       },
       {
         "id": "routing-to-selected-pop",
         "type": "connector",
-        "x": 670,
-        "y": 362,
-        "width": 145,
-        "height": 0,
+        "x": 740.72,
+        "y": 480.34000000000015,
+        "width": 185.60000000000002,
+        "height": 100.71052631578948,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
             0,
+            100.71052631578948
+          ],
+          [
+            161.60000000000002,
+            100.71052631578948
+          ],
+          [
+            161.60000000000002,
             0
           ],
           [
-            145,
+            185.60000000000002,
             0
           ]
         ],
         "label": "choose PoP",
+        "fontSize": 14,
         "startBinding": "global-routing",
         "endBinding": "pop-lisbon-edge",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          80.79999999999995,
+          25.372392638036786
+        ],
         "locked": true
       },
       {
         "id": "routing-to-frankfurt",
         "type": "connector",
-        "x": 530,
-        "y": 414,
-        "width": 285,
-        "height": 368,
+        "x": 340.75,
+        "y": 623.8400000000001,
+        "width": 599.01,
+        "height": 942,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#d84b43",
+          "stroke": "#a15f4b",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#d84b43"
+          "textColor": "#a15f4b"
         },
         "points": [
           [
-            0,
+            378.72,
             0
           ],
           [
-            0,
-            368
+            378.72,
+            616
           ],
           [
-            285,
-            368
+            599.01,
+            616
+          ],
+          [
+            599.01,
+            942
+          ],
+          [
+            0,
+            942
+          ],
+          [
+            0,
+            793
           ]
         ],
         "label": "Lisbon unhealthy → reroute",
+        "fontSize": 14,
         "startBinding": "global-routing",
         "endBinding": "pop-frankfurt-edge",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          299.5049999999999,
+          916.9000000000001
+        ],
         "locked": true
       },
       {
         "id": "routing-to-virginia",
         "type": "connector",
-        "x": 500,
-        "y": 414,
-        "width": 315,
-        "height": 803,
+        "x": 72,
+        "y": 623.8400000000001,
+        "width": 1051.44,
+        "height": 974,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#d84b43",
+          "stroke": "#a15f4b",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#d84b43"
+          "textColor": "#a15f4b"
         },
         "points": [
           [
-            0,
+            547.22,
             0
           ],
           [
-            0,
-            803
+            547.22,
+            512
           ],
           [
-            315,
-            803
+            0,
+            512
+          ],
+          [
+            0,
+            974
+          ],
+          [
+            1027.44,
+            974
+          ],
+          [
+            1027.44,
+            680.5
+          ],
+          [
+            1051.44,
+            680.5
           ]
         ],
         "label": "region unavailable → another PoP",
+        "fontSize": 14,
         "startBinding": "global-routing",
         "endBinding": "pop-virginia-edge",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          513.72,
+          999.0999999999999
+        ],
         "locked": true
       },
       {
         "id": "edge-response",
         "type": "connector",
-        "x": 195,
-        "y": 255,
-        "width": 1100,
-        "height": 55,
+        "x": 197.5,
+        "y": 303.84000000000003,
+        "width": 1192.83,
+        "height": 167.0000000000001,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
-            1100,
-            40
+            1192.83,
+            136.0000000000001
           ],
           [
-            1100,
+            1192.83,
             0
           ],
           [
@@ -372,76 +655,86 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           ],
           [
             0,
-            55
+            167.0000000000001
           ]
         ],
         "label": "HIT → return from edge now",
+        "fontSize": 14,
         "startBinding": "pop-lisbon-cache",
         "endBinding": "viewer",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          298.2075,
+          -25.100000000000023
+        ],
         "locked": true
       },
       {
         "id": "filled-response",
         "type": "connector",
-        "x": 195,
-        "y": 399,
-        "width": 965,
-        "height": 121,
+        "x": 72,
+        "y": 199.84,
+        "width": 1342.33,
+        "height": 292.2500000000001,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
-            965,
+            1342.33,
+            240.00000000000014
+          ],
+          [
+            1342.33,
             0
           ],
           [
-            905,
+            0,
             0
           ],
           [
-            905,
-            121
+            0,
+            292.2500000000001
           ],
           [
-            0,
-            121
-          ],
-          [
-            0,
-            15
+            24,
+            292.2500000000001
           ]
         ],
         "label": "after MISS: filled edge → return",
+        "fontSize": 14,
         "startBinding": "pop-lisbon-cache",
         "endBinding": "viewer",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          671.165,
+          25.100000000000023
+        ],
         "locked": true
       },
       {
         "id": "miss-to-parent",
         "type": "connector",
-        "x": 1430,
-        "y": 380,
-        "width": 130,
-        "height": 174,
+        "x": 1628.08,
+        "y": 539.859938650307,
+        "width": 977.4200000000005,
+        "height": 407.9800613496932,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#bd6212",
+          "stroke": "#9b713c",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#bd6212"
+          "textColor": "#9b713c"
         },
         "points": [
           [
@@ -449,134 +742,149 @@ export const CDN_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            90,
+            296,
             0
           ],
           [
-            90,
-            174
+            296,
+            359.9800613496932
           ],
           [
-            130,
-            174
+            977.4200000000005,
+            359.9800613496932
+          ],
+          [
+            977.4200000000005,
+            407.9800613496932
           ]
         ],
         "startBinding": "pop-lisbon-cache",
         "endBinding": "parent-proxy",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "parent-to-origin",
         "type": "connector",
-        "x": 1695,
-        "y": 608,
-        "width": 0,
-        "height": 207,
+        "x": 2620.5000000000005,
+        "y": 1084.8400000000001,
+        "width": 9,
+        "height": 564,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#bd6212",
+          "stroke": "#9b713c",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#bd6212"
+          "textColor": "#9b713c"
         },
         "points": [
           [
-            0,
+            9,
             0
           ],
           [
+            9,
+            24
+          ],
+          [
             0,
-            207
+            24
+          ],
+          [
+            0,
+            564
           ]
         ],
         "label": "parent MISS → fetch source",
+        "fontSize": 14,
         "startBinding": "parent-proxy",
         "endBinding": "origin",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          132.48000000000002,
+          325.1186440677966
+        ],
         "locked": true
       },
       {
         "id": "origin-to-parent",
         "type": "connector",
-        "x": 1745,
-        "y": 608,
-        "width": 115,
-        "height": 261,
+        "x": 2596.5000000000005,
+        "y": 1084.8400000000001,
+        "width": 9,
+        "height": 564,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
-            85,
-            261
-          ],
-          [
-            115,
-            261
-          ],
-          [
-            115,
-            82
+            0,
+            564
           ],
           [
             0,
-            82
+            24
           ],
           [
-            0,
+            9,
+            24
+          ],
+          [
+            9,
             0
           ]
         ],
         "label": "return object",
+        "fontSize": 14,
         "startBinding": "origin",
         "endBinding": "parent-proxy",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          98.24000000000024,
+          447
+        ],
         "locked": true
       },
       {
         "id": "parent-to-edge-fill",
         "type": "connector",
-        "x": 1295,
-        "y": 399,
-        "width": 265,
-        "height": 176,
+        "x": 1606.83,
+        "y": 592.8400000000001,
+        "width": 877.4200000000005,
+        "height": 355,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
-            265,
-            176
+            877.4200000000005,
+            355
           ],
           [
-            195,
-            176
-          ],
-          [
-            195,
-            36
+            877.4200000000005,
+            331
           ],
           [
             0,
-            36
+            331
           ],
           [
             0,
@@ -584,27 +892,32 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           ]
         ],
         "label": "return + store copy at edge",
+        "fontSize": 14,
         "startBinding": "parent-proxy",
         "endBinding": "pop-lisbon-cache",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          438.71000000000026,
+          356.1
+        ],
         "locked": true
       },
       {
         "id": "direct-miss-to-origin",
         "type": "connector",
-        "x": 1430,
-        "y": 365,
-        "width": 130,
-        "height": 535,
+        "x": 1486.58,
+        "y": 592.8400000000001,
+        "width": 1061.9200000000005,
+        "height": 1056,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#bd6212",
+          "stroke": "#9b713c",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#bd6212"
+          "textColor": "#9b713c"
         },
         "points": [
           [
@@ -612,57 +925,58 @@ export const CDN_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            40,
-            0
+            0,
+            543
           ],
           [
-            40,
-            535
+            1061.9200000000005,
+            543
           ],
           [
-            130,
-            535
+            1061.9200000000005,
+            1056
           ]
         ],
         "label": "no parent → fetch origin",
+        "fontSize": 14,
         "startBinding": "pop-lisbon-cache",
         "endBinding": "origin",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          796.4400000000005,
+          568.0999999999999
+        ],
         "locked": true
       },
       {
         "id": "direct-origin-fill",
         "type": "connector",
-        "x": 1295,
-        "y": 399,
-        "width": 265,
-        "height": 446,
+        "x": 1510.58,
+        "y": 592.8400000000001,
+        "width": 1061.9200000000005,
+        "height": 1056,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
-            265,
-            446
+            1061.9200000000005,
+            1056
           ],
           [
-            155,
-            446
-          ],
-          [
-            155,
-            56
+            1061.9200000000005,
+            516
           ],
           [
             0,
-            56
+            516
           ],
           [
             0,
@@ -670,39 +984,44 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           ]
         ],
         "label": "direct return → fill edge",
+        "fontSize": 14,
         "startBinding": "origin",
         "endBinding": "pop-lisbon-cache",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          530.9600000000003,
+          489.9819672131148
+        ],
         "locked": true
       },
       {
         "id": "routing-signals",
         "type": "connector",
-        "x": 530,
-        "y": 215,
-        "width": 1450,
-        "height": 95,
+        "x": 48,
+        "y": 175.84,
+        "width": 3045.2800000000007,
+        "height": 472.0000000000001,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
-            1450,
-            95
+            3045.2800000000007,
+            109.25000000000003
           ],
           [
-            1375,
-            95
+            3021.2800000000007,
+            109.25000000000003
           ],
           [
-            1375,
+            3021.2800000000007,
             0
           ],
           [
@@ -711,43 +1030,56 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           ],
           [
             0,
-            95
+            472.0000000000001
+          ],
+          [
+            446.97,
+            472.0000000000001
+          ],
+          [
+            446.97,
+            448.0000000000001
           ]
         ],
         "label": "choose and reroute",
+        "fontSize": 14,
         "startBinding": "routing-inputs",
         "endBinding": "global-routing",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          1510.6400000000003,
+          25.099999999999994
+        ],
         "locked": true
       },
       {
         "id": "placement-lisbon",
         "type": "connector",
-        "x": 1430,
-        "y": 347,
-        "width": 550,
-        "height": 323,
+        "x": 1628.08,
+        "y": 461.09000000000015,
+        "width": 368,
+        "height": 5.75,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
-            550,
-            323
+            368,
+            5.75
           ],
           [
-            490,
-            323
+            344,
+            5.75
           ],
           [
-            490,
+            344,
             0
           ],
           [
@@ -756,27 +1088,33 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           ]
         ],
         "label": "push selected content / expiry rules",
-        "startBinding": "content-placement",
+        "fontSize": 14,
+        "startBinding": "placement-reference-lisbon",
         "endBinding": "pop-lisbon-cache",
+        "parentId": "pop-lisbon-hull",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          172,
+          -34.200000000000045
+        ],
         "locked": true
       },
       {
         "id": "telemetry-lisbon",
         "type": "connector",
-        "x": 1430,
-        "y": 375,
-        "width": 550,
-        "height": 655,
+        "x": 1628.08,
+        "y": 485.09000000000015,
+        "width": 368,
+        "height": 241.25,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2.5,
           "strokeStyle": "dotted",
           "opacity": 1,
-          "textColor": "#087e8b"
+          "textColor": "#477d80"
         },
         "points": [
           [
@@ -784,79 +1122,83 @@ export const CDN_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            455,
+            320,
             0
           ],
           [
-            455,
-            655
+            320,
+            241.25
           ],
           [
-            550,
-            655
+            368,
+            241.25
           ]
         ],
         "startBinding": "pop-lisbon-cache",
-        "endBinding": "cdn-telemetry",
+        "endBinding": "monitoring-reference-lisbon",
+        "parentId": "pop-lisbon-hull",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "placement-frankfurt",
         "type": "connector",
-        "x": 1430,
-        "y": 670,
-        "width": 550,
-        "height": 112,
+        "x": 738.1599999999999,
+        "y": 1290.8400000000001,
+        "width": 48.600000000000136,
+        "height": 13.5,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
-            550,
+            48.600000000000136,
             0
           ],
           [
-            490,
+            24.600000000000136,
             0
           ],
           [
-            490,
-            112
+            24.600000000000136,
+            13.5
           ],
           [
             0,
-            112
+            13.5
           ]
         ],
-        "startBinding": "content-placement",
+        "startBinding": "placement-reference-frankfurt",
         "endBinding": "pop-frankfurt-cache",
+        "parentId": "pop-frankfurt-hull",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "telemetry-frankfurt",
         "type": "connector",
-        "x": 1430,
-        "y": 810,
-        "width": 550,
-        "height": 220,
+        "x": 609.26,
+        "y": 1416.8400000000001,
+        "width": 242,
+        "height": 75,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2.5,
           "strokeStyle": "dotted",
           "opacity": 1,
-          "textColor": "#087e8b"
+          "textColor": "#477d80"
         },
         "points": [
           [
@@ -864,132 +1206,146 @@ export const CDN_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            455,
-            0
+            0,
+            51
           ],
           [
-            455,
-            220
+            242,
+            51
           ],
           [
-            550,
-            220
+            242,
+            75
           ]
         ],
         "startBinding": "pop-frankfurt-cache",
-        "endBinding": "cdn-telemetry",
+        "endBinding": "monitoring-reference-frankfurt",
+        "parentId": "pop-frankfurt-hull",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "placement-virginia",
         "type": "connector",
-        "x": 1430,
-        "y": 670,
-        "width": 550,
-        "height": 547,
+        "x": 1733.6,
+        "y": 1290.8400000000001,
+        "width": 48.600000000000136,
+        "height": 13.5,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
-            550,
+            48.600000000000136,
             0
           ],
           [
-            490,
+            24.600000000000136,
             0
           ],
           [
-            490,
-            547
+            24.600000000000136,
+            13.5
           ],
           [
             0,
-            547
+            13.5
           ]
         ],
-        "startBinding": "content-placement",
+        "startBinding": "placement-reference-virginia",
         "endBinding": "pop-virginia-cache",
+        "parentId": "pop-virginia-hull",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "telemetry-virginia",
         "type": "connector",
-        "x": 1430,
-        "y": 1030,
-        "width": 550,
-        "height": 215,
+        "x": 1604.7,
+        "y": 1416.8400000000001,
+        "width": 242,
+        "height": 75,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2.5,
           "strokeStyle": "dotted",
           "opacity": 1,
-          "textColor": "#087e8b"
+          "textColor": "#477d80"
         },
         "points": [
           [
             0,
-            215
-          ],
-          [
-            455,
-            215
-          ],
-          [
-            455,
             0
           ],
           [
-            550,
-            0
+            0,
+            24
+          ],
+          [
+            242,
+            24
+          ],
+          [
+            242,
+            75
           ]
         ],
         "startBinding": "pop-virginia-cache",
-        "endBinding": "cdn-telemetry",
+        "endBinding": "monitoring-reference-virginia",
+        "parentId": "pop-virginia-hull",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "telemetry-to-routing",
         "type": "connector",
-        "x": 2390,
-        "y": 310,
-        "width": 30,
-        "height": 720,
+        "x": 3301.7800000000007,
+        "y": 384.84000000000003,
+        "width": 207.5,
+        "height": 303.0000000000001,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2.5,
           "strokeStyle": "dotted",
           "opacity": 1,
-          "textColor": "#087e8b"
+          "textColor": "#477d80"
         },
         "points": [
           [
+            54,
+            303.0000000000001
+          ],
+          [
+            54,
+            279.0000000000001
+          ],
+          [
+            207.5,
+            279.0000000000001
+          ],
+          [
+            207.5,
+            24.000000000000057
+          ],
+          [
             0,
-            720
-          ],
-          [
-            30,
-            720
-          ],
-          [
-            30,
-            0
+            24.000000000000057
           ],
           [
             0,
@@ -1000,39 +1356,48 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "endBinding": "routing-inputs",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "origin-to-placement",
         "type": "connector",
-        "x": 1830,
-        "y": 700,
-        "width": 150,
-        "height": 195,
+        "x": 2644.5000000000005,
+        "y": 580.8400000000001,
+        "width": 644.7800000000002,
+        "height": 1068,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
             0,
-            195
+            1068
           ],
           [
-            120,
-            195
+            0,
+            1044
           ],
           [
-            120,
-            0
+            424.7800000000002,
+            1044
           ],
           [
-            150,
+            424.7800000000002,
+            56
+          ],
+          [
+            644.7800000000002,
+            56
+          ],
+          [
+            644.7800000000002,
             0
           ]
         ],
@@ -1040,19 +1405,18 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "endBinding": "content-placement",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "viewer",
         "type": "system",
-        "x": 80,
-        "y": 310,
-        "width": 230,
-        "height": 104,
+        "x": 96,
+        "y": 470.84000000000015,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1061,20 +1425,28 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "iconId": "client",
         "title": "Client",
         "subtitle": "requests one object",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "parentId": "cdn-data-plane",
         "variant": "client",
+        "width": 250.07999999999993,
+        "height": 153,
+        "capacity": "QPS avg 3k · peak 15k · flash 30k\n20 KB objects · 300 MB/s peak",
+        "metadata": {
+          "explanation": "Requests an object. Routing chooses an edge; cache hits keep the request close to the viewer.",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "global-routing",
         "type": "system",
-        "x": 410,
-        "y": 310,
-        "width": 260,
-        "height": 104,
+        "x": 473.72,
+        "y": 470.84000000000015,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1083,20 +1455,28 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "iconId": "global-routing",
         "title": "Global routing",
         "subtitle": "chooses a healthy PoP",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "parentId": "cdn-data-plane",
         "variant": "routing",
+        "width": 267,
+        "height": 153,
+        "capacity": "1 routing host · CPU/network\n10% lookups: 1.5k / safe 50k QPS · 3%",
+        "metadata": {
+          "explanation": "Directs a viewer to a nearby healthy edge using location, health and available capacity.",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "pop-lisbon-edge",
         "type": "system",
-        "x": 815,
-        "y": 295,
-        "width": 260,
-        "height": 104,
+        "x": 926.32,
+        "y": 439.84000000000015,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1105,20 +1485,28 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "iconId": "edge-pop",
         "title": "Edge proxy",
         "subtitle": "machine serving this request",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "parentId": "pop-lisbon-hull",
         "variant": "routing",
+        "width": 324.95999999999987,
+        "height": 137,
+        "capacity": "1 host · safe 10k QPS / 200 MB/s\nPeak 5k / 10k · 50%; flash 100% LIMIT",
+        "metadata": {
+          "explanation": "Serves nearby viewers from cache. A miss goes to the parent proxy, then fills this edge cache.",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "pop-lisbon-cache",
         "type": "system",
-        "x": 1160,
-        "y": 295,
-        "width": 270,
-        "height": 104,
+        "x": 1369.08,
+        "y": 439.84000000000015,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1127,16 +1515,24 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "iconId": "cache",
         "title": "Cached objects",
         "subtitle": "RAM hot · SSD colder",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "parentId": "pop-lisbon-hull",
         "variant": "cache",
+        "width": 259,
+        "height": 153,
+        "capacity": "Same edge RAM/SSD budget\n20 / 64 GB resident · 90% hits",
+        "metadata": {
+          "explanation": "Keeps hot objects in RAM and colder objects on SSD, sharing the edge host's storage budget.",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "pop-frankfurt-edge",
         "type": "system",
-        "x": 815,
-        "y": 730,
-        "width": 260,
-        "height": 104,
+        "x": 128,
+        "y": 1263.8400000000001,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
@@ -1149,16 +1545,24 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "iconId": "edge-pop",
         "title": "Edge proxy",
         "subtitle": "alternate machine",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "parentId": "pop-frankfurt-hull",
         "variant": "routing",
+        "width": 234,
+        "height": 153,
+        "capacity": "1 host · safe 10k QPS / 200 MB/s\nPeak 5k / 10k · 50%; failover 75%",
+        "metadata": {
+          "explanation": "Serves nearby viewers and takes redirected traffic when another edge fails.",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "pop-frankfurt-cache",
         "type": "system",
-        "x": 1160,
-        "y": 730,
-        "width": 270,
-        "height": 104,
+        "x": 479.76,
+        "y": 1263.8400000000001,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
@@ -1171,16 +1575,24 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "iconId": "cache",
         "title": "Cached objects",
         "subtitle": "RAM hot · SSD colder",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "parentId": "pop-frankfurt-hull",
         "variant": "cache",
+        "width": 258.3999999999999,
+        "height": 153,
+        "capacity": "Same edge RAM/SSD budget\n20 / 64 GB resident · 90% hits",
+        "metadata": {
+          "explanation": "Keeps hot objects in RAM and colder objects on SSD, sharing the edge host's storage budget.",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "pop-virginia-edge",
         "type": "system",
-        "x": 815,
-        "y": 1165,
-        "width": 260,
-        "height": 104,
+        "x": 1123.44,
+        "y": 1263.8400000000001,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
@@ -1193,16 +1605,24 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "iconId": "edge-pop",
         "title": "Edge proxy",
         "subtitle": "alternate machine",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "parentId": "pop-virginia-hull",
         "variant": "routing",
+        "width": 233.43999999999994,
+        "height": 153,
+        "capacity": "1 host · safe 10k QPS / 200 MB/s\nPeak 5k / 10k · 50%; failover 75%",
+        "metadata": {
+          "explanation": "Serves nearby viewers and takes redirected traffic when another edge fails.",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "pop-virginia-cache",
         "type": "system",
-        "x": 1160,
-        "y": 1165,
-        "width": 270,
-        "height": 104,
+        "x": 1475.2,
+        "y": 1263.8400000000001,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
@@ -1215,20 +1635,28 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "iconId": "cache",
         "title": "Cached objects",
         "subtitle": "RAM hot · SSD colder",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "parentId": "pop-virginia-hull",
         "variant": "cache",
+        "width": 258.3999999999999,
+        "height": 153,
+        "capacity": "Same edge RAM/SSD budget\n20 / 64 GB resident · 90% hits",
+        "metadata": {
+          "explanation": "Keeps hot objects in RAM and colder objects on SSD, sharing the edge host's storage budget.",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "parent-proxy",
         "type": "system",
-        "x": 1560,
-        "y": 500,
-        "width": 270,
-        "height": 108,
+        "x": 2463.0000000000005,
+        "y": 947.8400000000001,
         "rotation": 0,
         "style": {
-          "fill": "#fff1da",
-          "stroke": "#bd6212",
+          "fill": "#f6f0e4",
+          "stroke": "#9b713c",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1237,20 +1665,28 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "iconId": "origin-shield",
         "title": "Parent cache",
         "subtitle": "optional intermediate copy",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "parentId": "cdn-data-plane",
         "variant": "cache",
+        "width": 308.3199999999999,
+        "height": 137,
+        "capacity": "1 host · RAM/network · 80% hits\nPeak 1.5k / safe 10k QPS · 15%",
+        "metadata": {
+          "explanation": "Shares cached objects across edges and shields the origin from repeated misses.",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "origin",
         "type": "system",
-        "x": 1560,
-        "y": 815,
-        "width": 270,
-        "height": 108,
+        "x": 2463.0000000000005,
+        "y": 1648.8400000000001,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#d84b43",
+          "stroke": "#a15f4b",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1259,20 +1695,28 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "iconId": "server",
         "title": "Origin server",
         "subtitle": "authoritative content",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "parentId": "cdn-data-plane",
         "variant": "storage",
+        "width": 266.7199999999999,
+        "height": 185,
+        "capacity": "1 host · I/O/egress · safe 1k QPS\nPeak 300 / 1k · 30%; flash 60%\nNo parent: 1.5k / 1k OVERLOAD",
+        "metadata": {
+          "explanation": "Owns the authoritative content. Handles requests that miss both edge and parent caches.",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "routing-inputs",
         "type": "system",
-        "x": 1980,
-        "y": 250,
-        "width": 410,
-        "height": 120,
+        "x": 3093.2800000000007,
+        "y": 263.84000000000003,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1281,20 +1725,28 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "iconId": "global-routing",
         "title": "Routing inputs",
         "subtitle": "delay · queue · memory · link · cached?",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "parentId": "cdn-control-plane",
         "variant": "routing",
+        "width": 416.4799999999998,
+        "height": 121,
+        "capacity": "1 control host · CPU\n100 / safe 1k updates/s · 10%",
+        "metadata": {
+          "explanation": "Publishes edge health and capacity so routing can avoid unavailable hosts.",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "content-placement",
         "type": "system",
-        "x": 1980,
-        "y": 610,
-        "width": 410,
-        "height": 120,
+        "x": 3093.2800000000007,
+        "y": 459.84000000000015,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
@@ -1303,38 +1755,54 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "iconId": "control-plane",
         "title": "Control + placement system",
         "subtitle": "PULL after miss · PUSH before demand",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "parentId": "cdn-control-plane",
         "variant": "service",
+        "width": 391.5199999999998,
+        "height": 121,
+        "capacity": "1 placement host · CPU/network\n300 / safe 1k object copies/s · 30%",
+        "metadata": {
+          "explanation": "Copies objects to edges in the background, ahead of viewer requests.",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "cdn-telemetry",
         "type": "system",
-        "x": 1980,
-        "y": 970,
-        "width": 410,
-        "height": 120,
+        "x": 3093.2800000000007,
+        "y": 687.8400000000001,
         "rotation": 0,
         "style": {
-          "fill": "#e4f6f7",
-          "stroke": "#087e8b",
+          "fill": "#eaf2f2",
+          "stroke": "#477d80",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "telemetry",
-        "title": "Observation · what signals prove",
+        "title": "Monitoring",
         "subtitle": "hit ratio · queues · origin traffic · fetch failures",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
+        "parentId": "cdn-control-plane",
         "variant": "observability",
+        "width": 524.6399999999996,
+        "height": 121,
+        "capacity": "1 collector · 2 events/request\nPeak 30k / safe 100k events/s · 30%",
+        "metadata": {
+          "explanation": "Collects request events to reveal hit rates, latency and overloaded hosts.",
+          "sourcePath": "drawing-platform/CAPACITY_ASSUMPTIONS.md"
+        },
         "locked": true
       },
       {
         "id": "title",
         "type": "text",
-        "x": 52,
-        "y": 36,
-        "width": 1450,
-        "height": 48,
+        "x": 32,
+        "y": 32,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1349,15 +1817,15 @@ export const CDN_TEMPLATE: TemplateDefinition = {
         "fontFamily": "sans",
         "fontWeight": 600,
         "align": "left",
+        "width": 720.48,
+        "height": 59.52,
         "locked": true
       },
       {
         "id": "legend",
         "type": "text",
-        "x": 1600,
-        "y": 49,
-        "width": 790,
-        "height": 24,
+        "x": 801,
+        "y": 32,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1367,20 +1835,20 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           "opacity": 1,
           "textColor": "#66717d"
         },
-        "text": "GREEN edge answer · AMBER upstream miss · CORAL failover · PURPLE placement",
+        "text": "GREEN edge answer · AMBER upstream miss · CORAL failover · PURPLE placement\nBOTEC ASSUMPTIONS · peak / safe capacity\nTarget ≥50% spare · flash = 2× peak",
         "fontSize": 14,
         "fontFamily": "sans",
         "fontWeight": 600,
         "align": "right",
+        "width": 723.4816,
+        "height": 69.76,
         "locked": true
       },
       {
         "id": "cdn-data-plane-label",
         "type": "text",
-        "x": 58,
-        "y": 132,
-        "width": 1774,
-        "height": 24,
+        "x": 96,
+        "y": 223.84000000000003,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1391,20 +1859,20 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "text": "DATA PLANE",
-        "fontSize": 15,
+        "fontSize": 18,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
         "parentId": "cdn-data-plane",
+        "width": 160.74880000000002,
+        "height": 39.04,
         "locked": true
       },
       {
         "id": "cdn-control-plane-label",
         "type": "text",
-        "x": 1948,
-        "y": 132,
-        "width": 494,
-        "height": 24,
+        "x": 3093.2800000000007,
+        "y": 191.84,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1415,20 +1883,20 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "text": "CONTROL / PLACEMENT + OBSERVATION",
-        "fontSize": 15,
+        "fontSize": 18,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
         "parentId": "cdn-control-plane",
+        "width": 485.3248000000002,
+        "height": 39.04,
         "locked": true
       },
       {
         "id": "routing-rule",
         "type": "text",
-        "x": 390,
-        "y": 450,
-        "width": 300,
-        "height": 43,
+        "x": 96,
+        "y": 907.3400000000001,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1436,22 +1904,23 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           "strokeWidth": 0,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
-        "text": "Close = a good network path,\nnot only geographic distance.",
+        "text": "ROUTING POLICY\nHealthy PoP · lowest path cost",
         "fontSize": 15,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "center",
+        "parentId": "cdn-data-plane",
+        "width": 297.23199999999997,
+        "height": 54.4,
         "locked": true
       },
       {
         "id": "pop-lisbon-hull-label",
         "type": "text",
-        "x": 778,
-        "y": 187,
-        "width": 694,
-        "height": 24,
+        "x": 926.32,
+        "y": 327.84000000000003,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1462,20 +1931,20 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "text": "PoP LISBON · SELECTED",
-        "fontSize": 15,
+        "fontSize": 18,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
         "parentId": "pop-lisbon-hull",
+        "width": 302.67520000000013,
+        "height": 39.04,
         "locked": true
       },
       {
         "id": "pop-frankfurt-hull-label",
         "type": "text",
-        "x": 778,
-        "y": 622,
-        "width": 694,
-        "height": 24,
+        "x": 128,
+        "y": 1191.8400000000001,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1486,20 +1955,20 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "text": "PoP FRANKFURT · ALTERNATE",
-        "fontSize": 15,
+        "fontSize": 18,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
         "parentId": "pop-frankfurt-hull",
+        "width": 371.2192000000001,
+        "height": 39.04,
         "locked": true
       },
       {
         "id": "pop-virginia-hull-label",
         "type": "text",
-        "x": 778,
-        "y": 1057,
-        "width": 694,
-        "height": 24,
+        "x": 1123.44,
+        "y": 1191.8400000000001,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1510,20 +1979,20 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "text": "PoP VIRGINIA · ALTERNATE",
-        "fontSize": 15,
+        "fontSize": 18,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
         "parentId": "pop-virginia-hull",
+        "width": 334.1248000000001,
+        "height": 39.04,
         "locked": true
       },
       {
         "id": "pop-definition",
         "type": "text",
-        "x": 790,
-        "y": 470,
-        "width": 650,
-        "height": 24,
+        "x": 926.32,
+        "y": 726.3400000000001,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1531,22 +2000,23 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           "strokeWidth": 0,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
-        "text": "PoP = facility at one location · edge proxy = machine inside it",
+        "text": "PoP · location group containing edge machines\nAll 3 PoPs: 3 × safe 10k = 30k QPS · peak 15k (50%)",
         "fontSize": 14,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "center",
+        "parentId": "pop-lisbon-hull",
+        "width": 477.93279999999976,
+        "height": 51.84,
         "locked": true
       },
       {
         "id": "miss-parent-note",
         "type": "text",
-        "x": 1435,
-        "y": 300,
-        "width": 250,
-        "height": 24,
+        "x": 2205.08,
+        "y": 460.84000000000015,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1554,22 +2024,23 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           "strokeWidth": 0,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#bd6212"
+          "textColor": "#9b713c"
         },
         "text": "MISS → ask parent cache",
         "fontSize": 14,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
+        "parentId": "cdn-data-plane",
+        "width": 227.99360000000007,
+        "height": 33.92,
         "locked": true
       },
       {
         "id": "best-path-note",
         "type": "text",
-        "x": 1515,
-        "y": 1020,
-        "width": 350,
-        "height": 70,
+        "x": 2205.08,
+        "y": 1908.8400000000001,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -1577,26 +2048,33 @@ export const CDN_TEMPLATE: TemplateDefinition = {
           "strokeWidth": 0,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#bd6212"
+          "textColor": "#9b713c"
         },
-        "text": "Best case stops at the edge.\nEach upstream hop adds latency and cost.",
+        "text": "EDGE HIT · lowest latency\nUPSTREAM HOP · added latency + cost",
         "fontSize": 17,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "center",
+        "parentId": "cdn-data-plane",
+        "width": 428.7871999999999,
+        "height": 59.52,
         "locked": true
       }
     ],
     "appState": {
       "camera": {
-        "x": 18,
-        "y": 18,
-        "zoom": 0.58
+        "x": 25.6,
+        "y": 70.4,
+        "zoom": 0.8
       },
       "background": {
         "color": "#f7f4ec",
         "pattern": "dots",
         "spacing": 24
+      },
+      "layoutSpacing": {
+        "nodeGap": 32,
+        "edgeClearance": 24
       }
     },
     "files": {}

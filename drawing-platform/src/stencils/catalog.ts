@@ -3,12 +3,13 @@ import {
   type StencilCategory,
   type StencilDefinition,
 } from "./types";
+import { CANVAS_PALETTE } from "../../shared/layout-standard";
 
-const ROUTING = "#7048e8";
-const SERVICES = "#1971c2";
-const DISTRIBUTED_DATA = "#0b7285";
-const SYSTEMS = "#e67700";
-const HARDWARE = "#c92a2a";
+const ROUTING = CANVAS_PALETTE.blue;
+const SERVICES = CANVAS_PALETTE.blue;
+const DISTRIBUTED_DATA = CANVAS_PALETTE.green;
+const SYSTEMS = CANVAS_PALETTE.amber;
+const HARDWARE = CANVAS_PALETTE.coral;
 
 /**
  * The phase-one shelf deliberately uses generic mechanisms instead of vendor
@@ -75,7 +76,7 @@ export const STENCIL_CATALOG = [
     category: "Routing",
     name: "Data Router",
     role: "Maps keys to partitions",
-    accent: ROUTING,
+    accent: CANVAS_PALETTE.purple,
     iconId: "data-router",
     keywords: ["shard", "partition", "consistent hash", "key", "placement"],
   },
@@ -157,7 +158,7 @@ export const STENCIL_CATALOG = [
     category: "Services",
     name: "Observability",
     role: "Measures every request path",
-    accent: SERVICES,
+    accent: CANVAS_PALETTE.cyan,
     iconId: "telemetry",
     keywords: ["telemetry", "observation", "metrics", "logs", "traces", "monitoring"],
   },
@@ -212,7 +213,7 @@ export const STENCIL_CATALOG = [
     category: "Distributed Data",
     name: "Partition / Shard",
     role: "Owns a slice of data",
-    accent: DISTRIBUTED_DATA,
+    accent: CANVAS_PALETTE.purple,
     iconId: "partition",
     keywords: ["shard", "range", "hash", "split", "tablet"],
   },

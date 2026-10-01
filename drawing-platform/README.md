@@ -47,6 +47,17 @@ npm run generate:designs
 - click, Shift-toggle, and empty-canvas marquee selection; connector-aware group
   movement/resizing; content-aware width and height; parent-container growth;
   directly selectable wrapped text; shapes; and undo/redo
+- `Layout spacing` controls for node distance and arrow clearance; `Tidy layout`
+  applies both to the whole board as one undoable edit without selecting anything;
+  sliders apply on release, and locked boards offer `Unlock all and tidy`
+- `Clear board` empties the canvas with Undo and preserves saved server designs.
+- `Reset design` restores the current built-in design from its latest template;
+  Undo recovers edits and Redo reapplies the reset. Saved copies keep their board
+  identity and name; previews remain temporary. Custom boards without a matching
+  template are left intact.
+- a readable component reference panel: select an element or click its `Details ↗`
+  badge to consult architecture notes, open named references, and jump to connected
+  components; `Edit details` opens the existing explicit-Apply form
 - an explicit-Apply inspector for titles, subtitles, body/explanation, labels,
   font sizes, text alignment, image alt text, width, height, and optional
   architecture metadata; it closes with its button, Escape, or an outside click
@@ -63,7 +74,7 @@ npm run generate:designs
 - custom canvas colors with plain, dotted, and grid backgrounds
 - PNG, JPEG, WebP, and GIF insertion by browse, drop, or paste; images are
   embedded in the board and limited to 2 MB each
-- immediate browser snapshots, serialized API saves, explicit sync state, and
+- immediate browser snapshots, manual `Save` to the server, explicit sync state, and
   optimistic revision conflicts
 - schema-v2 JSON import/export, SVG/PNG export, and migration of supported
   schema-v1 and Excalidraw JSON
@@ -79,13 +90,54 @@ See [STACK.md](./STACK.md) for the technology choices and
 board also follows the repository-wide
 [design standard](../DESIGN_STANDARD.md).
 
+Saved and imported boards keep their authored positions on load. Automatic
+placement runs for generated templates and explicit tidy actions. Templates use
+the [shared layout standard](./shared/layout-standard.ts) for spacing,
+measurement, route clearance, labels, and modest arrowheads; generated previews
+use the same SVG element renderer as the editor.
+
+Short `↗ Placement` and `↗ Monitoring` references identify the same component
+drawn elsewhere on the board. They keep secondary paths near the relevant PoP
+while preserving the canonical component and primary request journey.
+
+## Consult component details
+
+Select a component, or click its **Details ↗** badge above the component; click that badge again to close it. Badges
+appear at readable zoom levels (45% and above), and on the selected element at
+any zoom. The right panel shows a short role, a compact load/storage comparison, and actual connected components.
+`More context` and `References` start collapsed for each selected component.
+Context uses short sections; full calculations are available as a Markdown
+reference download. Expanding notes never changes the canvas component's size.
+Empty fields stay hidden. Locked components remain readable.
+
+Use **Edit details → Architecture details → Reference links** to add links,
+one per line: `Documentation | https://example.com/docs`. A bare HTTP(S) URL
+also works. **Apply changes** validates and stores the edits locally; the header's
+**Save** persists them to the server. **Cancel changes**, Escape, and closing
+leave unapplied drafts out of the board. Links open in a separate tab. Source
+paths remain literal unless they are full web URLs; attach a source link in
+Reference links to make a repository file accessible.
+
+Try the **System Canvas · website architecture** template and select
+**Canvas editor · React**. Its reference panel includes implementation and
+project Markdown links. Existing saved copies retain their authored metadata;
+use the template preview to try the populated example.
+
+Reference notes travel in JSON exports and reusable components. The reader and
+Details badges are editor controls and are excluded from SVG/PNG artwork.
+
 ## Application architecture
 
 ![System Canvas frontend, local-first, and backend architecture](./system-canvas.png)
 
 The [editable architecture board](./examples/system-canvas-app.system-canvas.json)
-shows browser input, the repo-owned React/TypeScript SVG editor, immediate local snapshots, the
-serialized revision-aware save queue, Fastify validation, and atomic files.
+documents **this website itself**, so a development team can recognize its parts
+and their responsibilities. React creates and updates SVG elements from object
+properties; the browser’s SVG renderer draws the canvas. Browser localStorage
+and server JSON files preserve those properties so boards reopen as editable
+objects. Vite and Fastify/Node.js appear on their relevant components, without
+separate build or backend areas. API contracts and implementation rules stay in
+the inspector and [development design](./DESIGN.md).
 
 The custom SVG editor is not a third-party library, server, or database. It is
 the frontend module [`src/editor/EditorCanvas.tsx`](./src/editor/EditorCanvas.tsx),

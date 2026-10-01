@@ -1,6 +1,9 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import { createEmptyScene } from "../shared/contracts";
+import { CANVAS_PALETTE, LAYOUT_STANDARD } from "../shared/layout-standard";
+import { validateBoardLayout } from "../shared/layout-validator";
 
 import {
   SYSTEM_ICON_IDS,
@@ -10,8 +13,6 @@ import {
 import {
   STENCIL_CATALOG,
   STENCIL_CATEGORIES,
-  STENCIL_HEIGHT,
-  STENCIL_WIDTH,
   createStencilElements,
   getStencilById,
   getStencilsByCategory,
@@ -78,6 +79,16 @@ describe("stencil catalog", () => {
     );
   });
 
+  it("uses the shared muted palette and the routing, placement, and monitoring colors", () => {
+    const colors = new Set<string>(Object.values(CANVAS_PALETTE));
+    expect(STENCIL_CATALOG.every((stencil) => colors.has(stencil.accent))).toBe(true);
+    expect(getStencilById("load-balancer")?.accent).toBe(CANVAS_PALETTE.blue);
+    expect(getStencilById("data-router")?.accent).toBe(CANVAS_PALETTE.purple);
+    expect(getStencilById("partition")?.accent).toBe(CANVAS_PALETTE.purple);
+    expect(getStencilById("cache")?.accent).toBe(CANVAS_PALETTE.green);
+    expect(getStencilById("telemetry")?.accent).toBe(CANVAS_PALETTE.cyan);
+  });
+
   it("searches names, roles, categories, and keywords case-insensitively", () => {
     expect(searchStencils("  CONSISTENT   HASH ").map(({ id }) => id)).toEqual([
       "data-router",
@@ -109,15 +120,31 @@ describe("stencil conversion", () => {
       subtitle: "Reads and writes by key",
       variant: "storage",
       rotation: 0,
+      titleFontSize: LAYOUT_STANDARD.titleFontSize,
+      bodyFontSize: LAYOUT_STANDARD.bodyFontSize,
       style: {
-        fill: "#ffffff",
-        stroke: "#0b7285",
+        fill: CANVAS_PALETTE.white,
+        stroke: CANVAS_PALETTE.green,
+        textColor: CANVAS_PALETTE.ink,
       },
     });
-    expect(elements[0].width).toBeGreaterThanOrEqual(STENCIL_WIDTH);
-    expect(elements[0].height).toBeGreaterThanOrEqual(STENCIL_HEIGHT);
     expect(elements[0].x + elements[0].width / 2).toBe(center.x);
     expect(elements[0].y + elements[0].height / 2).toBe(center.y);
+  });
+
+  it("shrink-wraps short cards and wraps long content without a fixed size floor", () => {
+    const definition = getStencilById("cpu")!;
+    const [short] = createStencilElements({ ...definition, role: "" });
+    const [long] = createStencilElements({
+      ...definition,
+      role: "An application processor executes instructions and coordinates memory access across multiple concurrent workloads. ".repeat(3),
+    });
+    expect(short.width).toBeLessThan(224);
+    expect(short.height).toBeLessThan(112);
+    expect(long.width).toBeLessThanOrEqual(LAYOUT_STANDARD.maxSystemWidth);
+    expect(long.height).toBeGreaterThan(short.height);
+    expect(validateBoardLayout({ ...createEmptyScene(), elements: [short] })).toEqual([]);
+    expect(validateBoardLayout({ ...createEmptyScene(), elements: [long] })).toEqual([]);
   });
 
   it("produces a complete semantic node for every category", () => {
@@ -132,6 +159,15 @@ describe("stencil conversion", () => {
       expect(element.subtitle).toBe(stencil.role);
       expect(element.style.stroke).toBe(stencil.accent);
     }
+  });
+
+  it("fits every built-in stencil without changing catalog definitions", () => {
+    const before = structuredClone(STENCIL_CATALOG);
+    for (const stencil of STENCIL_CATALOG) {
+      const elements = createStencilElements(stencil);
+      expect(validateBoardLayout({ ...createEmptyScene(), elements })).toEqual([]);
+    }
+    expect(STENCIL_CATALOG).toEqual(before);
   });
 
   it("creates independent identifiers on repeated insertion", () => {

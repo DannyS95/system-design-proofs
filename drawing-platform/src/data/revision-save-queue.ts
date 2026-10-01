@@ -16,6 +16,7 @@ type TimerHandle = ReturnType<typeof setTimeout>;
 
 export type RevisionSaveQueueOptions = {
   initialRevision: number;
+  manualOnly?: boolean;
   delayMs?: number;
   retryMs?: number;
   save: (
@@ -66,7 +67,7 @@ export class RevisionSaveQueue {
     this.options.onStatus("saved-local");
     this.clearTimer();
 
-    if (!this.inFlight) {
+    if (!this.inFlight && !this.options.manualOnly) {
       this.timer = setTimeout(() => void this.flush(), this.delayMs);
     }
   }
@@ -100,12 +101,12 @@ export class RevisionSaveQueue {
       this.pending ??= payload;
       const kind = errorKind(error);
       this.options.onStatus(kind, errorMessage(error));
-      if (kind === "offline") {
+      if (kind === "offline" && !this.options.manualOnly) {
         this.retryTimer = setTimeout(() => void this.flush(), this.retryMs);
       }
     } finally {
       this.inFlight = false;
-      if (succeeded && !this.disposed && this.pending && !this.retryTimer) {
+      if (succeeded && !this.options.manualOnly && !this.disposed && this.pending && !this.retryTimer) {
         void this.flush();
       }
     }

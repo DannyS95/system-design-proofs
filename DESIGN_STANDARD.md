@@ -192,6 +192,39 @@ How do those pieces combine into the working application?
 
 Inspect the actual repository. Do not produce a generic web-stack diagram.
 
+### Elements identify; details reveal
+
+The reader should recognize each element from its technology, role, icon, and
+place in the architecture before reading its body. Name a concrete technology
+with its responsibility, such as `React · editor` or `Fastify · board storage
+server`. An abstract process heading is a boundary, not a substitute for an
+identifiable component.
+
+Visible details reveal what that component contributes and how it connects to
+its neighbors. Use brief statements and labeled paths instead of instructions
+the reader must memorize. The main board teaches the stable technology and data
+relationships; it is not an API reference or a walkthrough of application rules.
+HTTP methods and status codes, revision comparisons, timing constants, helper
+method names, and worked coordinate changes belong in inspector details or
+linked documentation unless they are the board's explicit subject. Apply this
+rule to project-architecture boards without removing the policies, invariants,
+or failure mechanisms that a distributed-system or algorithm board is meant to
+teach.
+
+Show how stored data becomes the application's visible result. For an editable
+graphics application, make the actual chain recognizable: stored object
+properties → scene data → renderer → browser graphics. Show which technology
+performs each step and how saving those properties allows the same objects to
+be reopened and edited. Do not imply that storage draws graphics or that a
+browser drawing API is used without checking the implementation.
+
+Keep a short hierarchy within cards: recognizable title, concise role, then only
+the details needed to reveal the relationship. Use consistent typography,
+alignment, indentation, and section spacing. Adding headings to a long technical
+inventory does not make it suitable for a visible card.
+
+### Required dependency evidence
+
 Identify the real:
 
 * package dependencies;
@@ -205,7 +238,10 @@ Identify the real:
 * network boundaries;
 * runtime processes.
 
-For every dependency, show:
+For every dependency, keep the following evidence accessible through the board's
+inspector or linked project documentation. Put its name, role, runtime ownership,
+and relevant connections on the canvas; do not repeat the full inventory inside
+every element:
 
 ```text
 Dependency name
@@ -352,23 +388,74 @@ uses a small token/ring-position icon. Similar names do not make these objects
 interchangeable. The inspector must report the icon's verified package or
 project-owned source and stable icon identifier.
 
-## Required breathing room
+## Intentional whitespace and compact choices
 
-Spacing is part of correctness, not decoration. Every component, block, figure,
-shape, layer statement, and route label must have visible space on its left,
-right, top, and bottom. Expand the infinite canvas whenever that space is not
-available; never compress the mechanism to preserve a preferred board width.
+Whitespace has exactly three purposes: content padding, visual grouping, or
+connector routing. Remove space that serves none of these. Cards shrink-wrap
+rendered text and icons plus standard padding; containers shrink-wrap their
+children plus internal margins. A short section heading is sufficient when a
+frame adds no useful grouping. Keep related policy and observability content
+beside the component it configures or measures.
 
-For generated teaching boards:
+Policy cards inherit the colour of the layer that owns and enforces them.
+For example, cache-server LFU/TTL memory policy uses the cache-server green;
+its database-fallback connector may use amber. A consequence does not change
+the policy's owning layer.
 
-* leave at least 80 world-space units between a layer statement and the first
-  detail beneath it;
-* make the open gap between connected components wider than the connector label,
-  with at least 24 units of clear space remaining around that label;
-* keep route labels clear of every component and every other route label;
-* terminate arrows at the visible boundary or explicit target marker—never
-  behind or inside an unrelated figure;
-* move a detail to another row when its natural width would otherwise be
-  squeezed merely to complete a symmetrical row;
-* do not use a large frame when a compact layer statement or policy block carries
-  the same information.
+Internal padding is intentional whitespace. A major plane may explicitly use
+64 units of padding instead of the default 32; persist this as
+`containerPadding` so generation, compaction, resizing, and validation agree.
+Do not compact this declared breathing room away.
+
+On the canvas prefer a title, selected configuration, and consequence. The
+visible mechanism shows the operation and destination; put background and
+first-principles explanations in Markdown or inspector details. Preserve roles,
+correctness boundaries, failure destinations, and hot-key fallback choices.
+
+The executable standard is `drawing-platform/shared/layout-standard.ts`.
+Spacing uses 8 / 12 / 16 / 24 / 32 / 48 / 64 world units. Independent arrows
+reserve a gap from both neighboring stroke and arrowhead envelopes, with a
+24-unit minimum. Arrowheads are capped at 14 world units. Connector labels have
+opaque padded plates and remain clear of cards, routes, and other labels.
+
+Generated designs measure content, place sections and children, route arrows,
+place labels, resolve collisions, compact unused space, calculate visual bounds,
+and choose a readable initial viewport. Ring geometry moves as a rigid group.
+Rendering and generated SVG/PNG previews use the same primitives and text layout.
+
+Explicit **Layout spacing → Tidy layout** lets the user configure node distance
+and arrow clearance. It is undoable and respects locks. Loading a user-authored
+board must never silently reposition its elements. Manual resizing may enlarge
+an object; it may not clip its content.
+
+Validate generated layouts programmatically and inspect real template previews
+at initial zoom, 100%, fit-to-content, and a mechanism detail view. Do not claim
+layout completion while any generated-layout check or visual check fails.
+
+## Execution-aware capacity annotations
+
+For workload diagrams, use small secondary captions to connect traffic to physical
+machines, work, limiting resources, and bottleneck candidates. Logical shards,
+rings, stored objects and libraries do not own independent machine capacity.
+Choose explicit, round safe-capacity assumptions for physical hosts, together with
+average, peak/flash traffic and desired spare capacity. Show peak demand / safe
+capacity and mark a bottleneck or headroom failure when the assumed load does not
+fit. Do not substitute vague workload caveats for a sizing choice in a design
+exercise. Use the vault BOTEC sources and state any additional design assumption. Distinguish
+**BOTEC ASSUMPTION** from **MEASURED/BENCHMARKED CAPACITY**, with workload, unit,
+and per-core/per-node scope. Count replication, quorum, retries and repair work;
+an aggregate node-operation budget is not client QPS. Exact throughput requires
+measurement. Keep detailed derivations in a linked reference, preserve the main
+architecture, and skip diagrams where runtime capacity is irrelevant.
+
+
+## Quick component inspection
+
+This is a visualization tool for grasping concepts quickly. Opening a component
+shows a short role, a compact capacity comparison when relevant, and its connected
+components. Background notes, implementation inventories, and calculations stay
+collapsed or in linked references. Hidden context must never increase the canvas
+component's dimensions. Do not duplicate a board-wide sizing essay on each node.
+Workload cards show the chosen budget, peak demand and consequence; derivations
+belong in the reference document. Expanded notes use short titled sections and
+lists, and reset to collapsed when selecting another component.

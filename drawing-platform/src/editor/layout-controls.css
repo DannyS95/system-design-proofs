@@ -1,0 +1,104 @@
+.canvas-layout-controls {
+  position: absolute;
+  z-index: 8;
+  bottom: 58px;
+  left: 16px;
+  color: var(--ink-800);
+  font-size: 11px;
+}
+
+.canvas-layout-controls > summary,
+.canvas-layout-controls__panel {
+  border: 1px solid var(--panel-border);
+  border-radius: 11px;
+  background: rgba(253, 250, 243, 0.97);
+  box-shadow: 0 10px 30px rgba(24, 27, 21, 0.12);
+  backdrop-filter: blur(12px);
+}
+
+.canvas-layout-controls > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 700;
+}
+
+.canvas-layout-controls > summary::-webkit-details-marker {
+  display: none;
+}
+
+.canvas-layout-controls > summary:focus-visible {
+  outline: 3px solid rgba(138, 173, 37, 0.52);
+  outline-offset: 2px;
+}
+
+.canvas-layout-controls > summary svg {
+  width: 15px;
+  height: 15px;
+}
+
+.canvas-layout-controls__panel {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  display: grid;
+  gap: 16px;
+  width: min(256px, calc(100vw - 32px));
+  padding: 16px;
+}
+
+.canvas-layout-controls__panel label {
+  display: grid;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.canvas-layout-controls__panel label > span {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.canvas-layout-controls__panel output {
+  color: var(--ink-600);
+  font-variant-numeric: tabular-nums;
+}
+
+.canvas-layout-controls__panel input {
+  width: 100%;
+  margin: 0;
+  accent-color: #576e86;
+}
+
+.canvas-layout-controls__panel button {
+  padding: 9px 12px;
+  border: 1px solid var(--paper-300);
+  border-radius: 8px;
+  background: var(--paper-150);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.canvas-layout-controls__panel button:hover:not(:disabled) {
+  background: var(--paper-200);
+}
+
+.canvas-layout-controls__panel button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .canvas-layout-controls {
+    bottom: 16px;
+  }
+}
+
+.canvas-layout-controls__panel p {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--ink-600);
+}

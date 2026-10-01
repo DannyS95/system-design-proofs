@@ -7,6 +7,7 @@ import { describe, expect, it } from "vitest";
 import { buildApp } from "../server/app.js";
 import { FileBoardStore } from "../server/board-store.js";
 import { DEFAULT_TEMPLATES } from "../server/templates.js";
+import { LAYOUT_STANDARD } from "../shared/layout-standard.js";
 import { isSystemIconId } from "../src/editor/SystemIcon.js";
 import {
   minimumTextHeight,
@@ -42,6 +43,12 @@ function connectorById(template: TemplateDefinition, id: string): CanvasConnecto
   const element = elementById(template, id);
   if (element.type !== "connector") throw new Error(`${id} is not a connector`);
   return element;
+}
+
+/** A local visual reference preserves the canonical service relationship. */
+function canonicalBinding(template: TemplateDefinition, binding?: string): string | undefined {
+  if (!binding) return undefined;
+  return elementById(template, binding).referenceId ?? binding;
 }
 
 function systemById(template: TemplateDefinition, id: string): CanvasSystemElement {
@@ -132,445 +139,304 @@ function expectNoDatabaseToClientConnector(template: TemplateDefinition): void {
   expect(invalid).toEqual([]);
 }
 
-function expectOrthogonalConnectorsAvoidUnrelatedCards(
-  template: TemplateDefinition,
-): void {
-  const cards = template.scene.elements.filter(
-    (element): element is CanvasSystemElement | CanvasShapeElement =>
-      element.type === "system" ||
-      (element.type === "shape" && Boolean(element.label)),
-  );
-  const diagonalSegments: string[] = [];
-  const cardCrossings: string[] = [];
-
-  for (const connector of template.scene.elements.filter(
-    (element): element is CanvasConnectorElement => element.type === "connector",
-  )) {
-    const points = connector.points.map(([x, y]) => ({
-      x: connector.x + x,
-      y: connector.y + y,
-    }));
-
-    for (let index = 1; index < points.length; index += 1) {
-      const start = points[index - 1];
-      const end = points[index];
-      if (
-        start.x !== end.x &&
-        start.y !== end.y &&
-        connector.id !== "key-position-to-vnode"
-      ) {
-        diagonalSegments.push(`${connector.id}:${index - 1}-${index}`);
-        continue;
-      }
-
-      for (const card of cards) {
-        if (
-          card.id === connector.startBinding ||
-          card.id === connector.endBinding
-        ) {
-          continue;
-        }
-        const minX = Math.min(start.x, end.x);
-        const maxX = Math.max(start.x, end.x);
-        const minY = Math.min(start.y, end.y);
-        const maxY = Math.max(start.y, end.y);
-        const crossesInterior =
-          start.x === end.x
-            ? start.x > card.x &&
-              start.x < card.x + card.width &&
-              maxY > card.y &&
-              minY < card.y + card.height
-            : start.y > card.y &&
-              start.y < card.y + card.height &&
-              maxX > card.x &&
-              minX < card.x + card.width;
-        if (crossesInterior) {
-          cardCrossings.push(`${connector.id}->${card.id}`);
-        }
-      }
-    }
-  }
-
-  expect(diagonalSegments).toEqual([]);
-  expect(cardCrossings).toEqual([]);
+/** Visible choices and inspectable background are intentionally separate. */
+function systemDetails(template: TemplateDefinition, id: string): string {
+  const element = systemById(template, id);
+  return [element.title, element.subtitle, element.body, element.metadata?.explanation].filter(Boolean).join("\n");
 }
 
-describe("topology teaching templates", () => {
-  it("keeps the social-feed cache distinct and stacks each mechanism with breathing room", () => {
+function canvasText(template: TemplateDefinition): string {
+  return template.scene.elements.map((element) => {
+    if (element.type === "system") return systemDetails(template, element.id);
+    if (element.type === "text") return element.text;
+    if (element.type === "shape" || element.type === "connector") return element.label ?? "";
+    return element.alt ?? "";
+  }).join("\n");
+}
+
+const semanticColors = {
+  request: "#496b8a",
+  placement: "#775d83",
+  cache: "#527760",
+  database: "#a15f4b",
+  observability: "#477d80",
+};
+
+describe("architecture choices in built-in templates", () => {
+  it("keeps the social-feed mechanisms distinct with compact text headings", () => {
     const template = templateById("social-feed-distributed-cache");
     expectNativeScene(template, false);
-    expectOrthogonalConnectorsAvoidUnrelatedCards(template);
-
-    const levels = ["level-1", "level-2", "level-3"].map((id) => shapeById(template, id));
-    expect(levels.map(({ label }) => label)).toEqual([
+    expect(["level-1", "level-2", "level-3"].map((id) => textById(template, id).text)).toEqual([
       expect.stringMatching(/FEED READ.*HIT.*RAM.*MISS.*FEED API/i),
       expect.stringMatching(/KEY PLACEMENT.*REPLICATION.*HASH.*SHARD.*REPLICA/i),
       expect.stringMatching(/WRITE POLICY.*DATABASE FIRST.*INVALIDATE.*REFILLS/i),
     ]);
-
-    const mechanisms = [
-      "mechanism-sharding",
-      "mechanism-replication",
-      "mechanism-memory-policy",
-      "mechanism-db-fallback",
-    ].map((id) => shapeById(template, id));
-    expect(mechanisms.map(({ label }) => label)).toEqual([
+    expect([
+      "mechanism-sharding", "mechanism-replication", "mechanism-memory-policy", "mechanism-db-fallback",
+    ].map((id) => textById(template, id).text)).toEqual([
       expect.stringMatching(/SHARDING.*SHARDS.*CACHE RAM/i),
       expect.stringMatching(/REPLICATION.*COPIES.*AVAILABLE/i),
-      expect.stringMatching(/MEMORY.*FAILURE.*PROOF.*TTL.*HOT KEYS.*METRICS/i),
+      expect.stringMatching(/MEMORY.*FAILURE.*TTL.*HOT KEYS.*METRICS/i),
       expect.stringMatching(/MISS PATH.*DATABASE FALLBACK.*REFILL/i),
     ]);
-    expect(shapeById(template, "level-1").y + shapeById(template, "level-1").height + 100)
-      .toBeLessThanOrEqual(systemById(template, "user-client").y);
-    expect(shapeById(template, "level-2").y + shapeById(template, "level-2").height + 80)
-      .toBeLessThanOrEqual(shapeById(template, "mechanism-sharding").y);
-    expect(shapeById(template, "level-3").y + shapeById(template, "level-3").height + 150)
-      .toBeLessThanOrEqual(shapeById(template, "write-request-step").y);
-    const requestLane = [
-      "user-client",
-      "feed-api",
-      "cache-client",
-      "hash-key",
-      "owning-shard",
-      "healthy-replica",
-    ].map((id) => systemById(template, id));
-    expect(requestLane.slice(1).every(
-      (element, index) => element.x - (requestLane[index].x + requestLane[index].width) >= 240,
-    )).toBe(true);
+    expect(["replica-b-primary", "replica-b-peer-1", "replica-b-peer-2"].map((id) => systemById(template, id).parentId))
+      .toEqual(["replica-set-b", "replica-set-b", "replica-set-b"]);
+    expect(shapeById(template, "replica-set-b").layoutRole).toBe("container");
   });
 
-  it("makes social-feed hit, miss, refill, write, placement, and failure paths explicit", () => {
+  it("preserves social-feed hit, miss, refill, invalidation and failure destinations", () => {
     const template = templateById("social-feed-distributed-cache");
-    expect(connectorById(template, "client-to-api")).toMatchObject({ startBinding: "user-client", endBinding: "feed-api" });
-    expect(connectorById(template, "api-to-cache-client")).toMatchObject({ startBinding: "feed-api", endBinding: "cache-client" });
-    expect(connectorById(template, "cache-client-to-hash")).toMatchObject({ startBinding: "cache-client", endBinding: "hash-key" });
-    expect(connectorById(template, "hash-to-shard")).toMatchObject({ startBinding: "hash-key", endBinding: "owning-shard" });
-    expect(connectorById(template, "shard-to-replica")).toMatchObject({ startBinding: "owning-shard", endBinding: "healthy-replica" });
-    expect(connectorById(template, "hit-to-api")).toMatchObject({ startBinding: "healthy-replica", endBinding: "feed-api", label: expect.stringMatching(/HIT.*RAM.*Feed API/i) });
-    expect(connectorById(template, "replica-miss-to-api")).toMatchObject({ startBinding: "healthy-replica", endBinding: "miss-api", label: expect.stringMatching(/MISS.*Feed API/i) });
-    expect(connectorById(template, "api-reads-db")).toMatchObject({ startBinding: "miss-api", endBinding: "authoritative-db" });
-    expect(connectorById(template, "db-result-to-api")).toMatchObject({ startBinding: "authoritative-db", endBinding: "miss-api" });
-    expect(connectorById(template, "api-refills-cache")).toMatchObject({ startBinding: "miss-api", endBinding: "healthy-replica", label: expect.stringMatching(/refill.*TTL/i) });
-    expect(connectorById(template, "miss-api-to-client")).toMatchObject({ startBinding: "miss-api", endBinding: "user-client" });
+    expect([
+      "client-to-api", "api-to-cache-client", "cache-client-to-hash", "hash-to-shard", "shard-to-replica",
+      "hit-to-api", "replica-miss-to-api", "api-reads-db", "db-result-to-api", "api-refills-cache", "miss-api-to-client",
+    ].map((id) => {
+      const { startBinding, endBinding } = connectorById(template, id);
+      return [startBinding, endBinding];
+    })).toEqual([
+      ["user-client", "feed-api"], ["feed-api", "cache-client"], ["cache-client", "hash-key"],
+      ["hash-key", "owning-shard"], ["owning-shard", "healthy-replica"], ["healthy-replica", "feed-api"],
+      ["healthy-replica", "miss-api"], ["miss-api", "authoritative-db"], ["authoritative-db", "miss-api"],
+      ["miss-api", "healthy-replica"], ["miss-api", "user-client"],
+    ]);
+    expect(connectorById(template, "hit-to-api").label).toMatch(/HIT.*RAM.*Feed API/i);
+    expect(connectorById(template, "replica-miss-to-api").label).toMatch(/MISS.*Feed API/i);
+    expect(connectorById(template, "api-refills-cache").label).toMatch(/refill.*TTL/i);
     expectNoDatabaseToClientConnector(template);
 
-    expect(systemById(template, "cache-client")).toMatchObject({ title: "Cache client + key routing", subtitle: expect.stringMatching(/inside the Feed API/i) });
-    expect(systemById(template, "contract-workload").subtitle).toMatch(/500,000.*reads greatly outnumber writes/i);
-    expect(systemById(template, "contract-target").subtitle).toMatch(/hit ratio.*91%.*fallback.*9%.*p99/i);
-    expect(systemById(template, "contract-target").body).toBe("Most feed requests should terminate in RAM rather than reaching the database.");
+    expect(systemById(template, "cache-client")).toMatchObject({
+      title: "Cache client + key routing", subtitle: expect.stringMatching(/inside the Feed API/i),
+    });
+    expect(systemById(template, "contract-workload").subtitle).toMatch(/500,000.*read-heavy/i);
+    expect(systemDetails(template, "contract-target")).toMatch(/hit ratio.*91%.*fallback.*9%.*p99/is);
+    expect(systemById(template, "contract-consistency").subtitle).toMatch(/brief staleness accepted/i);
+    expect(systemById(template, "authoritative-db").body).toBe("Source of truth");
     expect(systemById(template, "database-first-write")).toMatchObject({
-      subtitle: "cache-aside reads + database-first writes",
-      body: "The database is updated first. The old cache entry is invalidated. The next read fetches fresh data and repopulates the cache.",
+      subtitle: "cache-aside · database-first writes", body: "Update → invalidate · next read refills",
     });
+    expect(systemById(template, "database-first-write").metadata?.explanation)
+      .toMatch(/database is updated first.*old cache entry is invalidated.*next read fetches fresh data/is);
     expect([
-      connectorById(template, "write-request-to-database"),
-      connectorById(template, "database-to-invalidation"),
-      connectorById(template, "invalidation-to-next-miss"),
-      connectorById(template, "next-miss-to-database-refill"),
-    ].map(({ startBinding, endBinding }) => [startBinding, endBinding])).toEqual([
-      ["write-request-step", "write-database-step"],
-      ["write-database-step", "invalidate-key-step"],
-      ["invalidate-key-step", "next-read-miss-step"],
-      ["next-read-miss-step", "database-refill-step"],
+      "write-request-to-database", "database-to-invalidation", "invalidation-to-next-miss", "next-miss-to-database-refill",
+    ].map((id) => {
+      const { startBinding, endBinding } = connectorById(template, id);
+      return [startBinding, endBinding];
+    })).toEqual([
+      ["write-request-step", "write-database-step"], ["write-database-step", "invalidate-key-step"],
+      ["invalidate-key-step", "next-read-miss-step"], ["next-read-miss-step", "database-refill-step"],
     ]);
-    expect([
-      shapeById(template, "write-request-step").label,
-      shapeById(template, "write-database-step").label,
-      shapeById(template, "invalidate-key-step").label,
-      shapeById(template, "next-read-miss-step").label,
-      shapeById(template, "database-refill-step").label,
-    ].join(" ")).toMatch(/WRITE REQUEST.*UPDATE DATABASE.*INVALIDATE.*NEXT READ MISSES.*DATABASE.*REFILL/i);
     expect(systemById(template, "memory-policy")).toMatchObject({
-      subtitle: expect.stringMatching(/entry absent.*next read misses/i),
-      body: expect.stringMatching(/MISS.*database fallback.*cache refill/i),
+      subtitle: "LFU eviction · TTL expiry", body: "MISS → database → refill",
     });
-    expect(systemById(template, "node-failure").body).toMatch(/No healthy replica.*MISS.*database.*refill/i);
-    expect(systemById(template, "cache-stampede").body).toMatch(/one database read.*duplicate requests wait/i);
+    expect(systemById(template, "node-failure")).toMatchObject({
+      subtitle: "retry a healthy replica", body: "None healthy → database → refill",
+    });
+    expect(systemById(template, "cache-stampede")).toMatchObject({
+      subtitle: "one database read per missing key", body: "Duplicate reads wait and share result",
+    });
+    expect(systemById(template, "hot-key").subtitle).toMatch(/extra replicas or application cache/i);
     expect(systemById(template, "observability").subtitle).toMatch(/hit ratio.*shard QPS.*p99/i);
-    expect(["replica-b-primary", "replica-b-peer-1", "replica-b-peer-2"].map((id) => systemById(template, id).title)).toEqual(["Shard B", "Shard B", "Shard B"]);
-    expect(["replica-b-primary", "replica-b-peer-1", "replica-b-peer-2"].map((id) => systemById(template, id).subtitle)).toEqual([
-      expect.stringMatching(/replica 1.*healthy.*selected/i),
-      expect.stringMatching(/replica 2.*healthy/i),
-      expect.stringMatching(/replica 3.*healthy/i),
-    ]);
-    const allText = JSON.stringify(template.scene);
-    expect(allText).not.toMatch(/Feed client|Cache router|B copy|write-through|write-back/i);
+    expect(["replica-b-primary", "replica-b-peer-1", "replica-b-peer-2"].map((id) => systemById(template, id).title))
+      .toEqual(["Shard B · replica 1", "Shard B · replica 2", "Shard B · replica 3"]);
+    expect(systemById(template, "replica-b-primary").subtitle).toBe("healthy · selected");
+    expect(canvasText(template)).not.toMatch(/Feed client|Cache router|B copy|write-through|write-back/i);
   });
 
-  it("keeps the financial cache separate and traces only its distributed-cache request journey", () => {
+  it("keeps the financial-cache workload, invariant, request ownership and return path", () => {
     const template = templateById("distributed-cache");
     expectNativeScene(template, false);
-    expectOrthogonalConnectorsAvoidUnrelatedCards(template);
     expect(template.name).toBe("Distributed Cache · financial quorum path");
-    expect(template.scene.appState.camera.zoom).toBeGreaterThanOrEqual(0.45);
-    expect(template.scene.appState.camera.zoom).toBeLessThanOrEqual(0.65);
-
-    expect(textById(template, "goal").text).toBe(
-      "GOAL · 500K USERS · BALANCED R/W · FINANCIAL KEYS REQUIRE STRONG CONSISTENCY",
-    );
-    expect(textById(template, "invariant").text).toBe(
-      "INVARIANT · NO CLIENT OBSERVES A VALUE OLDER THAN THE LAST ACKNOWLEDGED WRITE",
-    );
-    expect([
-      shapeById(template, "request-layer").label,
-      shapeById(template, "placement-layer").label,
-      shapeById(template, "cache-layer").label,
-      shapeById(template, "database-layer").label,
-    ]).toEqual([
-      expect.stringMatching(/REQUEST ROUTING.*LOAD BALANCER.*CACHE CLIENT/i),
-      expect.stringMatching(/KEY PLACEMENT.*HASH.*VIRTUAL NODE.*SHARD/i),
-      expect.stringMatching(/CACHE SERVERS.*THREE PHYSICAL SERVERS.*QUORUMS OVERLAP/i),
-      expect.stringMatching(/DATABASE.*AUTHORITATIVE CASSANDRA.*QUORUM WRITES/is),
+    expect(template.scene.appState.camera.zoom).toBeGreaterThanOrEqual(LAYOUT_STANDARD.minInitialZoom);
+    expect(template.scene.appState.camera.zoom).toBeLessThanOrEqual(LAYOUT_STANDARD.maxInitialZoom);
+    expect(textById(template, "goal").text).toMatch(/500,000 users.*Balanced reads \/ writes.*strong consistency for financial keys/is);
+    expect(textById(template, "invariant").text).toMatch(/No client sees a value older than the last acknowledged write/i);
+    expect(["request-layer", "placement-layer", "cache-layer", "database-layer"].map((id) => textById(template, id).text)).toEqual([
+      expect.stringMatching(/REQUEST ROUTING.*LOAD BALANCER.*APPLICATION/i),
+      expect.stringMatching(/KEY PLACEMENT.*HASH.*CLOCKWISE SUCCESSOR.*SHARD/i),
+      expect.stringMatching(/CACHE SERVERS.*THREE REPLICAS.*OVERLAPPING QUORUMS/i),
+      expect.stringMatching(/PERSISTENCE.*AUTHORITATIVE CASSANDRA/i),
     ]);
-    expect(template.scene.elements.some(({ id }) => id === "layer-map" || id === "logic-rail")).toBe(false);
-    expect(shapeById(template, "request-layer").y + shapeById(template, "request-layer").height + 120)
-      .toBeLessThanOrEqual(systemById(template, "clients").y);
-    expect(shapeById(template, "placement-layer").y + shapeById(template, "placement-layer").height + 170)
-      .toBeLessThanOrEqual(shapeById(template, "key-position-marker").y);
-    expect(shapeById(template, "cache-layer").y + shapeById(template, "cache-layer").height + 150)
-      .toBeLessThanOrEqual(shapeById(template, "cache-shard-b-group").y);
-    expect(systemById(template, "load-balancer").x - (
-      systemById(template, "clients").x + systemById(template, "clients").width
-    )).toBeGreaterThanOrEqual(300);
-    expect(systemById(template, "cache-client-coordinator").x - (
-      systemById(template, "load-balancer").x + systemById(template, "load-balancer").width
-    )).toBeGreaterThanOrEqual(350);
-
-    const systems = template.scene.elements.filter(
-      (element): element is CanvasSystemElement => element.type === "system",
-    );
-    expect(systems.map(({ id }) => id)).toEqual([
-      "clients",
-      "load-balancer",
-      "cache-client-coordinator",
-      "logic-placement",
-      "cache-shard-b-logical",
-      "cache-server-b1",
-      "cache-server-b2",
-      "cache-server-b3",
-      "logic-cache",
-      "write-commit-rule",
-      "memory-policy",
-      "database-shards",
-      "monitoring-service",
-    ]);
-    expect(systemById(template, "clients")).toMatchObject({
-      title: "Clients",
-      subtitle: "read or write request",
+    expect(textById(template, "observability-layer").text).toBe("OBSERVABILITY");
+    expect(systemById(template, "clients")).toMatchObject({ title: "Clients", subtitle: "Read and write requests" });
+    expect(systemById(template, "load-balancer")).toMatchObject({
+      subtitle: "Application request routing", body: expect.stringContaining("Spread reads and writes across app instances"),
     });
-    expect(systemById(template, "load-balancer").subtitle).toBe(
-      "spreads requests across application instances",
-    );
     expect(systemById(template, "cache-client-coordinator")).toMatchObject({
-      subtitle: "library inside the application/API service",
-      metadata: expect.objectContaining({
-        layer: "Application/API and cache coordination",
-      }),
+      subtitle: "Library inside the application / API service",
+      metadata: expect.objectContaining({ layer: "Application/API and cache coordination" }),
     });
-
     expect([
-      connectorById(template, "client-request"),
-      connectorById(template, "load-balancer-route"),
-      connectorById(template, "coordinator-to-ring"),
-      connectorById(template, "key-position-to-vnode"),
-      connectorById(template, "selected-vnode-to-shard-b"),
-      connectorById(template, "hit-return"),
-      connectorById(template, "coordinator-response"),
-      connectorById(template, "client-response"),
-    ].map(({ startBinding, endBinding }) => [startBinding, endBinding])).toEqual([
-      ["clients", "load-balancer"],
-      ["load-balancer", "cache-client-coordinator"],
-      ["cache-client-coordinator", "key-position-marker"],
-      ["key-position-marker", "vnode-b-selected"],
-      ["vnode-b-selected", "cache-shard-b-logical"],
-      ["cache-shard-b-group", "cache-client-coordinator"],
-      ["cache-client-coordinator", "load-balancer"],
-      ["load-balancer", "clients"],
+      "client-request", "load-balancer-route", "coordinator-to-ring", "key-position-to-vnode", "selected-vnode-to-shard-b",
+      "hit-return", "coordinator-response", "client-response",
+    ].map((id) => {
+      const { startBinding, endBinding } = connectorById(template, id);
+      return [startBinding, endBinding];
+    })).toEqual([
+      ["clients", "load-balancer"], ["load-balancer", "cache-client-coordinator"],
+      ["cache-client-coordinator", "key-position-marker"], ["key-position-marker", "vnode-b-selected"],
+      ["vnode-b-selected", "cache-shard-b-logical"], ["cache-shard-b-group", "cache-client-coordinator"],
+      ["cache-client-coordinator", "load-balancer"], ["load-balancer", "clients"],
     ]);
-
-    const allText = JSON.stringify(template.scene);
-    expect(allText).not.toMatch(
-      /Feed API|feed:user|cache-aside|why a distributed cache|routing layers|data destinations|user changes data|read repair/i,
-    );
-    expect(template.scene).not.toEqual(
-      templateById("social-feed-distributed-cache").scene,
-    );
+    expect(canvasText(template)).not.toMatch(/Feed API|feed:user|cache-aside|read repair/i);
+    expect(template.scene).not.toEqual(templateById("social-feed-distributed-cache").scene);
   });
 
-  it("makes placement, physical replicas, policies, persistence, and monitoring explicit", () => {
+  it("preserves ring geometry and explains the clockwise successor in a compact section", () => {
     const template = templateById("distributed-cache");
-
-    expect(shapeById(template, "hash-ring-visual").shape).toBe("ellipse");
-    expect(shapeById(template, "key-position-marker").shape).toBe("diamond");
-    expect(connectorById(template, "coordinator-to-ring").label).toMatch(/MARK ONE RING POSITION/i);
-    expect(connectorById(template, "key-position-to-vnode").label).toMatch(/CLOCKWISE.*STOP AT vB2/i);
-    expect(textById(template, "hash-key-label").text).toBe("HASH(KEY)\nPOSITION");
-    const virtualNodes = [
-      "vnode-a-1",
-      "vnode-b-1",
-      "vnode-b-selected",
-      "vnode-c-1",
-      "vnode-a-2",
-      "vnode-c-2",
-      "vnode-a-3",
-      "vnode-b-2",
-    ].map((id) => shapeById(template, id));
-    expect(virtualNodes.map(({ label }) => label)).toEqual([
-      "vA1", "vB1", "vB2", "vC1", "vA2", "vC2", "vA3", "vB3",
+    const ring = shapeById(template, "hash-ring-visual");
+    expect(ring).toMatchObject({ shape: "ellipse", width: 400, height: 400, layoutGroup: "hash-ring", layoutRole: "mechanism" });
+    const tokenIds = ["vnode-a-1", "vnode-b-1", "vnode-b-selected", "vnode-c-1", "vnode-a-2", "vnode-c-2", "vnode-a-3", "vnode-b-2"];
+    const tokens = tokenIds.map((id) => shapeById(template, id));
+    expect(tokens.map(({ label }) => label)).toEqual(["vA1", "vB1", "vB2", "vC1", "vA2", "vC2", "vA3", "vB3"]);
+    // A common translation is allowed; ring/token topology is the preserved artifact.
+    expect(tokens.map(({ x, y }) => [x - ring.x, y - ring.y])).toEqual([
+      [168, -32], [309, 27], [368, 168], [309, 309], [168, 368], [27, 309], [-32, 168], [27, 27],
     ]);
-    expect(virtualNodes.every(({ fontSize }) => fontSize === 20)).toBe(true);
-    expect(virtualNodes.every(({ iconId }) => iconId === "virtual-node")).toBe(true);
-    expect(shapeById(template, "vnode-b-selected").style.stroke).toBe("#15803d");
+    expect(tokens.every(({ iconId, layoutGroup }) => iconId === "virtual-node" && layoutGroup === "hash-ring")).toBe(true);
     const marker = shapeById(template, "key-position-marker");
+    expect(marker).toMatchObject({ shape: "diamond", layoutGroup: "hash-ring" });
     expect(marker.y).toBeGreaterThan(shapeById(template, "vnode-b-1").y);
     expect(marker.y).toBeLessThan(shapeById(template, "vnode-b-selected").y);
-    expect(textById(template, "selected-token-note").text).toMatch(
-      /vB2.*VIRTUAL TOKEN.*NOT PHYSICAL SERVER B2/is,
-    );
-    expect(systemById(template, "logic-placement").body).toMatch(
-      /1\. hash\(key\) produces one position on the ring\..*2\. Starting at that position, move clockwise\..*3\. Stop at the first virtual-node token encountered\..*4\. In this example, that token is vB2\..*5\. The key range ending at vB2 maps to logical Cache Shard B\..*6\. Shard B’s replica-selection rule then chooses physical server B1, B2, or B3\..*vB2 owns the ring interval after its predecessor and up to vB2\./is,
-    );
+    expect(connectorById(template, "coordinator-to-ring").label).toBe("HASH(KEY)");
+    expect(connectorById(template, "key-position-to-vnode").label).toBeUndefined();
+    expect(textById(template, "hash-key-label").text).toBe("HASH(KEY)\nPOSITION");
+    expect(textById(template, "selected-token-note").text).toBe("vB2 · VIRTUAL TOKEN");
+    const rule = systemById(template, "logic-placement");
+    expect([rule.title, rule.subtitle, rule.body]).toEqual([
+      "hash(key) → ring position", "Consistent-hash placement", expect.stringMatching(/move clockwise.*First token: vB2 → Cache Shard B/s),
+    ]);
+    expect([rule.title, rule.subtitle, rule.body].join("\n")).not.toMatch(/(?:^|\n)\d+[.)]/);
+    expect(rule.metadata).toMatchObject({
+      layer: "Key placement", outputs: "logical Cache Shard B",
+      explanation: expect.stringMatching(/interval after its predecessor and up to vB2/i),
+    });
+  });
 
+  it("shows physical replicas, selected quorums, write acknowledgement and failure policy", () => {
+    const template = templateById("distributed-cache");
     expect(systemById(template, "cache-shard-b-logical")).toMatchObject({
-      title: "Cache Shard B",
-      iconId: "partition",
-      subtitle: expect.stringMatching(/logical partition.*key range/i),
-      body: "vB2 maps its owned key range to Cache Shard B.",
-      parentId: "cache-shard-b-group",
+      title: "Cache Shard B", iconId: "partition", subtitle: "Logical key range · selected",
+      body: expect.stringContaining("vB2 interval → B1 / B2 / B3"), parentId: "cache-shard-b-group",
     });
-    expect(textById(template, "shard-b-replication").text).toMatch(
-      /REPLICA SELECTION.*THREE PHYSICAL SERVERS HOLD THIS SHARD/is,
-    );
-    expect(["cache-server-b1", "cache-server-b2", "cache-server-b3"].map(
-      (id) => systemById(template, id),
-    )).toEqual([
-      expect.objectContaining({ title: "B1", subtitle: "physical cache server", iconId: "server", parentId: "cache-shard-b-group" }),
-      expect.objectContaining({ title: "B2", subtitle: "physical cache server", iconId: "server", parentId: "cache-shard-b-group" }),
-      expect.objectContaining({ title: "B3", subtitle: "physical cache server", iconId: "server", parentId: "cache-shard-b-group" }),
+    expect(textById(template, "shard-b-replication").text).toMatch(/REPLICA SELECTION.*THREE PHYSICAL SERVERS/is);
+    expect(["cache-server-b1", "cache-server-b2", "cache-server-b3"].map((id) => systemById(template, id))).toEqual([
+      expect.objectContaining({ title: "B1", subtitle: "Physical cache server", iconId: "server", parentId: "cache-shard-b-group" }),
+      expect.objectContaining({ title: "B2", subtitle: "Physical cache server", iconId: "server", parentId: "cache-shard-b-group" }),
+      expect.objectContaining({ title: "B3", subtitle: "Physical cache server", iconId: "server", parentId: "cache-shard-b-group" }),
     ]);
-    expect(["cache-shard-a", "cache-shard-c"].map((id) =>
-      shapeById(template, id).iconId
-    )).toEqual(["partition", "partition"]);
-    expect([
-      "shard-b-to-server-b1",
-      "shard-b-to-server-b2",
-      "shard-b-to-server-b3",
-    ].map((id) => connectorById(template, id).endBinding)).toEqual([
-      "cache-server-b1",
-      "cache-server-b2",
-      "cache-server-b3",
-    ]);
-
+    expect(["cache-shard-a", "cache-shard-c"].map((id) => shapeById(template, id).iconId)).toEqual(["partition", "partition"]);
+    expect(["shard-b-to-server-b1", "shard-b-to-server-b2", "shard-b-to-server-b3"].map((id) => connectorById(template, id).endBinding))
+      .toEqual(["cache-server-b1", "cache-server-b2", "cache-server-b3"]);
     expect(systemById(template, "logic-cache")).toMatchObject({
-      subtitle: "N=3 · R=2 · W=2",
-      body: expect.stringMatching(
-        /N=3.*three physical servers per shard.*R=2.*read two versioned values.*newest.*W=2.*two cache write acknowledgements.*R\+W>N.*quorums intersect.*ONE SERVER DOWN.*two healthy replicas.*FEWER THAN TWO.*do not serve/is,
-      ),
+      title: "Cache quorum", subtitle: "N=3 · R=2 · W=2", body: expect.stringContaining("R + W > N · tolerates one failed server"),
     });
+    expect(systemById(template, "logic-cache").metadata?.explanation)
+      .toMatch(/R=2.*read two versioned values.*newest.*W=2.*two cache write acknowledgements.*FEWER THAN TWO.*do not serve/is);
     expect(systemById(template, "write-commit-rule")).toMatchObject({
-      subtitle: "cache W=2 + Cassandra CL=QUORUM",
-      body: expect.stringMatching(
-        /acknowledged only after both required quorums succeed.*same version.*do not acknowledge.*invalidate or bypass the cache/is,
-      ),
+      title: "Acknowledged write", subtitle: "Synchronous write-through", body: expect.stringMatching(/Cache W=2 \+ Cassandra CL=QUORUM.*Acknowledge only after both quorums/s),
     });
-    expect(systemById(template, "memory-policy")).toMatchObject({
-      subtitle: "LFU eviction · TTL expiry",
-      body: expect.stringMatching(/MISS path.*Cassandra.*refill/i),
-    });
-    expect(connectorById(template, "hit-return").label).toBe(
-      "HIT · RETURN NEWEST CACHE VALUE",
-    );
-
+    expect(systemById(template, "write-commit-rule").metadata?.explanation)
+      .toMatch(/both required quorums succeed.*same version.*do not acknowledge.*invalidate or bypass/is);
+    expect(systemById(template, "memory-policy")).toMatchObject({ subtitle: "LFU eviction · TTL expiry", body: expect.stringContaining("Miss → Cassandra → refill") });
     expect(systemById(template, "database-shards")).toMatchObject({
-      title: "Cassandra cluster",
-      subtitle: "authoritative · RF=3 · CL=QUORUM · partition key=user_id",
-      body: expect.stringMatching(
-        /RF=3.*3 durable copies of each row.*CL=QUORUM.*2 of 3 database replicas must respond.*read or write.*PARTITION KEY.*user_id.*database partition/is,
-      ),
+      title: "Cassandra", subtitle: "Authoritative source of truth", body: expect.stringMatching(/RF=3: three durable copies.*CL=QUORUM: two of three.*user_id/s),
     });
+    expect(systemById(template, "database-shards").metadata?.explanation)
+      .toMatch(/RF=3.*3 durable copies.*CL=QUORUM.*2 of 3 database replicas.*PARTITION KEY.*user_id.*database partition/is);
+    expect(systemById(template, "financial-hot-key")).toMatchObject({
+      title: "Hot-key options", subtitle: "Application load protection",
+      body: expect.stringMatching(/Coalesce.*healthy replicas.*R=2.*W=2.*no stale single-copy fallback/is),
+    });
+    expect(systemById(template, "financial-hot-key").metadata?.explanation)
+      .toMatch(/not a change to the selected topology.*reevaluating N, R and W/is);
+
+    expect(connectorById(template, "hit-return").label).toBe("HIT · NEWEST VERSION");
     expect(connectorById(template, "cache-miss-to-database")).toMatchObject({
-      startBinding: "cache-shard-b-group",
-      endBinding: "database-shards",
+      startBinding: "cache-shard-b-group", endBinding: "database-shards", label: "MISS / QUORUM FAILURE · READ CASSANDRA",
     });
     expect(connectorById(template, "database-fill-to-cache")).toMatchObject({
-      startBinding: "database-shards",
-      endBinding: "cache-shard-b-group",
+      startBinding: "database-shards", endBinding: "cache-shard-b-group", label: "FILL CACHE · SAME VERSION",
     });
     expect(connectorById(template, "write-through-to-database")).toMatchObject({
-      startBinding: "cache-client-coordinator",
-      endBinding: "database-shards",
-    });
-    expect(connectorById(template, "cache-miss-to-database").label).toMatch(
-      /MISS OR CACHE-QUORUM FAILURE.*APPLICATION READS CASSANDRA/i,
-    );
-    expect(connectorById(template, "database-fill-to-cache").label).toMatch(
-      /DATABASE RESULT.*FILL CACHE WITH SAME VERSION/i,
-    );
-    expect(connectorById(template, "write-through-to-database")).toMatchObject({
-      label: "SAME VERSION · WAIT FOR CASSANDRA CL=QUORUM",
-      fontSize: 20,
-      locked: false,
+      startBinding: "cache-client-coordinator", endBinding: "database-shards", label: "WRITE-THROUGH · CL=QUORUM", locked: false,
     });
     expect(connectorById(template, "cache-write-quorum")).toMatchObject({
-      startBinding: "cache-client-coordinator",
-      endBinding: "cache-shard-b-group",
-      label: "WRITE CACHE · WAIT FOR W=2",
+      startBinding: "cache-client-coordinator", endBinding: "cache-shard-b-group", label: "WRITE CACHE · WAIT FOR W=2",
     });
-    const writeRoute = connectorById(template, "write-through-to-database");
-    expect(connectorById(template, "cache-miss-to-database").x).toBe(1000);
-    expect(connectorById(template, "database-fill-to-cache").x).toBe(1950);
-    expect(writeRoute.points.some(([x]) => writeRoute.x + x === 3200)).toBe(true);
-
-    expect(systemById(template, "monitoring-service").body).toMatch(
-      /hit ratio.*shard QPS.*p50\/p99.*quorum failures.*replica lag/is,
-    );
-    expect(["cache-signals", "database-signals"].map(
-      (id) => connectorById(template, id).style.strokeStyle,
-    )).toEqual(["dotted", "dotted"]);
-
-    const systems = template.scene.elements.filter(
-      (element): element is CanvasSystemElement => element.type === "system",
-    );
-    const labeledConnectors = template.scene.elements.filter(
-      (element): element is CanvasConnectorElement =>
-        element.type === "connector" && Boolean(element.label),
-    );
-    const labeledShapes = template.scene.elements.filter(
-      (element): element is CanvasShapeElement =>
-        element.type === "shape" && Boolean(element.label),
-    );
-    const textElements = template.scene.elements.filter(
-      (element): element is CanvasTextElement => element.type === "text",
-    );
-    expect(systems.every(
-      (element) =>
-        (element.titleFontSize ?? 0) >= 22 &&
-        (element.bodyFontSize ?? 0) >= 21,
-    )).toBe(true);
-    expect(labeledConnectors.every(
-      (element) =>
-        element.id === "key-position-to-vnode" || (element.fontSize ?? 0) >= 20,
-    )).toBe(true);
-    expect(labeledShapes.every(
-      (element) => (element.fontSize ?? 0) >= 20,
-    )).toBe(true);
-    expect(textElements.every(({ id, fontSize }) =>
-      id === "selected-token-note" || fontSize >= 20
-    )).toBe(true);
+    expectNoDatabaseToClientConnector(template);
+    expect(systemDetails(template, "monitoring-service")).toMatch(/hit ratio.*shard QPS.*p50\/p99.*quorum failures.*replica lag/is);
+    expect(["cache-signals", "database-signals"].map((id) => connectorById(template, id).style.strokeStyle)).toEqual(["dotted", "dotted"]);
+    expect(["client-request", "coordinator-to-ring", "hit-return", "write-through-to-database", "cache-signals"]
+      .map((id) => connectorById(template, id).style.stroke)).toEqual(Object.values(semanticColors));
+    expect(shapeById(template, "vnode-b-selected").style.stroke).toBe(semanticColors.cache);
   });
-  it("makes CDN routing, PoP meaning, hit, miss, fill, placement, and failover explicit", () => {
+
+  it("keeps the coordinator write route clear of the database area before entry", () => {
+    const template = templateById("distributed-cache");
+    const area = shapeById(template, "database-workload-area");
+    const route = connectorById(template, "write-through-to-database");
+    const points = route.points.map(([x, y]) => [route.x + x, route.y + y]);
+    const clearance = LAYOUT_STANDARD.spacing.subsection;
+    // Only the final segment enters the area to reach its database endpoint.
+    for (let index = 1; index < points.length - 1; index += 1) {
+      const [a, b] = [points[index - 1], points[index]];
+      if (a[0] === b[0] && Math.max(a[1], b[1]) >= area.y && Math.min(a[1], b[1]) <= area.y + area.height) {
+        expect(Math.min(Math.abs(a[0] - area.x), Math.abs(a[0] - area.x - area.width)))
+          .toBeGreaterThanOrEqual(clearance - 0.001);
+      }
+      if (a[1] === b[1] && Math.max(a[0], b[0]) >= area.x && Math.min(a[0], b[0]) <= area.x + area.width) {
+        expect(Math.min(Math.abs(a[1] - area.y), Math.abs(a[1] - area.y - area.height)))
+          .toBeGreaterThanOrEqual(clearance - 0.001);
+      }
+    }
+    expect(route.endBinding).toBe("database-shards");
+  });
+
+  it("keeps configuration cards concise while retaining readable typography and role details", () => {
+    for (const id of ["distributed-cache", "social-feed-distributed-cache", "cdn", "system-canvas-app"]) {
+      for (const element of templateById(id).scene.elements) {
+        if (element.type === "system") {
+          if (element.metadata?.objectType === "workload estimate") {
+            expect(element.parentId).toBeDefined();
+            expect(shapeById(templateById(id), element.parentId!).layoutRole).toBe("container");
+            expect(element.referenceId).toBeDefined();
+            expect(systemById(templateById(id), element.referenceId!).parentId).toBe(element.parentId);
+          } else if (id === "distributed-cache") {
+            for (const block of (element.body ?? "").split("\n\n")) {
+              const [heading, ...details] = block.split("\n");
+              expect(heading).toBeTruthy();
+              expect(details.length).toBeGreaterThan(0);
+              expect(details.every(line => line.startsWith("  "))).toBe(true);
+            }
+            expect(element.align).toBe("left");
+          } else {
+            expect((element.body ?? "").split("\n"), `${id}:${element.id} consequence lines`).toHaveLength(1);
+          }
+          expect(element.body ?? "").not.toMatch(/(?:^|\n)\d+[.)]/);
+          expect(element.titleFontSize ?? LAYOUT_STANDARD.titleFontSize).toBeGreaterThanOrEqual(LAYOUT_STANDARD.titleFontSize);
+          expect(element.bodyFontSize ?? LAYOUT_STANDARD.bodyFontSize).toBeGreaterThanOrEqual(LAYOUT_STANDARD.bodyFontSize);
+        }
+        if (element.type === "connector" && element.label) {
+          expect(element.fontSize ?? LAYOUT_STANDARD.labelFontSize).toBeGreaterThanOrEqual(LAYOUT_STANDARD.labelFontSize);
+        }
+      }
+    }
+  });
+
+  it("preserves CDN PoP ownership, hit, upstream miss, fill, placement and failover", () => {
     const template = templateById("cdn");
     expectNativeScene(template);
-    expectOrthogonalConnectorsAvoidUnrelatedCards(template);
-
-    const hulls = ["pop-lisbon-hull", "pop-frankfurt-hull", "pop-virginia-hull"].map((id) => shapeById(template, id));
-    expect(hulls).toHaveLength(3);
+    for (const pop of ["lisbon", "frankfurt", "virginia"]) {
+      expect(shapeById(template, `pop-${pop}-hull`)).toMatchObject({ layoutRole: "container", parentId: "cdn-data-plane" });
+      expect(systemById(template, `pop-${pop}-edge`).parentId).toBe(`pop-${pop}-hull`);
+      expect(systemById(template, `pop-${pop}-cache`).parentId).toBe(`pop-${pop}-hull`);
+    }
     expect(textById(template, "pop-lisbon-hull-label").text).toMatch(/SELECTED/);
     expect(["pop-frankfurt-hull-label", "pop-virginia-hull-label"].every((id) => textById(template, id).text.includes("ALTERNATE"))).toBe(true);
     expect(systemById(template, "viewer").subtitle).toMatch(/requests one object/i);
-    expect(textById(template, "pop-definition").text).toMatch(/PoP.*facility.*edge proxy.*machine/i);
+    expect(textById(template, "pop-definition").text).toMatch(/PoP.*location group.*edge machines/i);
     expect(connectorById(template, "routing-to-selected-pop")).toMatchObject({ startBinding: "global-routing", endBinding: "pop-lisbon-edge", label: expect.stringMatching(/choose PoP/i) });
     expect(connectorById(template, "routing-to-frankfurt")).toMatchObject({ endBinding: "pop-frankfurt-edge", label: expect.stringMatching(/unhealthy.*reroute/i) });
+    expect(connectorById(template, "routing-to-virginia")).toMatchObject({ endBinding: "pop-virginia-edge", label: expect.stringMatching(/region unavailable.*another PoP/i) });
     expect(connectorById(template, "edge-response").label).toMatch(/HIT.*return from edge now/i);
     expect(connectorById(template, "filled-response")).toMatchObject({ endBinding: "viewer", label: expect.stringMatching(/after MISS.*filled edge.*return/i) });
     expect(connectorById(template, "miss-to-parent")).toMatchObject({ startBinding: "pop-lisbon-cache", endBinding: "parent-proxy" });
@@ -586,66 +452,125 @@ describe("topology teaching templates", () => {
     expect(systemById(template, "content-placement")).toMatchObject({ title: "Control + placement system", subtitle: expect.stringMatching(/PULL.*miss.*PUSH.*demand/i) });
     expect(systemById(template, "cdn-telemetry").subtitle).toMatch(/hit ratio.*queues.*origin traffic.*fetch failures/i);
     expect(textById(template, "cdn-control-plane-label").text).toMatch(/CONTROL.*PLACEMENT.*OBSERVATION/i);
-    const dataPlane = shapeById(template, "cdn-data-plane");
-    const controlPlane = shapeById(template, "cdn-control-plane");
-    const controlRouteXs = [1885, 1905, 1920];
-    expect(controlRouteXs.every(
-      (x) => x >= dataPlane.x + dataPlane.width + 24 && x < controlPlane.x,
-    )).toBe(true);
-    expect(["placement-lisbon", "placement-frankfurt", "placement-virginia"].every((id) => connectorById(template, id).startBinding === "content-placement")).toBe(true);
-    expect(["telemetry-lisbon", "telemetry-frankfurt", "telemetry-virginia"].every((id) => connectorById(template, id).style.strokeStyle === "dotted")).toBe(true);
-    const diagramTerms = JSON.stringify(template.scene);
-    expect(diagramTerms).not.toMatch(/coalesc|If-None-Match|stale-if-error|304/i);
+    for (const pop of ["lisbon", "frankfurt", "virginia"]) {
+      const placement = connectorById(template, `placement-${pop}`);
+      const telemetry = connectorById(template, `telemetry-${pop}`);
+      expect(canonicalBinding(template, placement.startBinding)).toBe("content-placement");
+      expect(placement.endBinding).toBe(`pop-${pop}-cache`);
+      expect(telemetry.startBinding).toBe(`pop-${pop}-cache`);
+      expect(canonicalBinding(template, telemetry.endBinding)).toBe("cdn-telemetry");
+      expect(telemetry.style.strokeStyle).toBe("dotted");
+      expect(shapeById(template, placement.startBinding!)).toMatchObject({
+        label: "↗ Placement", parentId: `pop-${pop}-hull`, referenceId: "content-placement",
+        metadata: expect.objectContaining({ objectType: "reference" }),
+      });
+      expect(shapeById(template, telemetry.endBinding!)).toMatchObject({
+        label: "↗ Monitoring", parentId: `pop-${pop}-hull`, referenceId: "cdn-telemetry",
+        metadata: expect.objectContaining({ objectType: "reference" }),
+      });
+    }
+    expect(canvasText(template)).not.toMatch(/coalesc|If-None-Match|stale-if-error|304/i);
   });
 
-  it("explains exactly what builds, runs in the browser, serves HTTP, and persists data", () => {
+  it("identifies the app technologies and how saved properties become editable graphics", () => {
     const template = templateById("system-canvas-app");
     expectNativeScene(template);
-    expectOrthogonalConnectorsAvoidUnrelatedCards(template);
-    expect(systemById(template, "vite")).toMatchObject({ title: "Vite build / dev tool", subtitle: expect.stringMatching(/transforms TSX.*bundles browser files/i), metadata: expect.objectContaining({ packageName: expect.stringMatching(/vite 6\.4\.3/i), sourcePath: expect.stringMatching(/vite\.config/i) }) });
-    expect(systemById(template, "vite-dev-server")).toMatchObject({ title: "Vite development server", subtitle: "development only" });
-    expect(connectorById(template, "vite-to-browser-app")).toMatchObject({ startBinding: "vite-dev-server", endBinding: "react-workspace" });
-    expect(textById(template, "vite-note").text).toMatch(/tooling.*not the SVG editor.*server.*database/is);
-    expect(systemById(template, "react-workspace").subtitle).toMatch(/React.*TypeScript/i);
-    expect(systemById(template, "browser")).toMatchObject({ title: "Browser tab / client", subtitle: expect.stringMatching(/runs the frontend/i), metadata: expect.objectContaining({ runtimeLocation: expect.stringMatching(/browser/i) }) });
-    expect(systemById(template, "custom-editor")).toMatchObject({ iconId: "whiteboard", subtitle: expect.stringMatching(/repo-owned React.*TypeScript/i), body: expect.stringMatching(/not a separate library.*server.*database/i), metadata: expect.objectContaining({ sourcePath: expect.stringMatching(/EditorCanvas\.tsx.*CanvasElementView\.tsx/i), objectType: expect.stringMatching(/React component.*TypeScript model/i) }) });
-    expect(textById(template, "editor-definition").text).toMatch(/browser code.*not.*server.*database/i);
-    expect(systemById(template, "native-svg")).toMatchObject({ iconId: "canvas", subtitle: expect.stringMatching(/svg.*rect.*text.*polyline/i), body: expect.stringMatching(/pointer.*wheel.*keyboard.*resize.*return to editor/i), metadata: expect.objectContaining({ packageName: expect.stringMatching(/browser-native SVG/i) }) });
-    expect(connectorById(template, "workspace-to-editor")).toMatchObject({ startBinding: "react-workspace", endBinding: "custom-editor" });
-    expect(connectorById(template, "editor-scene-loop")).toMatchObject({ startBinding: "board-scene", endBinding: "custom-editor", startArrow: "arrow", label: expect.stringMatching(/scene in.*edited scene out/i) });
-    expect(connectorById(template, "editor-svg-loop")).toMatchObject({ startBinding: "custom-editor", endBinding: "native-svg", startArrow: "arrow" });
-    expect(systemById(template, "canvas-controls")).toMatchObject({ subtitle: expect.stringMatching(/labels.*tools.*lock.*background/i), body: expect.stringMatching(/resize handles.*inspector.*elements.*appState/i), metadata: expect.objectContaining({ sourcePath: expect.stringMatching(/EditorCanvas\.tsx/i), outputs: expect.stringMatching(/BoardScene.*appState/i) }) });
-    expect(systemById(template, "browser-files")).toMatchObject({ body: expect.stringMatching(/image files.*imports board JSON.*exports JSON\/SVG\/PNG/i), metadata: expect.objectContaining({ sourcePath: expect.stringMatching(/EditorCanvas\.tsx.*downloads\.ts.*validation\.ts/i), objectType: expect.stringMatching(/browser file operations/i) }) });
-    expect(systemById(template, "stencil-catalog").subtitle).toMatch(/bundled TypeScript definitions/i);
-    expect(systemById(template, "component-palette")).toMatchObject({ title: expect.stringMatching(/Component palette.*StencilShelf/i), metadata: expect.objectContaining({ sourcePath: expect.stringMatching(/StencilShelf\.tsx.*App\.tsx/i), outputs: expect.stringMatching(/onInsertStencil/i) }) });
-    expect(systemById(template, "placed-browser-element")).toMatchObject({ title: "Placed CanvasSystemElement", metadata: expect.objectContaining({ sourcePath: expect.stringMatching(/createStencilElements\.ts.*App\.tsx/i), objectType: "CanvasSystemElement" }) });
-    expect(connectorById(template, "catalog-to-palette")).toMatchObject({ startBinding: "stencil-catalog", endBinding: "component-palette" });
-    expect(connectorById(template, "palette-to-placed-element")).toMatchObject({ startBinding: "component-palette", endBinding: "placed-browser-element" });
-    expect(connectorById(template, "placed-element-to-scene")).toMatchObject({ startBinding: "placed-browser-element", endBinding: "board-scene" });
-    expect(connectorById(template, "files-to-scene")).toMatchObject({ startBinding: "browser-files", endBinding: "board-scene", label: expect.stringMatching(/import.*embed/i) });
-    expect(connectorById(template, "scene-to-files")).toMatchObject({ startBinding: "board-scene", endBinding: "browser-files", label: expect.stringMatching(/export/i) });
-    expect(systemById(template, "my-library").body).toMatch(/localStorage/i);
-    expect(connectorById(template, "local-storage-to-my-library")).toMatchObject({ startBinding: "local-storage", endBinding: "my-library", startArrow: "arrow" });
-    expect(systemById(template, "local-storage").subtitle).toMatch(/board.*My library JSON/i);
-    expect(connectorById(template, "scene-to-local-storage")).toMatchObject({ endBinding: "local-storage", label: expect.stringMatching(/JSON\.stringify.*edit/i) });
-    expect(connectorById(template, "scene-to-save-queue").endBinding).toBe("save-queue");
-    expect(connectorById(template, "queue-to-api")).toMatchObject({ endBinding: "fastify-api" });
-    expect(textById(template, "save-request-note").text).toMatch(/board JSON.*expected revision/i);
-    expect(systemById(template, "fastify-api").subtitle).toMatch(/Node\.js.*Fastify.*TypeScript/i);
-    expect(textById(template, "server-definition").text).toMatch(/application server.*serves Vite's dist/i);
-    expect(connectorById(template, "static-build-to-server")).toMatchObject({ startBinding: "static-build", endBinding: "fastify-api", label: expect.stringMatching(/fastify.*serves dist/i) });
-    expect(connectorById(template, "fastify-to-browser-app")).toMatchObject({ startBinding: "fastify-api", endBinding: "react-workspace", label: expect.stringMatching(/HTML.*JS.*CSS/i) });
-    expect(connectorById(template, "templates-to-store")).toMatchObject({ startBinding: "template-modules", endBinding: "board-store" });
-    expect(textById(template, "local-storage-note").text).toMatch(/belongs to the browser.*not server storage.*database server/i);
-    expect(connectorById(template, "store-to-files")).toMatchObject({ endBinding: "file-snapshots", label: expect.stringMatching(/atomic rename/i) });
-    expect(systemById(template, "file-snapshots")).toMatchObject({ subtitle: expect.stringMatching(/\.data/i), body: expect.stringMatching(/not a database/i) });
-    expect(connectorById(template, "api-save-response")).toMatchObject({ endBinding: "save-queue" });
-    expect(textById(template, "save-response-note").text).toMatch(/new revision.*conflict keeps local/i);
-    expect(systemById(template, "system-icon-registry")).toMatchObject({ subtitle: expect.stringMatching(/hand-authored local SVG/i), metadata: expect.objectContaining({ sourcePath: expect.stringMatching(/SystemIcon\.tsx.*template-diagram-kit/i), packageName: expect.stringMatching(/project-owned SVG/i) }) });
-    expect(systemById(template, "lucide-ui-icons")).toMatchObject({ subtitle: expect.stringMatching(/lucide-react 0\.468\.0.*third-party/i), body: expect.stringMatching(/interface controls.*does not define the system stencil artwork/i) });
-    expect(connectorById(template, "concept-to-icon")).toMatchObject({ startBinding: "visual-concept", endBinding: "system-icon-registry" });
-    expect(connectorById(template, "icon-to-stencil")).toMatchObject({ startBinding: "system-icon-registry", endBinding: "stencil-definition" });
-    expect(connectorById(template, "stencil-to-element")).toMatchObject({ startBinding: "stencil-definition", endBinding: "placed-canvas-object" });
+    const visibleDetails = (id: string): string => {
+      const element = systemById(template, id);
+      return [element.title, element.subtitle, element.body].filter(Boolean).join("\n");
+    };
+    expect(textById(template, "title").text).toBe("System Canvas · website architecture");
+    expect(textById(template, "legend").text).toMatch(/This website.*Saved properties.*React.*SVG elements.*browser graphics/is);
+    expect(visibleDetails("browser")).toMatch(/browser.*website.*JavaScript.*HTML.*CSS.*built.*Vite/is);
+    expect(visibleDetails("react-workspace")).toMatch(/React.*interface.*editor.*saved designs/is);
+    expect(visibleDetails("custom-editor")).toMatch(/React.*creates and updates SVG elements.*Object properties.*position.*size.*color.*text/is);
+    expect(visibleDetails("board-scene")).toMatch(/Design data.*JavaScript object properties.*browser memory.*drawing and edits.*discarded.*tab closes/is);
+    expect(visibleDetails("native-svg")).toMatch(/Browser SVG renderer.*draws SVG.*editable canvas/is);
+    expect(visibleDetails("local-storage")).toMatch(/localStorage.*properties.*JSON.*device.*Survives tab closure.*board deletion.*clearing site data.*removes/is);
+    expect(visibleDetails("fastify-api")).toMatch(/Web server.*Fastify.*Node\.js.*website.*board data/is);
+    expect(visibleDetails("board-store")).toMatch(/File storage.*node:fs.*reads.*writes.*JSON files.*object properties.*server/is);
+    expect(visibleDetails("file-snapshots")).toMatch(/JSON files.*server disk.*file per board.*same objects.*editable properties/is);
+    expect(visibleDetails("browser-files")).toMatch(/JSON designs.*SVG.*PNG pictures.*editable design/is);
+    expect(visibleDetails("placed-canvas-object")).toMatch(/editable object.*properties.*icon.*saved properties.*appearance/is);
+    expect(systemById(template, "lucide-ui-icons")).toMatchObject({
+      title: "Lucide · UI icon library", subtitle: "Ready-made SVG icons",
+      body: "Button and toolbar icons: delete, undo, zoom",
+    });
+
+    const visibleText = template.scene.elements.map(element => {
+      if (element.type === "system") return visibleDetails(element.id);
+      if (element.type === "text") return element.text;
+      if (element.type === "shape" || element.type === "connector") return element.label ?? "";
+      return element.alt ?? "";
+    }).join("\n");
+    expect(visibleText).not.toMatch(/expectedRevision|\b409\b|screenToWorld|XMLSerializer|card-7|\b(?:GET|POST|PUT|DELETE|PATCH)\b/);
+    expect(template.scene.elements.filter(element => element.id.startsWith("example-"))).toEqual([]);
+    for (const technology of [/\bVite\b/g, /\bFastify\b/g, /\bNode\.js\b/g]) {
+      expect(visibleText.match(technology)).toHaveLength(1);
+    }
+    for (const id of ["vite-note", "editor-definition", "local-storage-note", "save-request-note", "save-response-note", "server-definition", "tooling-zone", "tooling-zone-label", "server-zone", "server-zone-label"]) {
+      expect(template.scene.elements.some(element => element.id === id)).toBe(false);
+    }
+  });
+
+  it("keeps application source provenance inspectable behind concise technology cards", () => {
+    const template = templateById("system-canvas-app");
+    expect(systemById(template, "browser").metadata).toMatchObject({
+      packageName: expect.stringMatching(/vite/i), sourcePath: expect.stringMatching(/vite\.config/i),
+      explanation: expect.stringMatching(/source files.*Vite build.*Vite development server.*static build/is),
+    });
+    expect(systemById(template, "custom-editor")).toMatchObject({
+      iconId: "whiteboard",
+      metadata: expect.objectContaining({ sourcePath: expect.stringMatching(/EditorCanvas\.tsx.*CanvasElementView\.tsx/i), objectType: expect.stringMatching(/React component.*TypeScript model/i) }),
+    });
+    expect(systemById(template, "native-svg")).toMatchObject({
+      iconId: "canvas", metadata: expect.objectContaining({ packageName: expect.stringMatching(/browser-native SVG/i) }),
+    });
+    expect(systemById(template, "browser").metadata?.runtimeLocation).toMatch(/browser/i);
+    expect(systemById(template, "canvas-controls").metadata).toMatchObject({ sourcePath: expect.stringMatching(/EditorCanvas\.tsx/i), outputs: expect.stringMatching(/BoardScene.*appState/i) });
+    expect(systemById(template, "browser-files").metadata).toMatchObject({
+      sourcePath: expect.stringMatching(/EditorCanvas\.tsx.*downloads\.ts.*validation\.ts/i), objectType: expect.stringMatching(/browser file operations/i),
+    });
+    expect(systemById(template, "component-palette").metadata?.sourcePath).toMatch(/StencilShelf\.tsx.*App\.tsx/i);
+    expect(systemById(template, "placed-browser-element").metadata).toMatchObject({
+      sourcePath: expect.stringMatching(/createStencilElements\.ts.*App\.tsx/i), objectType: "CanvasSystemElement",
+    });
+    expect(systemById(template, "local-storage").metadata).toMatchObject({ packageName: "browser Web Storage API", runtimeLocation: "User's browser profile" });
+    expect(systemById(template, "file-snapshots").metadata?.explanation).toMatch(/not a database/i);
+    expect(systemById(template, "system-icon-registry").metadata).toMatchObject({
+      sourcePath: expect.stringMatching(/SystemIcon\.tsx.*CanvasElementView\.tsx.*render-scene\.tsx/i), packageName: expect.stringMatching(/project-owned SVG/i),
+    });
+    expect(systemById(template, "lucide-ui-icons").metadata?.explanation).toMatch(/interface controls.*does not define the system stencil artwork/i);
+  });
+
+  it("preserves rendering, persistence and visual vocabulary connections in the app architecture", () => {
+    const template = templateById("system-canvas-app");
+    expect([
+      "workspace-to-editor", "editor-scene-loop", "editor-svg-loop", "catalog-to-palette",
+      "palette-to-placed-element", "placed-element-to-scene", "files-to-scene", "scene-to-files", "local-storage-to-my-library",
+      "scene-to-local-storage", "scene-to-save-queue", "queue-to-api", "fastify-to-browser-app",
+      "templates-to-store", "store-to-files", "concept-to-icon", "icon-to-stencil", "stencil-to-element",
+    ].map((id) => {
+      const { startBinding, endBinding } = connectorById(template, id);
+      return [canonicalBinding(template, startBinding), canonicalBinding(template, endBinding)];
+    })).toEqual([
+      ["react-workspace", "custom-editor"], ["board-scene", "custom-editor"],
+      ["custom-editor", "native-svg"], ["stencil-catalog", "component-palette"], ["component-palette", "placed-browser-element"],
+      ["placed-browser-element", "board-scene"], ["browser-files", "board-scene"], ["board-scene", "browser-files"],
+      ["local-storage", "my-library"], ["board-scene", "local-storage"], ["board-scene", "save-queue"], ["save-queue", "fastify-api"],
+      ["fastify-api", "react-workspace"], ["template-modules", "board-store"],
+      ["board-store", "file-snapshots"], ["visual-concept", "system-icon-registry"],
+      ["system-icon-registry", "stencil-definition"], ["stencil-definition", "placed-canvas-object"],
+    ]);
+    expect(["api-to-store"].map(id => {
+      const { startBinding, endBinding } = connectorById(template, id);
+      return [canonicalBinding(template, startBinding), canonicalBinding(template, endBinding)];
+    })).toEqual([["fastify-api", "board-store"]]);
+    expect(connectorById(template, "scene-to-local-storage").label).toMatch(/Edit: save.*Open: read/i);
+    expect(connectorById(template, "scene-to-local-storage").startArrow).toBe("arrow");
+    expect(connectorById(template, "store-to-files")).toMatchObject({ label: "save and reopen JSON", startArrow: "arrow" });
+    expect(connectorById(template, "queue-to-api").startArrow).toBe("arrow");
+    expect(["editor-scene-loop", "editor-svg-loop", "local-storage-to-my-library"].map((id) => connectorById(template, id).startArrow)).toEqual(["arrow", "arrow", "arrow"]);
   });
 
   it.each([

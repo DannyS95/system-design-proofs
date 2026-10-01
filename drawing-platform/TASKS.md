@@ -75,6 +75,36 @@ Each task implements one mechanism.
   data destinations without rearranging the board's layer composition.
 - [x] Regenerate and verify the editable board plus deterministic SVG/PNG views.
 
+## Phase 7 — layout integrity and design reset
+
+- [x] Share content sizing, spacing, port clearance, routing, labels, and compaction
+  across every built-in design; preserve the financial-cache ring geometry.
+- [x] Compact social-feed shard choices and CDN alternate PoPs, and retain
+  deliberate data-plane padding through generation and resizing.
+- [x] Restore the latest matching design through an explicit Reset design button
+  with undo/redo and local-first persistence.
+- [x] Regenerate all JSON, SVG, PNG, and server template artifacts.
+- [x] Pass lint, typecheck, production build, and all 216 tests.
+- [x] Inspect all five templates at initial zoom, 100%, fit, and detail; verify
+  browser text bounds, preview reset/undo/redo, and saved reset/undo persistence.
+
+## Phase 8 — consultable component references
+
+- [x] Add a readable default inspector and visible Details badges.
+- [x] Keep editable properties behind Edit details and the existing Apply boundary.
+- [x] Validate and persist named HTTP(S) reference links in optional v2 metadata.
+- [x] Navigate connected components using existing bindings and references.
+- [x] Populate the app template with implementation and project Markdown links.
+- [x] Cover links, navigation, persistence, draft cancellation, and locked reading.
+
+## Phase 9 — compact concept inspection
+
+- [x] Keep the default view brief and move supporting context into disclosures.
+- [x] Reset context per selection and make Details a true toggle.
+- [x] Show explicit load/budget comparisons without confusing hit rate and capacity.
+- [x] Shorten visible workload cards and keep calculations in a bundled reference.
+- [x] Verify hidden metadata and expanded context cannot resize canvas elements.
+
 ## Later mechanisms
 
 - [ ] Asset upload to object storage.

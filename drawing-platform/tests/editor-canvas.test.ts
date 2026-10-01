@@ -28,6 +28,7 @@ import {
 } from "../src/editor/EditorCanvas.js";
 import {
   ConnectorView,
+  ElementSelectionView,
   SceneElementView,
 } from "../src/editor/CanvasElementView.js";
 
@@ -133,6 +134,34 @@ const visualScene = (pattern: "solid" | "dots" | "grid"): BoardScene => ({
 });
 
 describe("EditorCanvas render boundary", () => {
+  it.each([
+    [[0, 0], [240, 0]],
+    [[0, 0], [0, 240]],
+    [[0, 0], [240, 0], [240, 180], [80, 180]],
+  ])("selects the arrow path without a rectangular envelope: %j", (...points) => {
+    const element: CanvasConnectorElement = {
+      ...connector, points: points.map(([x, y]): [number, number] => [x, y]), labelPosition: [800, 800],
+    };
+    const markup = renderToStaticMarkup(createElement(ElementSelectionView, {
+      element, onResizePointerDown: () => undefined,
+    }));
+    expect(markup).toContain('data-connector-selection="request-path"');
+    expect(markup).toContain(`points="${element.points.map(point => point.join(',')).join(' ')}"`);
+    expect(markup).toContain('pointer-events="none"');
+    expect(markup).not.toContain('<rect');
+    expect(markup).not.toContain('canvas-resize-handle');
+  });
+
+  it("limits connector hit strokes to the visible line width", () => {
+    const markup = renderToStaticMarkup(createElement(ConnectorView, {
+      element: connector, selected: false, layer: "path", onPointerDown: () => undefined,
+    }));
+    const hitPath = markup.match(/<polyline[^>]*stroke="transparent"[^>]*>/)![0];
+    expect(hitPath).toContain(`stroke-width="${connector.style.strokeWidth}"`);
+    expect(hitPath).toContain('pointer-events="stroke"');
+    expect(hitPath).not.toContain('vector-effect="non-scaling-stroke"');
+  });
+
   it("area-selects contained elements without capturing a surrounding frame", () => {
     expect(
       findElementsInsideArea(
@@ -219,6 +248,20 @@ describe("EditorCanvas render boundary", () => {
     expect(dotted).toContain('data-canvas-pattern="true"');
     expect(dotted).toMatch(/<pattern[^>]*><circle/);
     expect(plain).not.toContain('data-canvas-pattern="true"');
+  });
+
+  it("draws every route before opaque labels and every foreground shape after labels", () => {
+    const scene = visualScene("solid");
+    scene.elements.push({ ...connector, id: "return-path", label: "return", y: 280 },
+      { ...frame, id: "decision", width: 120, height: 80, label: "HIT?" });
+    const rendered = renderToStaticMarkup(createElement(EditorCanvas,
+      props({ ...board, scene })));
+    const finalPath = rendered.lastIndexOf('data-connector-layer="path"');
+    const firstLabel = rendered.indexOf('data-connector-layer="label"');
+    const finalLabel = rendered.lastIndexOf('data-connector-layer="label"');
+    expect(finalPath).toBeLessThan(firstLabel);
+    expect(finalLabel).toBeLessThan(rendered.indexOf('data-element-id="decision"'));
+    expect(rendered).toContain('fill-opacity="1"');
   });
 
   it("exposes board-wide and selected-element locking controls", () => {
@@ -409,6 +452,16 @@ describe("editable element typography rendering", () => {
     onResizePointerDown: () => undefined,
   };
 
+  it("preserves leading spaces in browser and exported SVG text", () => {
+    const markup = renderToStaticMarkup(createElement(SceneElementView, {
+      ...viewCallbacks,
+      element: { ...systemNode, body: "Peak traffic\n  8,000 messages/s" },
+    }));
+    const span = markup.match(/<tspan[^>]*> {2}8,000 messages\/s<\/tspan>/)![0];
+    expect(span).toContain('xml:space="preserve"');
+    expect(span).toContain('white-space:pre');
+  });
+
   it("renders configured card, shape, text, and connector typography", () => {
     const cardMarkup = renderToStaticMarkup(
       createElement(SceneElementView, {
@@ -490,6 +543,28 @@ describe("editable element typography rendering", () => {
     expect(shapeMarkup).toContain('text-anchor="middle"');
     expect(connectorMarkup).toContain('font-size="10"');
     expect(connectorMarkup).toContain('text-anchor="middle"');
+  });
+
+  it("uses capped world-unit arrowheads with the tip exactly at the endpoint", () => {
+    const rendered = renderToStaticMarkup(createElement(ConnectorView, {
+      element: { ...connector, style: { ...style, strokeWidth: 8 } }, selected: false,
+      onPointerDown: () => undefined,
+    }));
+    expect(rendered).toContain('markerUnits="userSpaceOnUse"');
+    expect(rendered).toContain('markerWidth="14"');
+    expect(rendered).toContain('refX="10"');
+    expect(rendered).not.toContain('markerUnits="strokeWidth"');
+  });
+
+  it("renders persisted label centers with padded opaque bounds", () => {
+    const rendered = renderToStaticMarkup(createElement(ConnectorView, {
+      element: { ...connector, labelPosition: [120, -50], style: { ...style, opacity: 0.5 } },
+      selected: false, layer: "label", onPointerDown: () => undefined,
+    }));
+    expect(rendered).toContain('data-connector-layer="label"');
+    expect(rendered).toContain('fill-opacity="1"');
+    expect(rendered).not.toContain('opacity="0.5"');
+    expect(rendered).not.toContain("<polyline");
   });
 });
 

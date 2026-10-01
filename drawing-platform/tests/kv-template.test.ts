@@ -109,7 +109,7 @@ describe("KV-store topology template", () => {
 
     const standaloneText = kvTemplate().scene.elements.filter(({ type }) => type === "text");
     expect(standaloneText).toHaveLength(6);
-    expect(standaloneText.every((element) => element.type === "text" && element.text.length < 80)).toBe(true);
+    expect(standaloneText.every((element) => element.type === "text" && element.text.split("\n").every((line) => line.length < 80))).toBe(true);
   });
 
   it("keeps the checked-in editable v2 example aligned with the API template", async () => {

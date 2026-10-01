@@ -8,6 +8,9 @@ import {
   LoaderCircle,
   Menu,
   Plus,
+  RotateCcw,
+  Save,
+  Eraser,
   Shapes,
   TriangleAlert,
   Upload,
@@ -29,6 +32,10 @@ export interface AppHeaderProps {
   onNewBoard: () => void;
   onImport: () => void;
   onExport: () => void;
+  onResetDesign?: () => void;
+  onClearBoard?: () => void;
+  onSaveBoard?: () => void;
+  isResetting?: boolean;
   onOpenBoards?: () => void;
   onOpenStencils?: () => void;
   isCreating?: boolean;
@@ -49,7 +56,7 @@ const STATUS_PRESENTATION: Record<PersistenceStatus, StatusPresentation> = {
   },
   "saved-locally": {
     label: "Saved locally",
-    detail: "This board is safe in your browser and waiting to sync.",
+    detail: "Changes are saved in this browser. Click Save to update the server copy.",
     icon: Check,
   },
   saving: {
@@ -64,7 +71,7 @@ const STATUS_PRESENTATION: Record<PersistenceStatus, StatusPresentation> = {
   },
   offline: {
     label: "Offline",
-    detail: "Keep drawing. Your latest snapshot is saved locally and queued.",
+    detail: "Keep drawing. Changes stay in this browser. Click Save to retry when online.",
     icon: CloudOff,
   },
   conflict: {
@@ -82,6 +89,10 @@ export function AppHeader({
   onNewBoard,
   onImport,
   onExport,
+  onResetDesign,
+  onClearBoard,
+  onSaveBoard,
+  isResetting = false,
   onOpenBoards,
   onOpenStencils,
   isCreating = false,
@@ -150,6 +161,24 @@ export function AppHeader({
         </div>
 
         <div className="header-action-group" aria-label="Board actions">
+          {onSaveBoard ? <button className="header-action" type="button" onClick={onSaveBoard}
+            disabled={actionsDisabled || syncStatus === "saving" || syncStatus === "conflict"} title="Save this design to the server">
+            <Save aria-hidden="true" /><span>Save</span>
+          </button> : null}
+          {onClearBoard ? <button className="header-action" type="button" onClick={onClearBoard}
+            disabled={actionsDisabled} title="Clear the canvas. Saved server designs stay unchanged. Undo restores the canvas.">
+            <Eraser aria-hidden="true" /><span>Clear board</span>
+          </button> : null}
+          {onResetDesign ? <button
+            className="header-action"
+            type="button"
+            onClick={onResetDesign}
+            disabled={actionsDisabled || isResetting}
+            title="Restore this design's latest template. Undo restores your edits."
+          >
+            <RotateCcw aria-hidden="true" />
+            <span>{isResetting ? "Resetting…" : "Reset design"}</span>
+          </button> : null}
           <button
             className="header-action"
             type="button"

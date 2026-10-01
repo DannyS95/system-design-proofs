@@ -42,7 +42,12 @@ import type {
   CanvasShapeElement,
   CanvasTextAlign,
 } from "../../shared/contracts.js";
-import { ConnectorView, SceneElementView } from "./CanvasElementView.js";
+import { parseReferenceLinks } from "../../shared/reference-links.js";
+import { ComponentDetails } from "./ComponentDetails.js";
+import { elementName, hasArchitectureDetails } from "./component-details-model.js";
+import { tidySceneLayout } from "../../shared/generated-layout.js";
+import { ConnectorView, ElementSelectionView, SceneElementView } from "./CanvasElementView.js";
+import { LayoutControls, type LayoutSpacing } from "./LayoutControls.js";
 import {
   CONNECTOR_STYLE,
   DEFAULT_NODE_HEIGHT,
@@ -112,6 +117,7 @@ export interface ElementTextDraft {
   primary: string;
   secondary: string;
   body?: string;
+  capacity?: string;
 }
 
 export interface ElementTypographyDraft {
@@ -226,6 +232,7 @@ export const getElementTextDraft = (element: CanvasElement): ElementTextDraft =>
       primary: element.title,
       secondary: element.subtitle ?? "",
       body: element.body ?? "",
+      ...(element.capacity !== undefined ? { capacity: element.capacity } : {}),
     };
   }
   if (element.type === "shape" || element.type === "connector") {
@@ -251,6 +258,10 @@ export const applyElementTextDraft = (
     else delete customized.subtitle;
     if (draft.body) customized.body = draft.body;
     else delete customized.body;
+    if (draft.capacity !== undefined) {
+      if (draft.capacity) customized.capacity = draft.capacity;
+      else delete customized.capacity;
+    }
     return customized;
   }
   if (element.type === "shape" || element.type === "connector") {
@@ -276,6 +287,7 @@ const EMPTY_METADATA: CanvasElementMetadata = {
   outputs: "",
   ownership: "",
   explanation: "",
+  referenceLinks: "",
 };
 
 const METADATA_FIELDS: ReadonlyArray<{
@@ -291,6 +303,7 @@ const METADATA_FIELDS: ReadonlyArray<{
   { key: "outputs", label: "Outputs" },
   { key: "ownership", label: "Ownership" },
   { key: "explanation", label: "Explanation" },
+  { key: "referenceLinks", label: "Reference links" },
 ];
 
 const dimensionDraft = (value: number): string =>
@@ -314,6 +327,7 @@ export const hasElementInspectorChanges = (
     current.primary !== draft.primary ||
     current.secondary !== draft.secondary ||
     (current.body ?? "") !== (draft.body ?? "") ||
+    (current.capacity ?? "") !== (draft.capacity ?? current.capacity ?? "") ||
     dimensionDraft(element.width) !== draft.width ||
     dimensionDraft(element.height) !== draft.height ||
     currentTypography.fontSize !== draft.fontSize ||
@@ -463,12 +477,14 @@ function EditorCanvasComponent({
   const [labelDraft, setLabelDraft] = useState("");
   const [subtitleDraft, setSubtitleDraft] = useState("");
   const [bodyDraft, setBodyDraft] = useState("");
+  const [capacityDraft, setCapacityDraft] = useState("");
   const [fontSizeDraftValue, setFontSizeDraftValue] = useState("");
   const [bodyFontSizeDraft, setBodyFontSizeDraft] = useState("");
   const [textAlignDraft, setTextAlignDraft] =
     useState<CanvasTextAlign>("left");
   const [widthDraft, setWidthDraft] = useState("");
   const [heightDraft, setHeightDraft] = useState("");
+  const [inspectorMode, setInspectorMode] = useState<"details" | "edit">("details");
   const [metadataDraft, setMetadataDraft] =
     useState<CanvasElementMetadata>(EMPTY_METADATA);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -492,6 +508,7 @@ function EditorCanvasComponent({
       setLabelDraft(draft.primary);
       setSubtitleDraft(draft.secondary);
       setBodyDraft(draft.body ?? "");
+      setCapacityDraft(draft.capacity ?? "");
       const typographyDraft = getElementTypographyDraft(element);
       setFontSizeDraftValue(typographyDraft.fontSize);
       setBodyFontSizeDraft(typographyDraft.bodyFontSize);
@@ -532,6 +549,34 @@ function EditorCanvasComponent({
   const reportLiveScene = useCallback(() => {
     onSceneChange(cloneScene(sceneRef.current));
   }, [onSceneChange]);
+
+  const viewportSize = useCallback(() => {
+    const element = rootRef.current;
+    return {
+      width: element?.clientWidth ?? 1,
+      height: element?.clientHeight ?? 1,
+    };
+  }, []);
+
+  const tidyLayout = useCallback((spacing: LayoutSpacing, unlock = false) => {
+    const before = cloneScene(sceneRef.current);
+    if (!unlock && before.elements.some((element) => !element.deleted && element.locked)) {
+      showError("This board contains locked elements. Use Unlock all and tidy to apply spacing.");
+      return;
+    }
+    try {
+      const input = cloneScene(before);
+      if (unlock) input.elements = input.elements.map(element => element.deleted ? element : { ...element, locked: false });
+      const next = tidySceneLayout(input, spacing);
+      next.appState.camera = fitCameraToBounds(getSceneBounds(next.elements), viewportSize());
+      next.appState.layoutSpacing = { ...spacing };
+      commit(next, before);
+      setSelectedIds([]);
+      setEditingId(undefined);
+    } catch (cause) {
+      showError(cause instanceof Error ? cause.message : "The layout could not be tidied.");
+    }
+  }, [commit, showError, viewportSize]);
 
   const undo = useCallback(() => {
     const previous = undoRef.current.pop();
@@ -626,14 +671,6 @@ function EditorCanvasComponent({
     },
     [commit],
   );
-
-  const viewportSize = useCallback(() => {
-    const element = rootRef.current;
-    return {
-      width: element?.clientWidth ?? 1,
-      height: element?.clientHeight ?? 1,
-    };
-  }, []);
 
   const zoomToFit = useCallback(() => {
     const current = sceneRef.current;
@@ -798,10 +835,12 @@ function EditorCanvasComponent({
   }, [api, onApiReady]);
 
   useEffect(() => {
+    setInspectorMode("details");
     if (!selectedId) {
       setLabelDraft("");
       setSubtitleDraft("");
       setBodyDraft("");
+      setCapacityDraft("");
       setFontSizeDraftValue("");
       setBodyFontSizeDraft("");
       setTextAlignDraft("left");
@@ -826,7 +865,7 @@ function EditorCanvasComponent({
       if (
         target instanceof Element &&
         target.closest(
-          ".canvas-node, .canvas-resize-handle, .canvas-toolbar, .canvas-lock-controls, .canvas-zoom-controls, .canvas-background-panel",
+          ".canvas-details-badge, .canvas-node, .canvas-resize-handle, .canvas-toolbar, .canvas-lock-controls, .canvas-zoom-controls, .canvas-background-panel, .canvas-layout-controls",
         )
       ) {
         return;
@@ -1311,6 +1350,11 @@ function EditorCanvasComponent({
       showError("A system component needs a title before it can be saved.");
       return;
     }
+    try { parseReferenceLinks(metadataDraft.referenceLinks); }
+    catch (cause) {
+      showError(cause instanceof Error ? cause.message : "Check the reference links.");
+      return;
+    }
     const typographyDraft: ElementTypographyDraft = {
       fontSize: fontSizeDraftValue,
       bodyFontSize: bodyFontSizeDraft,
@@ -1352,6 +1396,7 @@ function EditorCanvasComponent({
       currentText.primary !== labelDraft ||
       currentText.secondary !== subtitleDraft ||
       (currentText.body ?? "") !== bodyDraft ||
+      (currentText.capacity ?? "") !== capacityDraft ||
       currentTypography.fontSize !== typographyDraft.fontSize ||
       currentTypography.bodyFontSize !== typographyDraft.bodyFontSize;
     const widthWasEdited = widthDraft !== dimensionDraft(selected.width);
@@ -1363,6 +1408,7 @@ function EditorCanvasComponent({
           primary: labelDraft,
           secondary: subtitleDraft,
           body: bodyDraft,
+          capacity: capacityDraft,
       });
       return {
         ...applyElementTypographyDraft(withText, typographyDraft),
@@ -1383,8 +1429,10 @@ function EditorCanvasComponent({
     commit(next, before);
     const applied = next.elements.find((element) => element.id === selected.id);
     if (applied) syncInspectorDrafts(applied);
+    setInspectorMode("details");
   }, [
     bodyDraft,
+    capacityDraft,
     bodyFontSizeDraft,
     commit,
     fontSizeDraftValue,
@@ -1418,6 +1466,7 @@ function EditorCanvasComponent({
         primary: labelDraft,
         secondary: subtitleDraft,
         body: bodyDraft,
+          capacity: capacityDraft,
         fontSize: fontSizeDraftValue,
         bodyFontSize: bodyFontSizeDraft,
         align: textAlignDraft,
@@ -1432,6 +1481,7 @@ function EditorCanvasComponent({
     onSaveSelectionToLibrary(structuredClone(selected));
   }, [
     bodyDraft,
+    capacityDraft,
     bodyFontSizeDraft,
     fontSizeDraftValue,
     heightDraft,
@@ -1529,6 +1579,28 @@ function EditorCanvasComponent({
     [handleImageFiles],
   );
 
+  const openDetails = useCallback((id: string, navigate = false, toggle = false) => {
+    if (toggle && selectedId === id && inspectorMode === "details" && !backgroundOpen) {
+      setSelectedIds([]);
+      rootRef.current?.focus();
+      return;
+    }
+    const current = sceneRef.current;
+    const element = current.elements.find(item => item.id === id && !item.deleted);
+    if (!element) return;
+    setSelectedIds([id]);
+    setInspectorMode("details");
+    setBackgroundOpen(false);
+    setEditingId(undefined);
+    if (navigate) {
+      const viewport = viewportSize();
+      const available = { ...viewport, width: Math.max(240, viewport.width - 402) };
+      const camera = fitCameraToBounds(getElementBounds(element), available, 48);
+      commit({ ...current, appState: { ...current.appState, camera } }, current, false);
+    }
+    requestAnimationFrame(() => { inspectorRef.current?.focus(); inspectorRef.current?.scrollTo(0, 0); });
+  }, [backgroundOpen, commit, inspectorMode, selectedId, viewportSize]);
+
   const camera = scene.appState.camera;
   const background = scene.appState.background;
   const patternSize = Math.max(6, background.spacing * camera.zoom);
@@ -1536,6 +1608,11 @@ function EditorCanvasComponent({
   const patternY = ((camera.y % patternSize) + patternSize) % patternSize;
   const patternId = `canvas-pattern-${board.id.replaceAll(/[^a-zA-Z0-9_-]/g, "-")}`;
   const visibleElements = scene.elements.filter((element) => !element.deleted);
+  const parentIds = new Set(visibleElements.map((element) => element.parentId));
+  const backgroundIds = new Set(visibleElements.filter((element) =>
+    element.type === "shape" && (parentIds.has(element.id) ||
+      (!element.label && !element.iconId && element.width * element.height >= 120_000)),
+  ).map((element) => element.id));
   const selectedElements = visibleElements.filter((element) =>
     selectedIds.includes(element.id),
   );
@@ -1550,6 +1627,7 @@ function EditorCanvasComponent({
         primary: labelDraft,
         secondary: subtitleDraft,
         body: bodyDraft,
+          capacity: capacityDraft,
         fontSize: fontSizeDraftValue,
         bodyFontSize: bodyFontSizeDraft,
         align: textAlignDraft,
@@ -1618,12 +1696,6 @@ function EditorCanvasComponent({
       >
         <title>{board.name}</title>
         <defs>
-          <marker id="canvas-arrow-end" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke" />
-          </marker>
-          <marker id="canvas-arrow-start" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
-            <path d="M 10 0 L 0 5 L 10 10 z" fill="context-stroke" />
-          </marker>
           <pattern id={patternId} x={patternX} y={patternY} width={patternSize} height={patternSize} patternUnits="userSpaceOnUse">
             {background.pattern === "dots" ? (
               <circle cx={patternSize / 2} cy={patternSize / 2} r={Math.max(0.7, camera.zoom)} fill="#374151" fillOpacity={0.2} />
@@ -1639,12 +1711,12 @@ function EditorCanvasComponent({
         ) : null}
         <g data-scene-root="true" transform={`translate(${camera.x} ${camera.y}) scale(${camera.zoom})`}>
           {visibleElements
-            .filter((element) => element.type === "shape")
+            .filter((element) => backgroundIds.has(element.id))
             .map((element) => (
               <SceneElementView
                 key={element.id}
                 element={element}
-                selected={selectedIds.includes(element.id)}
+                selected={false}
                 editing={false}
                 editingText=""
                 onPointerDown={onElementPointerDown}
@@ -1657,16 +1729,21 @@ function EditorCanvasComponent({
           {visibleElements
             .filter((element): element is CanvasConnectorElement => element.type === "connector")
             .map((element) => (
-              <ConnectorView key={element.id} element={element} selected={selectedIds.includes(element.id)} onPointerDown={onElementPointerDown} />
+              <ConnectorView key={element.id} element={element} selected={false} layer="path" onPointerDown={onElementPointerDown} />
             ))}
           {visibleElements
-            .filter((element) => element.type !== "connector" && element.type !== "shape")
+            .filter((element): element is CanvasConnectorElement => element.type === "connector")
+            .map((element) => (
+              <ConnectorView key={element.id} element={element} selected={false} layer="label" onPointerDown={onElementPointerDown} />
+            ))}
+          {visibleElements
+            .filter((element) => element.type !== "connector" && !backgroundIds.has(element.id))
             .map((element) => (
               <SceneElementView
                 key={element.id}
                 element={element}
                 file={element.type === "image" ? scene.files[element.fileId] : undefined}
-                selected={selectedIds.includes(element.id)}
+                selected={false}
                 editing={editingId === element.id}
                 editingText={editingText}
                 onPointerDown={onElementPointerDown}
@@ -1681,6 +1758,32 @@ function EditorCanvasComponent({
                 onResizePointerDown={onResizePointerDown}
               />
             ))}
+          {visibleElements.filter(element => element.type !== "connector" && hasArchitectureDetails(element) &&
+            (camera.zoom >= 0.45 || element.id === selectedId)).map(element => {
+            const bounds = getElementBounds(element);
+            return <g key={`details-${element.id}`} className="canvas-details-badge" data-editor-overlay="true"
+              aria-expanded={selectedId === element.id && inspectorMode === "details" && !backgroundOpen}
+              aria-controls={`component-details-${board.id}`}
+              data-details-for={element.id} role="button" tabIndex={0} aria-label={`Details for ${elementName(element)}`}
+              transform={`translate(${bounds.x + bounds.width} ${bounds.y}) scale(${1 / camera.zoom})`}
+              onPointerDown={event => event.stopPropagation()}
+              onClick={event => { event.stopPropagation(); openDetails(element.id, false, true); }}
+              onKeyDown={event => {
+                event.stopPropagation();
+                if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openDetails(element.id, true, true); }
+              }}>
+              <title>Open or close component details</title>
+              <rect x={-70} y={-28} width={70} height={24} rx={7} />
+              <text x={-59} y={-12}>Details ↗</text>
+            </g>;
+          })}
+          {selectedElements.map((element) => (
+            <ElementSelectionView
+              key={element.id}
+              element={element}
+              onResizePointerDown={onResizePointerDown}
+            />
+          ))}
           {marqueeBounds ? (
             <rect
               data-editor-overlay="true"
@@ -1747,7 +1850,9 @@ function EditorCanvasComponent({
       {selectedElement && !backgroundOpen ? (
         <section
           ref={inspectorRef}
-          className="canvas-element-panel"
+          id={`component-details-${board.id}`}
+          className={`canvas-element-panel${inspectorMode === "details" ? " canvas-element-panel--reference" : ""}`}
+          tabIndex={-1}
           aria-label="Selected element inspector"
           onWheel={(event) => event.stopPropagation()}
           onKeyDown={(event) => {
@@ -1763,7 +1868,7 @@ function EditorCanvasComponent({
             <div>
               <span>Selected</span>
               <strong>
-                {selectedElement.type === "system"
+                {inspectorMode === "details" ? elementName(selectedElement) : selectedElement.type === "system"
                   ? "System component"
                   : selectedElement.type === "shape"
                     ? "Shape"
@@ -1799,6 +1904,12 @@ function EditorCanvasComponent({
             </div>
           </header>
 
+          {inspectorMode === "details" ? <ComponentDetails key={selectedElement.id} element={selectedElement} elements={visibleElements}
+            onEdit={() => { syncInspectorDrafts(selectedElement); setInspectorMode("edit"); }}
+            onNavigate={id => openDetails(id, true)} /> : <>
+          <button type="button" onClick={() => { syncInspectorDrafts(selectedElement); setInspectorMode("details"); }}>
+            {selectedInspectorChanged ? "Cancel changes" : "View details"}
+          </button>
           <label className="canvas-element-panel__field">
             {selectedElement.type === "system"
               ? "Title"
@@ -1848,6 +1959,15 @@ function EditorCanvasComponent({
                 rows={4}
                 onChange={(event) => setBodyDraft(event.target.value)}
               />
+            </label>
+          ) : null}
+
+          {selectedElement.type === "system" ? (
+            <label className="canvas-element-panel__field">
+              Capacity annotation
+              <textarea value={capacityDraft} disabled={selectedElement.locked}
+                aria-label="Capacity annotation" rows={2} maxLength={240}
+                onChange={(event) => setCapacityDraft(event.target.value)} />
             </label>
           ) : null}
 
@@ -1946,9 +2066,12 @@ function EditorCanvasComponent({
               {METADATA_FIELDS.map(({ key, label }) => (
                 <label key={key} className="canvas-element-panel__field">
                   {label}
-                  {key === "inputs" || key === "outputs" || key === "explanation" ? (
+                  {key === "referenceLinks" ? <span className="reference-links-help">One link per line: Name | https://address. Links open in a new tab after Apply changes.</span> : null}
+                  {key === "inputs" || key === "outputs" || key === "explanation" || key === "referenceLinks" ? (
                     <textarea
-                      rows={key === "explanation" ? 4 : 2}
+                      rows={key === "explanation" || key === "referenceLinks" ? 4 : 2}
+                      placeholder={key === "referenceLinks" ? "Documentation | https://example.com/docs" : undefined}
+                      maxLength={4000}
                       value={metadataDraft[key] ?? ""}
                       disabled={selectedElement.locked}
                       aria-label={label}
@@ -1961,6 +2084,7 @@ function EditorCanvasComponent({
                     />
                   ) : (
                     <input
+                      maxLength={4000}
                       value={metadataDraft[key] ?? ""}
                       disabled={selectedElement.locked}
                       aria-label={label}
@@ -1976,6 +2100,8 @@ function EditorCanvasComponent({
               ))}
             </div>
           </details>
+
+          </>}
 
           {selectedProvenance ? (
             <details className="canvas-element-panel__details">
@@ -1998,7 +2124,7 @@ function EditorCanvasComponent({
             <p className="canvas-element-panel__status"><Lock aria-hidden="true" /> Locked elements stay selectable, but cannot be edited, moved, resized, or deleted.</p>
           ) : null}
 
-          <div className="canvas-element-panel__actions">
+          {inspectorMode === "edit" ? <div className="canvas-element-panel__actions">
             <button
               type="button"
               onClick={applySelectedInspector}
@@ -2029,7 +2155,7 @@ function EditorCanvasComponent({
                 Save component
               </button>
             ) : null}
-          </div>
+          </div> : null}
         </section>
       ) : null}
 
@@ -2049,6 +2175,15 @@ function EditorCanvasComponent({
           </div>
         </section>
       ) : null}
+
+      <LayoutControls
+        key={board.id}
+        value={scene.appState.layoutSpacing}
+        onTidy={tidyLayout}
+        onUnlockAndTidy={visibleElements.some(element => element.locked) ? spacing => tidyLayout(spacing, true) : undefined}
+        disabled={visibleElements.length === 0 || visibleElements.some((element) => element.locked)}
+        disabledReason={visibleElements.length === 0 ? "Add elements to tidy the layout" : "Unlock all elements to tidy layout"}
+      />
 
       <div className="canvas-zoom-controls" aria-label="Zoom controls">
         <button type="button" onClick={() => zoomBy(0.82)} aria-label="Zoom out"><Minus aria-hidden="true" /></button>

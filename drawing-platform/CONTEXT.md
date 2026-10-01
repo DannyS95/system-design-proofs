@@ -2,6 +2,101 @@
 
 ## What became visible
 
+- Verification: 256 tests pass, with lint and production build passing. Chromium
+  checks cover financial cache, CDN and app component details; collapsed defaults,
+  selection resets, badge/Close/Escape controls, unchanged canvas bounds, reference
+  links, manual saves and board controls pass. Expanded notes were visually checked.
+
+- Component inspection now starts with a short concept summary, a capacity graphic
+  and connected components. Context/references stay collapsed and reset between
+  selections. Details badges toggle open/closed; Close and Escape also dismiss.
+- Removed duplicated design-wide sizing essays from generated node metadata;
+  legacy notes are condensed in the reader without rewriting saved boards.
+  Capacity assumptions are available as a bundled Markdown download.
+- Cassandra/monitoring workload cards now contain compact visible summaries.
+  Context uses short titled sections and remains independent of canvas dimensions.
+- Removed background blur from the reference panel after browser screenshots
+  exposed blank content when expanded notes became scrollable.
+
+
+- Component references now open as readable notes, with visible Details badges,
+  explicit Edit details, safe named links, and navigation through actual bound
+  connections. Empty fields are hidden; locked components remain consultable.
+- Optional `metadata.referenceLinks` extends schema v2, preserving local-first
+  Apply/Undo, manual server saves, JSON portability, and reusable components.
+  The app template includes source and Markdown links through its generator;
+  reference-only refreshes leave authored geometry and preview artwork intact.
+
+
+- Layout spacing applies to the whole board without selection; sliders apply on
+  release and locked boards offer an explicit undoable Unlock all and tidy action.
+  Coincident nodes separate correctly, and tidying fits the result into view.
+- Clear board empties the canvas with Undo and preserves server snapshots.
+  Save explicitly writes to the server; edits and failed saves never auto-sync.
+
+
+- Architecture storage labels should reveal use and lifetime, not promise to
+  “restore work after reload.” Show working memory, edit/open paths, retention,
+  and removal. Name Lucide as the UI icon library and identify its button icons.
+
+- The app architecture is an orientation map for the team developing this
+  website. React creates/updates SVG elements; the browser SVG renderer draws
+  them. Persistence stores the same editable properties. Vite and Fastify/Node.js
+  need only brief component mentions, without dedicated Build/Backend areas.
+  Browser recovery and server files share a persistence flow while component
+  labels preserve their runtime ownership.
+
+- The application architecture follows “Elements identify; details reveal.”
+  Cards identify concrete technology and its contribution. Object properties
+  feed React/SVG rendering and remain editable through JSON persistence. API
+  methods, response codes, save rules, timing constants and worked coordinate
+  examples belong in development documentation or inspector details. LocalStorage
+  holds browser recovery and My library; Fastify/Node.js stores board JSON on disk.
+
+- Financial-cache text uses the monitoring workload hierarchy throughout.
+  `scripts/distributed-cache-typography.mjs` formats text before layout; workload
+  cards use the same pass before sizing. Other templates retain their styling.
+
+- Capacity captions now choose safe physical budgets rather than leaving unknown
+  limits: financial LB 50k, app 10k, cache 50k/node, Cassandra 5k/node. Workloads
+  explicitly include average, peak and 2× flash; target ≥50% spare at peak.
+  These are exercise assumptions, not benchmarks or per-core CPU ceilings.
+- Financial peak 4k client QPS costs 10.6k cache node ops/s and 6.4k Cassandra
+  node ops/s. Three Cassandra hosts are an explicit count separate from RF=3;
+  their 15k budget is 43% used at peak and 85% at flash. Read-only quorum cache
+  capacity is 75k client QPS from 150k raw node ops/s, not 150k client QPS.
+- Adding captions must preserve routing topology. KV/CDN use monotonic vertical
+  expansion of their validated baseline, followed by content/port compaction;
+  rigid hash-ring mechanisms retain the normal layout path.
+- The requested Obsidian vault received 16 native text annotations in its existing
+  financial-cache drawing, one compact callout in each of 11 related design notes,
+  and `BOTEC/BOTEC — Execution Capacity Assumptions.md`. Original drawing elements
+  were retained; staged edits were hash-checked before writing and after readback.
+
+- Policy-card colour denotes the enforcing layer. LFU eviction and TTL expiry
+  belong to physical cache-server memory; an amber database-fallback consequence
+  does not make the memory policy a database-layer component.
+- Container padding and content density are separate choices: the CDN data plane
+  deliberately uses 64-unit margins while its alternate PoPs share a compact row.
+  `containerPadding` is scene data respected by generation, validation, and resize.
+- Final card compaction must reattach bottom/right connector stubs into the space
+  just vacated by the card. Occupied ports do not justify keeping unused capacity.
+- Label placement must consider frame growth immediately and include internal
+  label plates in the frame's content bounds; otherwise a later label can move
+  a border over a previously valid label.
+- Reset is an explicit undoable replacement with the latest template, preserving
+  board identity and the local-first save path. Stable element IDs recognize
+  renamed template copies; unknown custom scenes are never guessed from a name.
+- Visible cards should state the component, selected configuration and consequence.
+  Background belongs in inspector metadata; the hash ring already communicates
+  the successor mechanism with a marked position, short arc and selected token.
+- Layout controls are an explicit editing transaction. Slider drafts do not move
+  a saved scene; `Tidy layout` commits the spacing profile and resulting geometry
+  together through undo and local-first persistence. Import preserves authored
+  coordinates, and locked elements retain their existing edit protection.
+- A mechanism group preserves internal geometry while allowing common translation;
+  a container role and child `parentId` instead express bounds that follow their
+  children. Plain layer headings do not need decorative enclosing rectangles.
 - A shared design standard belongs at the repository boundary and must be
   discoverable from both agent guidance and product documentation; otherwise
   visual and explanatory quality drifts board by board.

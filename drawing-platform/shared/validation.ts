@@ -30,6 +30,8 @@ import {
   type TemplateDefinition,
 } from "./contracts.js";
 
+import { parseReferenceLinks } from "./reference-links.js";
+
 export const BOARD_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/;
 export const MAX_BOARD_NAME_LENGTH = 80;
 export const MAX_TEMPLATE_DESCRIPTION_LENGTH = 240;
@@ -346,6 +348,7 @@ const ELEMENT_METADATA_KEYS = [
   "outputs",
   "ownership",
   "explanation",
+  "referenceLinks",
 ] as const;
 
 function parseElementMetadata(
@@ -361,6 +364,10 @@ function parseElementMetadata(
       allowEmpty: true,
       maxLength: 4_000,
     });
+    if (key === "referenceLinks" && parsed) {
+      try { parseReferenceLinks(parsed); }
+      catch (error) { fail(`${path}.${key}`, error instanceof Error ? error.message : "Invalid reference links."); }
+    }
     if (parsed !== undefined) result[key] = parsed;
   }
   return result;
@@ -378,6 +385,8 @@ const BASE_ELEMENT_KEYS = [
   "locked",
   "deleted",
   "parentId",
+  "layoutGroup",
+  "referenceId",
   "metadata",
 ] as const;
 
@@ -409,6 +418,14 @@ function parseBaseElement(
   if (parentId !== undefined) {
     base.parentId = parentId;
   }
+  const layoutGroup = parseOptionalString(element.layoutGroup, `${path}.layoutGroup`, {
+    allowEmpty: false, maxLength: MAX_ELEMENT_ID_LENGTH,
+  });
+  if (layoutGroup !== undefined) base.layoutGroup = layoutGroup;
+  const referenceId = parseOptionalString(element.referenceId, `${path}.referenceId`, {
+    allowEmpty: false, maxLength: MAX_ELEMENT_ID_LENGTH,
+  });
+  if (referenceId !== undefined) base.referenceId = referenceId;
   const metadata = parseElementMetadata(element.metadata, `${path}.metadata`);
   if (metadata !== undefined) {
     base.metadata = metadata;
@@ -433,6 +450,7 @@ function parseCanvasElement(value: unknown, path: string): CanvasElement {
         "title",
         "subtitle",
         "body",
+        "capacity",
         "titleFontSize",
         "bodyFontSize",
         "align",
@@ -467,6 +485,8 @@ function parseCanvasElement(value: unknown, path: string): CanvasElement {
     if (body !== undefined) {
       result.body = body;
     }
+    const capacity = parseOptionalString(element.capacity, `${path}.capacity`, { allowEmpty: true, maxLength: 240 });
+    if (capacity !== undefined) result.capacity = capacity;
     for (const key of ["titleFontSize", "bodyFontSize"] as const) {
       if (element[key] !== undefined) {
         result[key] = parseFiniteNumber(element[key], `${path}.${key}`, {
@@ -488,7 +508,7 @@ function parseCanvasElement(value: unknown, path: string): CanvasElement {
   if (type === "shape") {
     rejectUnknownKeys(
       element,
-      [...BASE_ELEMENT_KEYS, "shape", "label", "iconId", "fontSize", "align"],
+      [...BASE_ELEMENT_KEYS, "shape", "label", "iconId", "fontSize", "align", "layoutRole", "containerPadding"],
       path,
     );
     const result: CanvasShapeElement = {
@@ -503,6 +523,12 @@ function parseCanvasElement(value: unknown, path: string): CanvasElement {
     const label = parseOptionalString(element.label, `${path}.label`, {
       allowEmpty: true,
     });
+    if (element.layoutRole !== undefined) {
+      result.layoutRole = parseEnum(element.layoutRole, ["container", "mechanism"] as const, `${path}.layoutRole`);
+    }
+    if (element.containerPadding !== undefined) {
+      result.containerPadding = parseFiniteNumber(element.containerPadding, `${path}.containerPadding`, { min: 16, max: 128 });
+    }
     const fontSize =
       element.fontSize === undefined
         ? undefined
@@ -577,6 +603,7 @@ function parseCanvasElement(value: unknown, path: string): CanvasElement {
         "align",
         "startBinding",
         "endBinding",
+        "labelPosition",
       ],
       path,
     );
@@ -607,6 +634,15 @@ function parseCanvasElement(value: unknown, path: string): CanvasElement {
         `${path}.endArrow`,
       ) as CanvasArrowhead,
     };
+    if (element.labelPosition !== undefined) {
+      if (!Array.isArray(element.labelPosition) || element.labelPosition.length !== 2) {
+        return fail(`${path}.labelPosition`, "must be a [x, y] pair");
+      }
+      result.labelPosition = [
+        parseFiniteNumber(element.labelPosition[0], `${path}.labelPosition[0]`),
+        parseFiniteNumber(element.labelPosition[1], `${path}.labelPosition[1]`),
+      ];
+    }
     for (const key of ["label", "startBinding", "endBinding"] as const) {
       const parsed = parseOptionalString(element[key], `${path}.${key}`, {
         allowEmpty: key === "label",
@@ -652,7 +688,16 @@ function parseCanvasElement(value: unknown, path: string): CanvasElement {
 
 function parseCanvasAppState(value: unknown, path: string): CanvasAppState {
   const appState = parseRecord(value, path);
-  rejectUnknownKeys(appState, ["camera", "background"], path);
+  rejectUnknownKeys(appState, ["camera", "background", "layoutSpacing"], path);
+  let layoutSpacing: CanvasAppState["layoutSpacing"];
+  if (appState.layoutSpacing !== undefined) {
+    const spacing = parseRecord(appState.layoutSpacing, `${path}.layoutSpacing`);
+    rejectUnknownKeys(spacing, ["nodeGap", "edgeClearance"], `${path}.layoutSpacing`);
+    layoutSpacing = {
+      nodeGap: parseFiniteNumber(spacing.nodeGap, `${path}.layoutSpacing.nodeGap`, { min: 24, max: 160 }),
+      edgeClearance: parseFiniteNumber(spacing.edgeClearance, `${path}.layoutSpacing.edgeClearance`, { min: 24, max: 96 }),
+    };
+  }
 
   const camera = parseRecord(appState.camera, `${path}.camera`);
   rejectUnknownKeys(camera, ["x", "y", "zoom"], `${path}.camera`);
@@ -665,6 +710,7 @@ function parseCanvasAppState(value: unknown, path: string): CanvasAppState {
   );
 
   return {
+    ...(layoutSpacing ? { layoutSpacing } : {}),
     camera: {
       x: parseFiniteNumber(camera.x, `${path}.camera.x`),
       y: parseFiniteNumber(camera.y, `${path}.camera.y`),
@@ -793,6 +839,12 @@ export function parseBoardScene(value: unknown, path = "scene"): BoardScene {
             `references missing element '${target}'`,
           );
         }
+      }
+    }
+    if (element.referenceId !== undefined) {
+      const reference = elements.find(({ id }) => id === element.referenceId);
+      if (!reference || reference.id === element.id || reference.type === "connector" || reference.referenceId) {
+        fail(`${path}.elements[${index}].referenceId`, "must name a distinct existing component, not another reference or route");
       }
     }
     if (element.parentId !== undefined) {

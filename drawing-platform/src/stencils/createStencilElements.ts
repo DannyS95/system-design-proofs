@@ -2,6 +2,7 @@ import type {
   CanvasSystemElement,
   SystemNodeVariant,
 } from "../../shared/contracts";
+import { CANVAS_PALETTE, LAYOUT_STANDARD } from "../../shared/layout-standard";
 import {
   minimumTextHeight,
   preferredTextWidth,
@@ -9,10 +10,10 @@ import {
 import { getStencilById } from "./catalog";
 import type { StencilDefinition, StencilPlacement } from "./types";
 
-export const STENCIL_WIDTH = 224;
-export const STENCIL_HEIGHT = 112;
-
-const CARD_BACKGROUND = "#ffffff";
+/** Icon and padding only; each inserted card adds its measured text dimensions. */
+export const STENCIL_WIDTH = LAYOUT_STANDARD.cardPadding * 2 +
+  LAYOUT_STANDARD.iconPlateSize + LAYOUT_STANDARD.iconGap;
+export const STENCIL_HEIGHT = LAYOUT_STANDARD.cardPadding * 2 + LAYOUT_STANDARD.iconPlateSize;
 
 let elementSequence = 0;
 
@@ -65,21 +66,23 @@ export const createStencilElements = (
     height: STENCIL_HEIGHT,
     rotation: 0,
     style: {
-      fill: CARD_BACKGROUND,
+      fill: CANVAS_PALETTE.white,
       stroke: stencil.accent,
       strokeWidth: 2,
       strokeStyle: "solid",
       opacity: 1,
-      textColor: "#1f2937",
+      textColor: CANVAS_PALETTE.ink,
     },
     iconId: stencil.iconId,
     title: stencil.name,
     subtitle: stencil.role,
+    titleFontSize: LAYOUT_STANDARD.titleFontSize,
+    bodyFontSize: LAYOUT_STANDARD.bodyFontSize,
     variant: variantForStencil(stencil),
   };
-  const width = Math.max(STENCIL_WIDTH, preferredTextWidth(provisional));
+  const width = Math.ceil(preferredTextWidth(provisional));
   const sized = { ...provisional, width };
-  const height = Math.max(STENCIL_HEIGHT, minimumTextHeight(sized));
+  const height = Math.ceil(minimumTextHeight(sized));
 
   return [{
     ...sized,

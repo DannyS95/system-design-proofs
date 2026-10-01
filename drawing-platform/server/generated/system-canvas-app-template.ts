@@ -3,39 +3,18 @@ import type { TemplateDefinition } from "../../shared/contracts.js";
 
 export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
   "id": "system-canvas-app",
-  "name": "System Canvas · app architecture",
-  "description": "See exactly what Vite builds, what React and the repo-owned SVG editor run in the browser, what Node/Fastify serves, and where browser and filesystem JSON persist.",
+  "name": "System Canvas · website architecture",
+  "description": "Understand this website: its React workspace, browser SVG renderer, and the saved object properties that keep designs editable.",
   "scene": {
     "elements": [
       {
-        "id": "tooling-zone",
-        "type": "shape",
-        "x": 40,
-        "y": 90,
-        "width": 416,
-        "height": 1350,
-        "rotation": 0,
-        "style": {
-          "fill": "#fff1da",
-          "stroke": "#e7bf80",
-          "strokeWidth": 1.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#17212b"
-        },
-        "shape": "rectangle",
-        "locked": true
-      },
-      {
         "id": "browser-zone",
         "type": "shape",
-        "x": 490,
-        "y": 90,
-        "width": 1236,
-        "height": 1350,
+        "x": 32,
+        "y": 168,
         "rotation": 0,
         "style": {
-          "fill": "#e8efff",
+          "fill": "#eaf0f4",
           "stroke": "#b8c9f7",
           "strokeWidth": 1.5,
           "strokeStyle": "solid",
@@ -43,18 +22,19 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "shape": "rectangle",
+        "layoutRole": "container",
+        "width": 2933.72,
+        "height": 872.5,
         "locked": true
       },
       {
         "id": "browser-persistence-zone",
         "type": "shape",
-        "x": 535,
-        "y": 1030,
-        "width": 1146,
-        "height": 355,
+        "x": 32,
+        "y": 1116,
         "rotation": 0,
         "style": {
-          "fill": "#e9f7ed",
+          "fill": "#edf3ee",
           "stroke": "#b4ddbe",
           "strokeWidth": 1.5,
           "strokeStyle": "solid",
@@ -62,232 +42,216 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "textColor": "#17212b"
         },
         "shape": "rectangle",
-        "locked": true
-      },
-      {
-        "id": "server-zone",
-        "type": "shape",
-        "x": 1760,
-        "y": 90,
-        "width": 906,
-        "height": 1350,
-        "rotation": 0,
-        "style": {
-          "fill": "#f1ebff",
-          "stroke": "#c7b5f7",
-          "strokeWidth": 1.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#17212b"
-        },
-        "shape": "rectangle",
-        "locked": true
-      },
-      {
-        "id": "server-persistence-zone",
-        "type": "shape",
-        "x": 2115,
-        "y": 1000,
-        "width": 506,
-        "height": 385,
-        "rotation": 0,
-        "style": {
-          "fill": "#fbfaf6",
-          "stroke": "#7c3aed",
-          "strokeWidth": 1.5,
-          "strokeStyle": "dashed",
-          "opacity": 1,
-          "textColor": "#17212b"
-        },
-        "shape": "rectangle",
+        "layoutRole": "container",
+        "width": 2927.52,
+        "height": 429,
         "locked": true
       },
       {
         "id": "visual-vocabulary-zone",
         "type": "shape",
-        "x": 40,
-        "y": 1470,
-        "width": 2626,
-        "height": 270,
+        "x": 32,
+        "y": 1620,
         "rotation": 0,
         "style": {
-          "fill": "#e4f6f7",
-          "stroke": "#087e8b",
+          "fill": "#eaf2f2",
+          "stroke": "#477d80",
           "strokeWidth": 1.5,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "shape": "rectangle",
+        "layoutRole": "container",
+        "width": 2325.7599999999998,
+        "height": 255,
         "locked": true
       },
       {
-        "id": "source-to-vite",
-        "type": "connector",
-        "x": 245,
-        "y": 360,
-        "width": 0,
-        "height": 85,
+        "id": "reference-local-storage-library",
+        "type": "shape",
+        "x": 64,
+        "y": 959,
         "rotation": 0,
         "style": {
-          "fill": "transparent",
-          "stroke": "#bd6212",
-          "strokeWidth": 2.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#bd6212"
-        },
-        "points": [
-          [
-            0,
-            0
-          ],
-          [
-            0,
-            85
-          ]
-        ],
-        "label": "source input",
-        "startBinding": "frontend-source",
-        "endBinding": "vite",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "vite-to-dev-server",
-        "type": "connector",
-        "x": 165,
-        "y": 575,
-        "width": 0,
-        "height": 75,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#bd6212",
-          "strokeWidth": 2.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#bd6212"
-        },
-        "points": [
-          [
-            0,
-            0
-          ],
-          [
-            0,
-            75
-          ]
-        ],
-        "label": "npm run dev",
-        "startBinding": "vite",
-        "endBinding": "vite-dev-server",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "vite-to-build",
-        "type": "connector",
-        "x": 415,
-        "y": 510,
-        "width": 60,
-        "height": 427,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#bd6212",
-          "strokeWidth": 2.5,
+          "fill": "#ffffff",
+          "stroke": "#527760",
+          "strokeWidth": 1.5,
           "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#bd6212"
+          "textColor": "#527760"
         },
-        "points": [
-          [
-            0,
-            0
-          ],
-          [
-            60,
-            0
-          ],
-          [
-            60,
-            427
-          ],
-          [
-            0,
-            427
-          ]
-        ],
-        "label": "npm run build",
-        "startBinding": "vite",
-        "endBinding": "static-build",
-        "startArrow": "none",
-        "endArrow": "arrow",
+        "shape": "rectangle",
+        "referenceId": "local-storage",
+        "label": "↗ localStorage · browser storage",
+        "fontSize": 14,
+        "metadata": {
+          "explanation": "Same component as localStorage · browser storage (local-storage). Local persistence owns its implementation; this local endpoint preserves the dependency without a cross-section routing loop.",
+          "runtimeLocation": "User's browser profile",
+          "layer": "Local persistence",
+          "sourcePath": "src/data/local-board-store.ts; src/data/custom-stencil-store.ts",
+          "packageName": "browser Web Storage API",
+          "objectType": "Reference to an existing component",
+          "inputs": "JSON.stringify board or custom stencil",
+          "outputs": "locally restored JSON",
+          "ownership": "browser/user"
+        },
+        "parentId": "browser-zone",
+        "width": 280.08000000000004,
+        "height": 49.5,
         "locked": true
       },
       {
-        "id": "vite-to-browser-app",
-        "type": "connector",
-        "x": 415,
-        "y": 190,
-        "width": 575,
-        "height": 522,
+        "id": "reference-scene-workspace",
+        "type": "shape",
+        "x": 686.44,
+        "y": 466,
         "rotation": 0,
         "style": {
-          "fill": "transparent",
-          "stroke": "#bd6212",
-          "strokeWidth": 2.5,
-          "strokeStyle": "solid",
+          "fill": "#ffffff",
+          "stroke": "#496b8a",
+          "strokeWidth": 1.5,
+          "strokeStyle": "dashed",
           "opacity": 1,
-          "textColor": "#bd6212"
+          "textColor": "#496b8a"
         },
-        "points": [
-          [
-            0,
-            522
-          ],
-          [
-            65,
-            522
-          ],
-          [
-            65,
-            0
-          ],
-          [
-            575,
-            0
-          ],
-          [
-            575,
-            60
-          ]
-        ],
-        "label": "development: transformed JS + CSS",
-        "startBinding": "vite-dev-server",
-        "endBinding": "react-workspace",
-        "startArrow": "none",
-        "endArrow": "arrow",
+        "shape": "rectangle",
+        "referenceId": "board-scene",
+        "label": "↗ Design data",
+        "fontSize": 14,
+        "metadata": {
+          "explanation": "Same component as Design data (board-scene). Editor state owns its implementation; this local endpoint preserves the dependency without a cross-section routing loop.",
+          "runtimeLocation": "Browser memory",
+          "layer": "Editor state",
+          "sourcePath": "shared/contracts.ts",
+          "packageName": "project-owned TypeScript contract",
+          "objectType": "Reference to an existing component",
+          "inputs": "loaded board, inserted objects, or editor mutations",
+          "outputs": "render input, local JSON, server save payload",
+          "ownership": "React App / EditorCanvas"
+        },
+        "parentId": "browser-zone",
+        "width": 136.72000000000003,
+        "height": 49.5,
+        "locked": true
+      },
+      {
+        "id": "reference-scene-files-controls",
+        "type": "shape",
+        "x": 1705.44,
+        "y": 775,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#477d80",
+          "strokeWidth": 1.5,
+          "strokeStyle": "dashed",
+          "opacity": 1,
+          "textColor": "#477d80"
+        },
+        "shape": "rectangle",
+        "referenceId": "board-scene",
+        "label": "↗ Design data",
+        "fontSize": 14,
+        "metadata": {
+          "explanation": "Same component as Design data (board-scene). Editor state owns its implementation; this local endpoint preserves the dependency without a cross-section routing loop.",
+          "runtimeLocation": "Browser memory",
+          "layer": "Editor state",
+          "sourcePath": "shared/contracts.ts",
+          "packageName": "project-owned TypeScript contract",
+          "objectType": "Reference to an existing component",
+          "inputs": "loaded board, inserted objects, or editor mutations",
+          "outputs": "render input, local JSON, server save payload",
+          "ownership": "React App / EditorCanvas"
+        },
+        "parentId": "browser-zone",
+        "width": 136.72000000000003,
+        "height": 90.5,
+        "locked": true
+      },
+      {
+        "id": "reference-scene-persistence",
+        "type": "shape",
+        "x": 64,
+        "y": 1220,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#527760",
+          "strokeWidth": 1.5,
+          "strokeStyle": "dashed",
+          "opacity": 1,
+          "textColor": "#527760"
+        },
+        "shape": "rectangle",
+        "referenceId": "board-scene",
+        "label": "↗ Design data",
+        "fontSize": 14,
+        "metadata": {
+          "explanation": "Same component as Design data (board-scene). Editor state owns its implementation; this local endpoint preserves the dependency without a cross-section routing loop.",
+          "runtimeLocation": "Browser memory",
+          "layer": "Editor state",
+          "sourcePath": "shared/contracts.ts",
+          "packageName": "project-owned TypeScript contract",
+          "objectType": "Reference to an existing component",
+          "inputs": "loaded board, inserted objects, or editor mutations",
+          "outputs": "render input, local JSON, server save payload",
+          "ownership": "React App / EditorCanvas"
+        },
+        "parentId": "browser-persistence-zone",
+        "width": 136.72000000000003,
+        "height": 66.5,
+        "locked": true
+      },
+      {
+        "id": "reference-api-workspace",
+        "type": "shape",
+        "x": 2227.44,
+        "y": 282,
+        "rotation": 0,
+        "style": {
+          "fill": "#ffffff",
+          "stroke": "#775d83",
+          "strokeWidth": 1.5,
+          "strokeStyle": "dashed",
+          "opacity": 1,
+          "textColor": "#775d83"
+        },
+        "shape": "rectangle",
+        "referenceId": "fastify-api",
+        "label": "↗ Web server",
+        "fontSize": 14,
+        "metadata": {
+          "explanation": "Same component as Web server (fastify-api). Backend HTTP application owns its implementation; this local endpoint preserves the dependency without a cross-section routing loop.",
+          "runtimeLocation": "Node.js server process",
+          "layer": "Backend HTTP application",
+          "sourcePath": "server/index.ts; server/app.ts",
+          "packageName": "fastify 5.12.1; @fastify/static 10.1.3",
+          "objectType": "Reference to an existing component",
+          "inputs": "HTTP requests and JSON bodies",
+          "outputs": "HTML/static files or JSON responses",
+          "ownership": "project-owned server using third-party packages"
+        },
+        "parentId": "browser-zone",
+        "width": 131.12,
+        "height": 49.5,
         "locked": true
       },
       {
         "id": "browser-to-workspace",
         "type": "connector",
-        "x": 780,
-        "y": 315,
-        "width": 40,
+        "x": 522.0799999999997,
+        "y": 336.5,
+        "width": 164.36000000000035,
         "height": 0,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
@@ -295,7 +259,7 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            40,
+            164.36000000000035,
             0
           ]
         ],
@@ -303,31 +267,40 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
         "endBinding": "react-workspace",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "workspace-to-editor",
         "type": "connector",
-        "x": 1160,
-        "y": 315,
-        "width": 50,
-        "height": 0,
+        "x": 1062.44,
+        "y": 326.5,
+        "width": 643,
+        "height": 34,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
             0,
+            34
+          ],
+          [
+            619,
+            34
+          ],
+          [
+            619,
             0
           ],
           [
-            50,
+            643,
             0
           ]
         ],
@@ -335,101 +308,121 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
         "endBinding": "custom-editor",
         "startArrow": "none",
         "endArrow": "arrow",
+        "label": "editing surface",
+        "fontSize": 14,
+        "labelPosition": [
+          309.5,
+          8.899999999999977
+        ],
         "locked": true
       },
       {
         "id": "workspace-to-scene",
         "type": "connector",
-        "x": 1160,
-        "y": 330,
-        "width": 240,
-        "height": 180,
+        "x": 754.94,
+        "y": 391,
+        "width": 119.5,
+        "height": 75,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#2563eb"
+          "textColor": "#496b8a"
         },
         "points": [
           [
+            119.5,
+            0
+          ],
+          [
+            119.5,
+            24
+          ],
+          [
             0,
-            0
+            24
           ],
           [
-            20,
-            0
-          ],
-          [
-            20,
-            150
-          ],
-          [
-            240,
-            150
-          ],
-          [
-            240,
-            180
+            0,
+            75
           ]
         ],
-        "label": "React owns BoardScene state",
+        "label": "design data",
+        "fontSize": 14,
         "startBinding": "react-workspace",
-        "endBinding": "board-scene",
+        "endBinding": "reference-scene-workspace",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          89.625,
+          49.10000000000002
+        ],
         "locked": true
       },
       {
         "id": "editor-scene-loop",
         "type": "connector",
-        "x": 1580,
-        "y": 390,
-        "width": 0,
-        "height": 120,
+        "x": 1954.44,
+        "y": 381,
+        "width": 716.5,
+        "height": 210,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#15803d"
+          "textColor": "#527760"
         },
         "points": [
           [
+            716.5,
+            210
+          ],
+          [
+            716.5,
+            186
+          ],
+          [
             0,
-            120
+            186
           ],
           [
             0,
             0
           ]
         ],
-        "label": "scene in ↕ edited scene out",
+        "label": "read and change properties",
+        "fontSize": 14,
         "startBinding": "board-scene",
         "endBinding": "custom-editor",
         "startArrow": "arrow",
         "endArrow": "arrow",
+        "labelPosition": [
+          358.25,
+          160.89999999999998
+        ],
         "locked": true
       },
       {
         "id": "editor-svg-loop",
         "type": "connector",
-        "x": 1680,
-        "y": 330,
-        "width": 25,
-        "height": 492,
+        "x": 1930.44,
+        "y": 381,
+        "width": 672,
+        "height": 394,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#087e8b"
+          "textColor": "#477d80"
         },
         "points": [
           [
@@ -437,39 +430,45 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            25,
-            0
-          ],
-          [
-            25,
-            492
-          ],
-          [
             0,
-            492
+            370
+          ],
+          [
+            672,
+            370
+          ],
+          [
+            672,
+            394
           ]
         ],
         "startBinding": "custom-editor",
         "endBinding": "native-svg",
         "startArrow": "arrow",
         "endArrow": "arrow",
+        "label": "SVG elements out · pointer events in",
+        "fontSize": 14,
+        "labelPosition": [
+          168,
+          335.79999999999995
+        ],
         "locked": true
       },
       {
         "id": "catalog-to-palette",
         "type": "connector",
-        "x": 770,
-        "y": 590,
-        "width": 25,
+        "x": 504.03999999999996,
+        "y": 645.5,
+        "width": 182.4000000000001,
         "height": 0,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#087e8b"
+          "textColor": "#477d80"
         },
         "points": [
           [
@@ -477,7 +476,7 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            25,
+            182.4000000000001,
             0
           ]
         ],
@@ -485,23 +484,24 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
         "endBinding": "component-palette",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "palette-to-placed-element",
         "type": "connector",
-        "x": 1055,
-        "y": 590,
-        "width": 25,
+        "x": 1083.3600000000001,
+        "y": 645.5,
+        "width": 89.07999999999993,
         "height": 0,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#087e8b"
+          "textColor": "#477d80"
         },
         "points": [
           [
@@ -509,7 +509,7 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            25,
+            89.07999999999993,
             0
           ]
         ],
@@ -517,23 +517,24 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
         "endBinding": "placed-browser-element",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "placed-element-to-scene",
         "type": "connector",
-        "x": 1340,
-        "y": 590,
-        "width": 25,
-        "height": 0,
+        "x": 1622.1999999999998,
+        "y": 645.5,
+        "width": 1199.2400000000002,
+        "height": 262.5,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#087e8b"
+          "textColor": "#477d80"
         },
         "points": [
           [
@@ -541,7 +542,31 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            25,
+            284.24000000000024,
+            0
+          ],
+          [
+            284.24000000000024,
+            262.5
+          ],
+          [
+            1199.2400000000002,
+            262.5
+          ],
+          [
+            1199.2400000000002,
+            78.5
+          ],
+          [
+            761.2400000000002,
+            78.5
+          ],
+          [
+            761.2400000000002,
+            0
+          ],
+          [
+            785.2400000000002,
             0
           ]
         ],
@@ -549,585 +574,24 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
         "endBinding": "board-scene",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "my-library-to-palette",
         "type": "connector",
-        "x": 660,
-        "y": 670,
-        "width": 265,
-        "height": 80,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#15803d",
-          "strokeWidth": 2.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#15803d"
-        },
-        "points": [
-          [
-            0,
-            80
-          ],
-          [
-            0,
-            40
-          ],
-          [
-            265,
-            40
-          ],
-          [
-            265,
-            0
-          ]
-        ],
-        "label": "custom choices",
-        "startBinding": "my-library",
-        "endBinding": "component-palette",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "files-to-scene",
-        "type": "connector",
-        "x": 945,
-        "y": 670,
-        "width": 505,
-        "height": 80,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#087e8b",
-          "strokeWidth": 2.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#087e8b"
-        },
-        "points": [
-          [
-            0,
-            80
-          ],
-          [
-            0,
-            20
-          ],
-          [
-            505,
-            20
-          ],
-          [
-            505,
-            0
-          ]
-        ],
-        "label": "import + embed",
-        "startBinding": "browser-files",
-        "endBinding": "board-scene",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "scene-to-files",
-        "type": "connector",
-        "x": 990,
-        "y": 670,
-        "width": 510,
-        "height": 80,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#087e8b",
-          "strokeWidth": 2.5,
-          "strokeStyle": "dashed",
-          "opacity": 1,
-          "textColor": "#087e8b"
-        },
-        "points": [
-          [
-            510,
-            0
-          ],
-          [
-            510,
-            60
-          ],
-          [
-            0,
-            60
-          ],
-          [
-            0,
-            80
-          ]
-        ],
-        "label": "export files",
-        "startBinding": "board-scene",
-        "endBinding": "browser-files",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "controls-to-scene",
-        "type": "connector",
-        "x": 1230,
-        "y": 620,
-        "width": 135,
-        "height": 130,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#087e8b",
-          "strokeWidth": 2.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#087e8b"
-        },
-        "points": [
-          [
-            0,
-            130
-          ],
-          [
-            0,
-            80
-          ],
-          [
-            115,
-            80
-          ],
-          [
-            115,
-            0
-          ],
-          [
-            135,
-            0
-          ]
-        ],
-        "startBinding": "canvas-controls",
-        "endBinding": "board-scene",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "scene-to-local-storage",
-        "type": "connector",
-        "x": 525,
-        "y": 560,
-        "width": 1170,
-        "height": 610,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#15803d",
-          "strokeWidth": 2.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#15803d"
-        },
-        "points": [
-          [
-            1155,
-            0
-          ],
-          [
-            1170,
-            0
-          ],
-          [
-            1170,
-            400
-          ],
-          [
-            0,
-            400
-          ],
-          [
-            0,
-            610
-          ],
-          [
-            65,
-            610
-          ]
-        ],
-        "label": "JSON.stringify after edit",
-        "startBinding": "board-scene",
-        "endBinding": "local-storage",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "local-storage-to-scene",
-        "type": "connector",
-        "x": 510,
-        "y": 620,
-        "width": 860,
-        "height": 580,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#15803d",
-          "strokeWidth": 2.5,
-          "strokeStyle": "dashed",
-          "opacity": 1,
-          "textColor": "#15803d"
-        },
-        "points": [
-          [
-            80,
-            580
-          ],
-          [
-            0,
-            580
-          ],
-          [
-            0,
-            300
-          ],
-          [
-            860,
-            300
-          ],
-          [
-            860,
-            0
-          ],
-          [
-            855,
-            0
-          ]
-        ],
-        "label": "reload: read local copy",
-        "startBinding": "local-storage",
-        "endBinding": "board-scene",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "local-storage-to-my-library",
-        "type": "connector",
-        "x": 500,
-        "y": 815,
-        "width": 90,
-        "height": 365,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#15803d",
-          "strokeWidth": 2.5,
-          "strokeStyle": "dashed",
-          "opacity": 1,
-          "textColor": "#15803d"
-        },
-        "points": [
-          [
-            90,
-            365
-          ],
-          [
-            0,
-            365
-          ],
-          [
-            0,
-            0
-          ],
-          [
-            30,
-            0
-          ]
-        ],
-        "startBinding": "local-storage",
-        "endBinding": "my-library",
-        "startArrow": "arrow",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "scene-to-save-queue",
-        "type": "connector",
-        "x": 1325,
-        "y": 620,
-        "width": 385,
-        "height": 520,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#15803d",
-          "strokeWidth": 2.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#15803d"
-        },
-        "points": [
-          [
-            355,
-            0
-          ],
-          [
-            385,
-            0
-          ],
-          [
-            385,
-            500
-          ],
-          [
-            0,
-            500
-          ],
-          [
-            0,
-            520
-          ]
-        ],
-        "label": "enqueue board JSON",
-        "startBinding": "board-scene",
-        "endBinding": "save-queue",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "static-build-to-server",
-        "type": "connector",
-        "x": 415,
-        "y": 350,
-        "width": 1405,
-        "height": 1065,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#bd6212",
-          "strokeWidth": 2.5,
-          "strokeStyle": "dashed",
-          "opacity": 1,
-          "textColor": "#bd6212"
-        },
-        "points": [
-          [
-            0,
-            587
-          ],
-          [
-            45,
-            587
-          ],
-          [
-            45,
-            1065
-          ],
-          [
-            1375,
-            1065
-          ],
-          [
-            1375,
-            0
-          ],
-          [
-            1405,
-            0
-          ]
-        ],
-        "label": "production: @fastify/static serves dist/",
-        "startBinding": "static-build",
-        "endBinding": "fastify-api",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "workspace-to-api",
-        "type": "connector",
-        "x": 1100,
-        "y": 205,
-        "width": 720,
-        "height": 120,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#7c3aed",
-          "strokeWidth": 2.5,
-          "strokeStyle": "dashed",
-          "opacity": 1,
-          "textColor": "#7c3aed"
-        },
-        "points": [
-          [
-            0,
-            45
-          ],
-          [
-            0,
-            0
-          ],
-          [
-            640,
-            0
-          ],
-          [
-            640,
-            120
-          ],
-          [
-            720,
-            120
-          ]
-        ],
-        "label": "API request",
-        "startBinding": "react-workspace",
-        "endBinding": "fastify-api",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "fastify-to-browser-app",
-        "type": "connector",
-        "x": 1050,
-        "y": 160,
-        "width": 770,
-        "height": 140,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#bd6212",
-          "strokeWidth": 2.5,
-          "strokeStyle": "dashed",
-          "opacity": 1,
-          "textColor": "#bd6212"
-        },
-        "points": [
-          [
-            770,
-            140
-          ],
-          [
-            700,
-            140
-          ],
-          [
-            700,
-            0
-          ],
-          [
-            0,
-            0
-          ],
-          [
-            0,
-            90
-          ]
-        ],
-        "label": "HTML + JS + CSS",
-        "startBinding": "fastify-api",
-        "endBinding": "react-workspace",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "queue-to-api",
-        "type": "connector",
-        "x": 1520,
-        "y": 375,
-        "width": 300,
-        "height": 825,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#7c3aed",
-          "strokeWidth": 2.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#7c3aed"
-        },
-        "points": [
-          [
-            0,
-            825
-          ],
-          [
-            220,
-            825
-          ],
-          [
-            220,
-            0
-          ],
-          [
-            300,
-            0
-          ]
-        ],
-        "startBinding": "save-queue",
-        "endBinding": "fastify-api",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "api-to-store",
-        "type": "connector",
-        "x": 2200,
-        "y": 420,
-        "width": 0,
-        "height": 120,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#7c3aed",
-          "strokeWidth": 2.5,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#7c3aed"
-        },
-        "points": [
-          [
-            0,
-            0
-          ],
-          [
-            0,
-            120
-          ]
-        ],
-        "label": "call TypeScript module",
-        "startBinding": "fastify-api",
-        "endBinding": "board-store",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "templates-to-store",
-        "type": "connector",
-        "x": 2200,
-        "y": 685,
-        "width": 0,
+        "x": 280.5,
+        "y": 700,
+        "width": 604.44,
         "height": 75,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#527760",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#527760"
         },
         "points": [
           [
@@ -1136,31 +600,552 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           ],
           [
             0,
+            51
+          ],
+          [
+            604.44,
+            51
+          ],
+          [
+            604.44,
             0
           ]
         ],
-        "label": "import constants · clone scene",
+        "label": "custom choices",
+        "fontSize": 14,
+        "startBinding": "my-library",
+        "endBinding": "component-palette",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "labelPosition": [
+          302.22,
+          25.899999999999977
+        ],
+        "locked": true
+      },
+      {
+        "id": "files-to-scene",
+        "type": "connector",
+        "x": 1103.19,
+        "y": 751,
+        "width": 623.5,
+        "height": 24,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#477d80",
+          "strokeWidth": 2.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#477d80"
+        },
+        "points": [
+          [
+            0,
+            24
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            623.5,
+            0
+          ],
+          [
+            623.5,
+            24
+          ]
+        ],
+        "label": "open design",
+        "fontSize": 14,
+        "startBinding": "browser-files",
+        "endBinding": "reference-scene-files-controls",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "labelPosition": [
+          311.75,
+          -25.100000000000023
+        ],
+        "locked": true
+      },
+      {
+        "id": "scene-to-files",
+        "type": "connector",
+        "x": 1124.44,
+        "y": 841.5,
+        "width": 581,
+        "height": 66.5,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#477d80",
+          "strokeWidth": 2.5,
+          "strokeStyle": "dashed",
+          "opacity": 1,
+          "textColor": "#477d80"
+        },
+        "points": [
+          [
+            581,
+            2.75
+          ],
+          [
+            557,
+            2.75
+          ],
+          [
+            557,
+            66.5
+          ],
+          [
+            24,
+            66.5
+          ],
+          [
+            24,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "label": "download",
+        "fontSize": 14,
+        "startBinding": "reference-scene-files-controls",
+        "endBinding": "browser-files",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "labelPosition": [
+          290.5,
+          91.60000000000002
+        ],
+        "locked": true
+      },
+      {
+        "id": "controls-to-scene",
+        "type": "connector",
+        "x": 1656.72,
+        "y": 796.25,
+        "width": 48.72000000000003,
+        "height": 33.25,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#477d80",
+          "strokeWidth": 2.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#477d80"
+        },
+        "points": [
+          [
+            0,
+            33.25
+          ],
+          [
+            24.720000000000027,
+            33.25
+          ],
+          [
+            24.720000000000027,
+            0
+          ],
+          [
+            48.72000000000003,
+            0
+          ]
+        ],
+        "startBinding": "canvas-controls",
+        "endBinding": "reference-scene-files-controls",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "fontSize": 14,
+        "locked": true
+      },
+      {
+        "id": "scene-to-local-storage",
+        "type": "connector",
+        "x": 200.72000000000003,
+        "y": 1241.25,
+        "width": 270.3600000000001,
+        "height": 33.25,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#527760",
+          "strokeWidth": 2.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#527760"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            246.36000000000013,
+            0
+          ],
+          [
+            246.36000000000013,
+            33.25
+          ],
+          [
+            270.3600000000001,
+            33.25
+          ]
+        ],
+        "label": "Edit: save · Open: read",
+        "fontSize": 14,
+        "startBinding": "reference-scene-persistence",
+        "endBinding": "local-storage",
+        "startArrow": "arrow",
+        "endArrow": "arrow",
+        "labelPosition": [
+          123.18000000000006,
+          -25.09999999999991
+        ],
+        "locked": true
+      },
+      {
+        "id": "local-storage-to-my-library",
+        "type": "connector",
+        "x": 204.5,
+        "y": 884,
+        "width": 76,
+        "height": 75,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#527760",
+          "strokeWidth": 2.5,
+          "strokeStyle": "dashed",
+          "opacity": 1,
+          "textColor": "#527760"
+        },
+        "points": [
+          [
+            0,
+            75
+          ],
+          [
+            0,
+            51
+          ],
+          [
+            76,
+            51
+          ],
+          [
+            76,
+            0
+          ]
+        ],
+        "startBinding": "reference-local-storage-library",
+        "endBinding": "my-library",
+        "startArrow": "arrow",
+        "endArrow": "arrow",
+        "fontSize": 14,
+        "locked": true
+      },
+      {
+        "id": "scene-to-save-queue",
+        "type": "connector",
+        "x": 200.72000000000003,
+        "y": 1265.25,
+        "width": 921.3600000000001,
+        "height": 87.75,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#527760",
+          "strokeWidth": 2.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#527760"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            24.279999999999973,
+            0
+          ],
+          [
+            24.279999999999973,
+            87.75
+          ],
+          [
+            897.3600000000001,
+            87.75
+          ],
+          [
+            897.3600000000001,
+            9.25
+          ],
+          [
+            921.3600000000001,
+            9.25
+          ]
+        ],
+        "label": "changed design",
+        "fontSize": 14,
+        "startBinding": "reference-scene-persistence",
+        "endBinding": "save-queue",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "labelPosition": [
+          460.82000000000005,
+          112.84999999999991
+        ],
+        "locked": true
+      },
+      {
+        "id": "workspace-to-api",
+        "type": "connector",
+        "x": 1041.19,
+        "y": 224,
+        "width": 1207.5,
+        "height": 58,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#775d83",
+          "strokeWidth": 2.5,
+          "strokeStyle": "dashed",
+          "opacity": 1,
+          "textColor": "#775d83"
+        },
+        "points": [
+          [
+            0,
+            58
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            1207.5,
+            0
+          ],
+          [
+            1207.5,
+            58
+          ]
+        ],
+        "label": "load designs · HTTP",
+        "fontSize": 14,
+        "startBinding": "react-workspace",
+        "endBinding": "reference-api-workspace",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "labelPosition": [
+          603.75,
+          -25.099999999999994
+        ],
+        "locked": true
+      },
+      {
+        "id": "fastify-to-browser-app",
+        "type": "connector",
+        "x": 1062.44,
+        "y": 248,
+        "width": 1165,
+        "height": 64.5,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#9b713c",
+          "strokeWidth": 2.5,
+          "strokeStyle": "dashed",
+          "opacity": 1,
+          "textColor": "#9b713c"
+        },
+        "points": [
+          [
+            1165,
+            55.25
+          ],
+          [
+            1141,
+            55.25
+          ],
+          [
+            1141,
+            0
+          ],
+          [
+            24,
+            0
+          ],
+          [
+            24,
+            64.5
+          ],
+          [
+            0,
+            64.5
+          ]
+        ],
+        "label": "web app files",
+        "fontSize": 14,
+        "startBinding": "reference-api-workspace",
+        "endBinding": "react-workspace",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "labelPosition": [
+          303.25,
+          25.100000000000023
+        ],
+        "locked": true
+      },
+      {
+        "id": "queue-to-api",
+        "type": "connector",
+        "x": 1559.04,
+        "y": 1274.5,
+        "width": 225.32000000000016,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#775d83",
+          "strokeWidth": 2.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#775d83"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            225.32000000000016,
+            0
+          ]
+        ],
+        "startBinding": "save-queue",
+        "endBinding": "fastify-api",
+        "startArrow": "arrow",
+        "endArrow": "arrow",
+        "label": "save design · HTTP",
+        "fontSize": 14,
+        "labelPosition": [
+          112.66000000000008,
+          -25.09999999999991
+        ],
+        "locked": true
+      },
+      {
+        "id": "api-to-store",
+        "type": "connector",
+        "x": 2239.8,
+        "y": 1274.5,
+        "width": 181.03999999999996,
+        "height": 0,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#775d83",
+          "strokeWidth": 2.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#775d83"
+        },
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            181.03999999999996,
+            0
+          ]
+        ],
+        "label": "store designs",
+        "fontSize": 14,
+        "startBinding": "fastify-api",
+        "endBinding": "board-store",
+        "startArrow": "none",
+        "endArrow": "arrow",
+        "labelPosition": [
+          90.51999999999998,
+          -25.09999999999991
+        ],
+        "locked": true
+      },
+      {
+        "id": "templates-to-store",
+        "type": "connector",
+        "x": 2145.28,
+        "y": 1329,
+        "width": 459.05999999999995,
+        "height": 129.5,
+        "rotation": 0,
+        "style": {
+          "fill": "transparent",
+          "stroke": "#775d83",
+          "strokeWidth": 2.5,
+          "strokeStyle": "solid",
+          "opacity": 1,
+          "textColor": "#775d83"
+        },
+        "points": [
+          [
+            0,
+            129.5
+          ],
+          [
+            24.079999999999927,
+            129.5
+          ],
+          [
+            24.079999999999927,
+            24
+          ],
+          [
+            459.05999999999995,
+            24
+          ],
+          [
+            459.05999999999995,
+            0
+          ]
+        ],
+        "label": "starter design",
+        "fontSize": 14,
         "startBinding": "template-modules",
         "endBinding": "board-store",
         "startArrow": "none",
         "endArrow": "arrow",
+        "labelPosition": [
+          241.57000000000016,
+          49.09999999999991
+        ],
         "locked": true
       },
       {
         "id": "store-to-files",
         "type": "connector",
-        "x": 2390,
-        "y": 660,
-        "width": 0,
-        "height": 455,
+        "x": 2628.34,
+        "y": 1329,
+        "width": 46,
+        "height": 75,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#7c3aed"
+          "textColor": "#775d83"
         },
         "points": [
           [
@@ -1169,124 +1154,60 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           ],
           [
             0,
-            455
+            24
+          ],
+          [
+            46,
+            24
+          ],
+          [
+            46,
+            75
           ]
         ],
-        "label": "temp file → atomic rename",
+        "label": "save and reopen JSON",
+        "fontSize": 14,
         "startBinding": "board-store",
         "endBinding": "file-snapshots",
-        "startArrow": "none",
+        "startArrow": "arrow",
         "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "files-to-store",
-        "type": "connector",
-        "x": 2565,
-        "y": 685,
-        "width": 25,
-        "height": 500,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#7c3aed",
-          "strokeWidth": 2.5,
-          "strokeStyle": "dashed",
-          "opacity": 1,
-          "textColor": "#7c3aed"
-        },
-        "points": [
-          [
-            0,
-            500
-          ],
-          [
-            25,
-            500
-          ],
-          [
-            25,
-            35
-          ],
-          [
-            15,
-            35
-          ],
-          [
-            15,
-            0
-          ]
+        "labelPosition": [
+          -59.59999999999991,
+          49.5
         ],
-        "label": "read + parse board JSON",
-        "startBinding": "file-snapshots",
-        "endBinding": "board-store",
-        "startArrow": "none",
-        "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "api-save-response",
-        "type": "connector",
-        "x": 1520,
-        "y": 395,
-        "width": 300,
-        "height": 855,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "#d84b43",
-          "strokeWidth": 2.5,
-          "strokeStyle": "dashed",
-          "opacity": 1,
-          "textColor": "#d84b43"
-        },
-        "points": [
-          [
-            300,
-            0
-          ],
-          [
-            165,
-            0
-          ],
-          [
-            165,
-            855
-          ],
-          [
-            0,
-            855
-          ]
-        ],
-        "startBinding": "fastify-api",
-        "endBinding": "save-queue",
-        "startArrow": "none",
-        "endArrow": "arrow",
         "locked": true
       },
       {
         "id": "concept-to-icon",
         "type": "connector",
-        "x": 380,
-        "y": 1610,
-        "width": 50,
-        "height": 0,
+        "x": 438.8799999999998,
+        "y": 1778.5,
+        "width": 48.120000000000175,
+        "height": 10,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#087e8b"
+          "textColor": "#477d80"
         },
         "points": [
           [
             0,
+            10
+          ],
+          [
+            24.120000000000175,
+            10
+          ],
+          [
+            24.120000000000175,
             0
           ],
           [
-            50,
+            48.120000000000175,
             0
           ]
         ],
@@ -1294,23 +1215,24 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
         "endBinding": "system-icon-registry",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "icon-to-stencil",
         "type": "connector",
-        "x": 860,
-        "y": 1610,
-        "width": 50,
-        "height": 0,
+        "x": 836.9199999999998,
+        "y": 1778.5,
+        "width": 48.080000000000155,
+        "height": 10,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#087e8b"
+          "textColor": "#477d80"
         },
         "points": [
           [
@@ -1318,31 +1240,40 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            50,
+            24.080000000000155,
             0
+          ],
+          [
+            24.080000000000155,
+            10
+          ],
+          [
+            48.080000000000155,
+            10
           ]
         ],
         "startBinding": "system-icon-registry",
         "endBinding": "stencil-definition",
         "startArrow": "none",
         "endArrow": "arrow",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "stencil-to-element",
         "type": "connector",
-        "x": 1310,
-        "y": 1610,
-        "width": 50,
+        "x": 1328.68,
+        "y": 1788.5,
+        "width": 48.319999999999936,
         "height": 0,
         "rotation": 0,
         "style": {
           "fill": "transparent",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2.5,
           "strokeStyle": "solid",
           "opacity": 1,
-          "textColor": "#087e8b"
+          "textColor": "#477d80"
         },
         "points": [
           [
@@ -1350,7 +1281,7 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
             0
           ],
           [
-            50,
+            48.319999999999936,
             0
           ]
         ],
@@ -1358,189 +1289,69 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
         "endBinding": "placed-canvas-object",
         "startArrow": "none",
         "endArrow": "arrow",
-        "locked": true
-      },
-      {
-        "id": "frontend-source",
-        "type": "system",
-        "x": 75,
-        "y": 235,
-        "width": 340,
-        "height": 125,
-        "rotation": 0,
-        "style": {
-          "fill": "#ffffff",
-          "stroke": "#bd6212",
-          "strokeWidth": 2,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#17212b"
-        },
-        "iconId": "file-snapshot",
-        "title": "Frontend source files",
-        "subtitle": ".tsx + .ts + CSS in this repo",
-        "body": "Input code; it does not run until Vite transforms it.",
-        "metadata": {
-          "runtimeLocation": "Repository / build input",
-          "layer": "Build input",
-          "sourcePath": "src/, shared/, index.html, src/styles.css",
-          "packageName": "project source",
-          "objectType": "TypeScript, TSX, CSS, HTML files",
-          "outputs": "modules consumed by Vite",
-          "ownership": "project-owned"
-        },
-        "variant": "storage",
-        "locked": true
-      },
-      {
-        "id": "vite",
-        "type": "system",
-        "x": 75,
-        "y": 445,
-        "width": 340,
-        "height": 130,
-        "rotation": 0,
-        "style": {
-          "fill": "#ffffff",
-          "stroke": "#bd6212",
-          "strokeWidth": 2,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#17212b"
-        },
-        "iconId": "worker",
-        "title": "Vite build / dev tool",
-        "subtitle": "transforms TSX · bundles browser files",
-        "body": "Tooling package, not the editor or an application server.",
-        "metadata": {
-          "runtimeLocation": "Developer machine / build process",
-          "layer": "Build tooling",
-          "sourcePath": "vite.config.ts; package.json",
-          "packageName": "vite 6.4.3 + @vitejs/plugin-react",
-          "objectType": "build tool and development server",
-          "inputs": "frontend source modules",
-          "outputs": "dev module responses or dist/ assets",
-          "ownership": "third-party package configured by this project"
-        },
-        "variant": "service",
-        "locked": true
-      },
-      {
-        "id": "vite-dev-server",
-        "type": "system",
-        "x": 75,
-        "y": 650,
-        "width": 340,
-        "height": 125,
-        "rotation": 0,
-        "style": {
-          "fill": "#ffffff",
-          "stroke": "#bd6212",
-          "strokeWidth": 2,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#17212b"
-        },
-        "iconId": "application-server",
-        "title": "Vite development server",
-        "subtitle": "development only",
-        "body": "Serves transformed modules to the browser during npm run dev.",
-        "metadata": {
-          "runtimeLocation": "Developer machine, separate dev process",
-          "layer": "Development serving",
-          "sourcePath": "package.json scripts.dev:web",
-          "packageName": "vite",
-          "objectType": "development HTTP server",
-          "inputs": "source modules",
-          "outputs": "transformed JS and CSS to browser"
-        },
-        "variant": "service",
-        "locked": true
-      },
-      {
-        "id": "static-build",
-        "type": "system",
-        "x": 75,
-        "y": 875,
-        "width": 340,
-        "height": 125,
-        "rotation": 0,
-        "style": {
-          "fill": "#ffffff",
-          "stroke": "#bd6212",
-          "strokeWidth": 2,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#17212b"
-        },
-        "iconId": "file-snapshot",
-        "title": "dist/ static build",
-        "subtitle": "HTML + browser JavaScript + CSS",
-        "body": "Production files; Node/Fastify serves them but they execute in the browser.",
-        "metadata": {
-          "runtimeLocation": "dist/ on the server filesystem",
-          "layer": "Production artifact",
-          "sourcePath": "dist/ (generated)",
-          "packageName": "Vite output",
-          "objectType": "static files",
-          "inputs": "compiled frontend source",
-          "outputs": "HTML, JavaScript, CSS"
-        },
-        "variant": "storage",
+        "fontSize": 14,
         "locked": true
       },
       {
         "id": "browser",
         "type": "system",
-        "x": 530,
-        "y": 250,
-        "width": 250,
-        "height": 142,
+        "x": 64,
+        "y": 282,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "browser",
-        "title": "Browser tab / client",
-        "subtitle": "runs the frontend",
-        "body": "Owns DOM, pointer/keyboard/wheel events, memory, and localStorage.",
+        "title": "Web browser",
+        "subtitle": "Runs this website's JavaScript, HTML and CSS",
+        "body": "Website files built with Vite",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "Browser tab / client\nruns the frontend\nOwns DOM, pointer/keyboard/wheel events, memory, and localStorage.\n\nFrontend source files\n.tsx + .ts + CSS in this repo\nInput code; it does not run until Vite transforms it.\n\nVite build / dev tool\ntransforms TSX · bundles browser files\nTooling package, not the editor or an application server.\n\nVite development server\ndevelopment only\nServes transformed modules to the browser during npm run dev.\n\ndist/ static build\nHTML + browser JavaScript + CSS\nProduction files; Node/Fastify serves them but they execute in the browser.",
           "runtimeLocation": "User's web browser",
           "layer": "Client runtime",
           "objectType": "browser tab",
           "inputs": "HTML, JavaScript, CSS and user events",
           "outputs": "DOM/SVG pixels and HTTP requests",
-          "ownership": "browser environment"
+          "ownership": "browser environment",
+          "sourcePath": "src/; shared/; index.html; vite.config.ts; package.json; dist/ (generated)",
+          "packageName": "Browser platform; vite + @vitejs/plugin-react (build tooling)"
         },
+        "parentId": "browser-zone",
         "variant": "client",
+        "width": 458.07999999999976,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "react-workspace",
         "type": "system",
-        "x": 820,
-        "y": 250,
-        "width": 340,
-        "height": 130,
+        "x": 686.44,
+        "y": 282,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "workspace",
-        "title": "Browser application UI",
-        "subtitle": "React 18 + TypeScript components",
-        "body": "App owns board state and renders the workspace around the canvas.",
+        "title": "React · application interface",
+        "subtitle": "Boards, panels and editing tools",
+        "body": "Connects the editor to saved designs",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "Browser application UI\nReact 18 + TypeScript components\nApp owns board state and renders the workspace around the canvas.",
           "runtimeLocation": "Browser JavaScript runtime",
           "layer": "Frontend UI",
           "sourcePath": "src/App.tsx; src/components/WorkspaceLayout.tsx",
@@ -1548,32 +1359,38 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "objectType": "React component tree",
           "inputs": "API data, local board data, user actions",
           "outputs": "props and BoardScene updates",
-          "ownership": "project-owned components using React"
+          "ownership": "project-owned components using React",
+          "referenceLinks": "Implementation · src/App.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/App.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
         },
+        "parentId": "browser-zone",
         "variant": "service",
+        "width": 376,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "custom-editor",
         "type": "system",
-        "x": 1210,
-        "y": 240,
-        "width": 470,
-        "height": 150,
+        "x": 1705.44,
+        "y": 272,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "whiteboard",
-        "title": "Custom SVG editor module",
-        "subtitle": "repo-owned React + TypeScript code",
-        "body": "A set of project modules—not a separate library, server, or database. It turns BoardScene data and user events into edited scene data and SVG.",
+        "title": "Canvas editor · React",
+        "subtitle": "Creates and updates SVG elements",
+        "body": "Object properties set position, size, color and text",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "Custom SVG editor module\nrepo-owned React + TypeScript code\nA set of project modules—not a separate library, server, or database. It turns BoardScene data and user events into edited scene data and SVG.",
           "runtimeLocation": "Browser JavaScript runtime",
           "layer": "Frontend editor",
           "sourcePath": "src/editor/EditorCanvas.tsx; src/editor/CanvasElementView.tsx; src/editor/camera.ts; src/editor/canvas-model.ts",
@@ -1581,32 +1398,38 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "objectType": "React component plus pure TypeScript model functions",
           "inputs": "BoardScene, pointer/keyboard/wheel/resize events, image files",
           "outputs": "updated BoardScene and native SVG DOM",
-          "ownership": "project-owned"
+          "ownership": "project-owned",
+          "referenceLinks": "Implementation · src/editor/EditorCanvas.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/editor/EditorCanvas.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
         },
+        "parentId": "browser-zone",
         "variant": "service",
+        "width": 473.0799999999999,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "stencil-catalog",
         "type": "system",
-        "x": 530,
-        "y": 510,
-        "width": 240,
-        "height": 160,
+        "x": 64,
+        "y": 591,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "template-grid",
-        "title": "Built-in stencil catalog",
-        "subtitle": "bundled TypeScript definitions",
-        "body": "Defines each concept's name, role, color, iconId, category, and search terms.",
+        "title": "Component catalog",
+        "subtitle": "Built-in component definitions",
+        "body": "Provides names, icons and default appearance",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "Built-in stencil catalog\nbundled TypeScript definitions\nDefines each concept's name, role, color, iconId, category, and search terms.",
           "runtimeLocation": "Browser bundle",
           "layer": "Visual vocabulary",
           "sourcePath": "src/stencils/catalog.ts; src/stencils/types.ts",
@@ -1614,32 +1437,38 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "objectType": "readonly StencilDefinition[]",
           "inputs": "compiled catalog data",
           "outputs": "StencilShelfItem choices shown by StencilShelf",
-          "ownership": "project-owned"
+          "ownership": "project-owned",
+          "referenceLinks": "Implementation · src/stencils/catalog.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/stencils/catalog.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
         },
+        "parentId": "browser-zone",
         "variant": "service",
+        "width": 440.03999999999996,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "component-palette",
         "type": "system",
-        "x": 795,
-        "y": 510,
-        "width": 260,
-        "height": 160,
+        "x": 686.44,
+        "y": 591,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "template-grid",
-        "title": "Component palette / StencilShelf",
-        "subtitle": "searchable React UI",
-        "body": "Shows built-in and My library choices. Clicking one calls insertStencil in App.tsx with its ID.",
+        "title": "Component palette · React",
+        "subtitle": "Components available to place",
+        "body": "Choose a component to add to the design",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "Component palette / StencilShelf\nsearchable React UI\nShows built-in and My library choices. Clicking one calls insertStencil in App.tsx with its ID.",
           "runtimeLocation": "Browser React UI",
           "layer": "Component palette",
           "sourcePath": "src/components/StencilShelf.tsx; src/App.tsx",
@@ -1647,32 +1476,38 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "objectType": "React component receiving StencilShelfItem[]",
           "inputs": "built-in and custom choices, search text, selected stencil ID",
           "outputs": "onInsertStencil(stencilId)",
-          "ownership": "WorkspaceLayout / App"
+          "ownership": "WorkspaceLayout / App",
+          "referenceLinks": "Implementation · src/components/StencilShelf.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/components/StencilShelf.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
         },
+        "parentId": "browser-zone",
         "variant": "service",
+        "width": 396.91999999999996,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "placed-browser-element",
         "type": "system",
-        "x": 1080,
-        "y": 510,
-        "width": 260,
-        "height": 160,
+        "x": 1172.44,
+        "y": 591,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "file-snapshot",
-        "title": "Placed CanvasSystemElement",
-        "subtitle": "one editable object",
-        "body": "createStencilElements turns the selected definition and viewport point into scene data.",
+        "title": "Canvas object",
+        "subtitle": "A placed component with editable properties",
+        "body": "Becomes part of the design data",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "Placed CanvasSystemElement\none editable object\ncreateStencilElements turns the selected definition and viewport point into scene data.",
           "runtimeLocation": "Browser memory",
           "layer": "Canvas object creation",
           "sourcePath": "src/stencils/createStencilElements.ts; src/App.tsx",
@@ -1682,30 +1517,35 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "outputs": "element inserted through EditorCanvas API",
           "ownership": "App / board scene"
         },
+        "parentId": "browser-zone",
         "variant": "storage",
+        "width": 449.75999999999976,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "board-scene",
         "type": "system",
-        "x": 1365,
-        "y": 510,
-        "width": 315,
-        "height": 160,
+        "x": 2407.44,
+        "y": 591,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "file-snapshot",
-        "title": "BoardScene in memory",
-        "subtitle": "typed JSON-shaped application state",
-        "body": "Elements + camera/background + embedded image files; this is data, not the SVG DOM.",
+        "title": "Design data",
+        "subtitle": "JavaScript object properties in browser memory",
+        "body": "Used for drawing and edits; discarded when the tab closes",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "BoardScene in memory\ntyped JSON-shaped application state\nElements + camera/background + embedded image files; this is data, not the SVG DOM.",
           "runtimeLocation": "Browser memory",
           "layer": "Editor state",
           "sourcePath": "shared/contracts.ts",
@@ -1713,32 +1553,38 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "objectType": "BoardScene object",
           "inputs": "loaded board, inserted objects, or editor mutations",
           "outputs": "render input, local JSON, server save payload",
-          "ownership": "React App / EditorCanvas"
+          "ownership": "React App / EditorCanvas",
+          "referenceLinks": "Implementation · shared/contracts.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/shared/contracts.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
         },
+        "parentId": "browser-zone",
         "variant": "storage",
+        "width": 526.2799999999997,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "my-library",
         "type": "system",
-        "x": 530,
-        "y": 750,
-        "width": 260,
-        "height": 135,
+        "x": 64,
+        "y": 775,
         "rotation": 0,
         "style": {
-          "fill": "#e9f7ed",
-          "stroke": "#15803d",
+          "fill": "#edf3ee",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "template-grid",
-        "title": "My library",
-        "subtitle": "custom reusable elements",
-        "body": "Saved as JSON in browser localStorage and shown in the same component palette.",
+        "title": "My library · reusable components",
+        "subtitle": "Saved in this browser",
+        "body": "Reuse a component's appearance and content",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "My library\ncustom reusable elements\nSaved as JSON in browser localStorage and shown in the same component palette.",
           "runtimeLocation": "Browser memory and localStorage",
           "layer": "User component library",
           "sourcePath": "src/data/custom-stencil-store.ts",
@@ -1748,30 +1594,35 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "outputs": "reusable StencilShelfItem choice",
           "ownership": "user/browser"
         },
+        "parentId": "browser-zone",
         "variant": "storage",
+        "width": 432.2,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "browser-files",
         "type": "system",
-        "x": 815,
-        "y": 750,
-        "width": 260,
-        "height": 145,
+        "x": 686.44,
+        "y": 775,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "import-export",
-        "title": "Browser file features",
-        "subtitle": "images · JSON · SVG · PNG",
-        "body": "Reads image files into board data, imports board JSON, and exports JSON/SVG/PNG downloads.",
+        "title": "Files · import and export",
+        "subtitle": "JSON designs · SVG and PNG pictures",
+        "body": "Open an editable design or download a picture",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "Browser file features\nimages · JSON · SVG · PNG\nReads image files into board data, imports board JSON, and exports JSON/SVG/PNG downloads.",
           "runtimeLocation": "Browser JavaScript runtime",
           "layer": "File input and export",
           "sourcePath": "src/editor/EditorCanvas.tsx; src/editor/downloads.ts; shared/validation.ts",
@@ -1779,32 +1630,38 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "objectType": "browser file operations",
           "inputs": "image or board JSON files; current BoardScene",
           "outputs": "embedded CanvasFile data or downloaded JSON/SVG/PNG",
-          "ownership": "EditorCanvas"
+          "ownership": "EditorCanvas",
+          "referenceLinks": "Implementation · src/editor/downloads.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/editor/downloads.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
         },
+        "parentId": "browser-zone",
         "variant": "storage",
+        "width": 438,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "canvas-controls",
         "type": "system",
-        "x": 1100,
-        "y": 750,
-        "width": 260,
-        "height": 145,
+        "x": 1172.44,
+        "y": 775,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "control-plane",
-        "title": "Editor controls",
-        "subtitle": "labels · tools · lock · background",
-        "body": "Toolbar, resize handles, and inspector controls change elements or appState.",
+        "title": "Editing tools · React",
+        "subtitle": "Toolbar and property inspector",
+        "body": "JavaScript updates the selected object's properties",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "Editor controls\nlabels · tools · lock · background\nToolbar, resize handles, and inspector controls change elements or appState.",
           "runtimeLocation": "Browser React UI",
           "layer": "Editor interaction controls",
           "sourcePath": "src/editor/EditorCanvas.tsx",
@@ -1812,32 +1669,38 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "objectType": "toolbar, inspector, and resize interactions",
           "inputs": "pointer, keyboard, wheel, form, and resize actions",
           "outputs": "BoardScene element or appState updates",
-          "ownership": "EditorCanvas"
+          "ownership": "EditorCanvas",
+          "referenceLinks": "Implementation · src/editor/EditorCanvas.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/editor/EditorCanvas.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
         },
+        "parentId": "browser-zone",
         "variant": "service",
+        "width": 484.28,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "native-svg",
         "type": "system",
-        "x": 1385,
-        "y": 750,
-        "width": 295,
-        "height": 156,
+        "x": 2407.44,
+        "y": 775,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#2563eb",
+          "stroke": "#496b8a",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "canvas",
-        "title": "Native browser SVG + DOM",
-        "subtitle": "<svg>, <g>, <rect>, <text>, <polyline>",
-        "body": "Editor renders native SVG; pointer, wheel, keyboard, and resize events return to editor code.",
+        "title": "Browser SVG renderer",
+        "subtitle": "Draws SVG shapes, paths and text",
+        "body": "Displays the editable canvas on screen",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "Native browser SVG + DOM\n<svg>, <g>, <rect>, <text>, <polyline>\nEditor renders native SVG; pointer, wheel, keyboard, and resize events return to editor code.",
           "runtimeLocation": "Browser DOM",
           "layer": "Rendering and input surface",
           "sourcePath": "src/editor/CanvasElementView.tsx; src/editor/EditorCanvas.tsx",
@@ -1847,30 +1710,35 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "outputs": "pixels and pointer/wheel/keyboard/resize events",
           "ownership": "browser DOM rendered by project code"
         },
+        "parentId": "browser-zone",
         "variant": "service",
+        "width": 389.64,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "local-storage",
         "type": "system",
-        "x": 590,
-        "y": 1140,
-        "width": 390,
-        "height": 125,
+        "x": 471.08000000000015,
+        "y": 1220,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "local-storage",
-        "title": "Browser localStorage",
-        "subtitle": "local board + My library JSON",
-        "body": "Synchronous browser key/value storage; it survives reload and is not server storage.",
+        "title": "localStorage · browser storage",
+        "subtitle": "Board properties saved as JSON on this device",
+        "body": "Survives tab closure; board deletion or clearing site data removes it",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "Saved boards are serialized to JSON in this browser's localStorage. Each edit replaces the local snapshot before remote saving. Opening a board reads the local snapshot and the server document, choosing the newer copy; the local copy can be used when the server is unavailable. Closing the tab discards its JavaScript memory, not localStorage. Deleting the board removes its local snapshot after server deletion succeeds. Clearing this site's browser data also removes the local copy. Template previews are temporary and do not enter this save flow.",
           "runtimeLocation": "User's browser profile",
           "layer": "Local persistence",
           "sourcePath": "src/data/local-board-store.ts; src/data/custom-stencil-store.ts",
@@ -1878,32 +1746,38 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "objectType": "string key/value storage",
           "inputs": "JSON.stringify board or custom stencil",
           "outputs": "locally restored JSON",
-          "ownership": "browser/user"
+          "ownership": "browser/user",
+          "referenceLinks": "Implementation · src/data/local-board-store.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/data/local-board-store.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
         },
+        "parentId": "browser-persistence-zone",
         "variant": "storage",
+        "width": 602.7199999999998,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "save-queue",
         "type": "system",
-        "x": 1130,
-        "y": 1140,
-        "width": 390,
-        "height": 125,
+        "x": 1122.0800000000002,
+        "y": 1220,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#15803d",
+          "stroke": "#527760",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "message-queue",
-        "title": "RevisionSaveQueue",
-        "subtitle": "debounce · one HTTP save in flight",
-        "body": "Browser code serializes remote saves and keeps the latest pending scene.",
+        "title": "Autosave · JavaScript",
+        "subtitle": "Connects edits to backend storage",
+        "body": "Sends changed design data in the background",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "RevisionSaveQueue\ndebounce · one HTTP save in flight\nBrowser code serializes remote saves and keeps the latest pending scene.",
           "runtimeLocation": "Browser JavaScript memory",
           "layer": "Remote synchronization",
           "sourcePath": "src/data/revision-save-queue.ts",
@@ -1911,32 +1785,38 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "objectType": "TypeScript class",
           "inputs": "BoardScene plus expected revision",
           "outputs": "save API requests and revision acknowledgements",
-          "ownership": "App.tsx"
+          "ownership": "App.tsx",
+          "referenceLinks": "Implementation · src/data/revision-save-queue.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/data/revision-save-queue.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
         },
+        "parentId": "browser-persistence-zone",
         "variant": "service",
+        "width": 436.9599999999999,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "fastify-api",
         "type": "system",
-        "x": 1820,
-        "y": 275,
-        "width": 420,
-        "height": 145,
+        "x": 1784.3600000000001,
+        "y": 1220,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "application-server",
-        "title": "Application / API server",
-        "subtitle": "Node.js runtime · Fastify 5 · TypeScript",
-        "body": "Handles board/template HTTP routes. In production @fastify/static also serves dist/.",
+        "title": "Web server",
+        "subtitle": "Fastify on Node.js",
+        "body": "Serves this website and loads/saves board data",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "Application / API server\nNode.js runtime · Fastify 5 · TypeScript\nHandles board/template HTTP routes. In production @fastify/static also serves dist/.",
           "runtimeLocation": "Node.js server process",
           "layer": "Backend HTTP application",
           "sourcePath": "server/index.ts; server/app.ts",
@@ -1944,32 +1824,38 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "objectType": "Fastify application server",
           "inputs": "HTTP requests and JSON bodies",
           "outputs": "HTML/static files or JSON responses",
-          "ownership": "project-owned server using third-party packages"
+          "ownership": "project-owned server using third-party packages",
+          "referenceLinks": "Implementation · server/app.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/server/app.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
         },
         "variant": "service",
+        "width": 455.4399999999999,
+        "height": 109,
+        "align": "left",
+        "parentId": "browser-persistence-zone",
         "locked": true
       },
       {
         "id": "board-store",
         "type": "system",
-        "x": 2180,
-        "y": 540,
-        "width": 420,
-        "height": 145,
+        "x": 2420.84,
+        "y": 1220,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "application-server",
-        "title": "FileBoardStore server module",
-        "subtitle": "validates schema + expected revision",
-        "body": "A project class that reads and atomically replaces JSON files; not a database server.",
+        "title": "File storage · node:fs",
+        "subtitle": "Reads and writes board JSON files",
+        "body": "Persists object properties on the server",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "FileBoardStore server module\nvalidates schema + expected revision\nA project class that reads and atomically replaces JSON files; not a database server.",
           "runtimeLocation": "Node.js server process",
           "layer": "Persistence adapter",
           "sourcePath": "server/board-store.ts; shared/validation.ts",
@@ -1977,32 +1863,38 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "objectType": "TypeScript FileBoardStore class",
           "inputs": "validated board ID, name, scene, expected revision",
           "outputs": "BoardDocument or revision conflict",
-          "ownership": "server application"
+          "ownership": "server application",
+          "referenceLinks": "Implementation · server/board-store.ts | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/server/board-store.ts\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
         },
         "variant": "service",
+        "width": 390.76,
+        "height": 109,
+        "align": "left",
+        "parentId": "browser-persistence-zone",
         "locked": true
       },
       {
         "id": "template-modules",
         "type": "system",
-        "x": 1820,
-        "y": 760,
-        "width": 420,
-        "height": 135,
+        "x": 1784.3600000000001,
+        "y": 1404,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "template-grid",
-        "title": "Template modules",
-        "subtitle": "typed scene constants imported by the server",
-        "body": "Generated from repo-native diagram code, then cloned for new boards.",
+        "title": "Templates · starter designs",
+        "subtitle": "Ready-made design data",
+        "body": "Provides an editable starting point",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "Template modules\ntyped scene constants imported by the server\nGenerated from repo-native diagram code, then cloned for new boards.",
           "runtimeLocation": "Node.js server bundle",
           "layer": "Default content",
           "sourcePath": "server/templates.ts; server/generated/*-template.ts",
@@ -2013,29 +1905,34 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "ownership": "project-owned"
         },
         "variant": "storage",
+        "width": 360.92,
+        "height": 109,
+        "align": "left",
+        "parentId": "browser-persistence-zone",
         "locked": true
       },
       {
         "id": "file-snapshots",
         "type": "system",
-        "x": 2165,
-        "y": 1115,
-        "width": 400,
-        "height": 140,
+        "x": 2420.84,
+        "y": 1404,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#7c3aed",
+          "stroke": "#775d83",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "file-snapshot",
-        "title": "Filesystem JSON snapshots",
-        "subtitle": ".data/{boardId}.json",
-        "body": "One portable BoardDocument per file. This is server persistence, not a database service.",
+        "title": "Saved designs · JSON files",
+        "subtitle": "Server disk · one file per board",
+        "body": "Restores the same objects and their editable properties",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "Filesystem JSON snapshots\n.data/{boardId}.json\nOne portable BoardDocument per file. This is server persistence, not a database service.",
           "runtimeLocation": "Server filesystem",
           "layer": "Durable persistence",
           "sourcePath": ".data/{boardId}.json (runtime data)",
@@ -2046,29 +1943,34 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "ownership": "FileBoardStore"
         },
         "variant": "storage",
+        "width": 506.68,
+        "height": 109,
+        "align": "left",
+        "parentId": "browser-persistence-zone",
         "locked": true
       },
       {
         "id": "visual-concept",
         "type": "system",
-        "x": 80,
-        "y": 1545,
-        "width": 300,
-        "height": 130,
+        "x": 64,
+        "y": 1734,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "server",
-        "title": "1 · System concept",
-        "subtitle": "server · cache · database · router",
-        "body": "The idea we want a learner to recognize.",
+        "title": "System concept",
+        "subtitle": "Server · cache · database · router",
+        "body": "The thing the component represents",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "1 · System concept\nserver · cache · database · router\nThe idea we want a learner to recognize.",
           "runtimeLocation": "Design vocabulary",
           "layer": "Semantics",
           "sourcePath": "src/stencils/types.ts",
@@ -2076,63 +1978,74 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "outputs": "an iconId and stencil definition",
           "ownership": "project design language"
         },
+        "parentId": "visual-vocabulary-zone",
         "variant": "service",
+        "width": 374.8799999999998,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "system-icon-registry",
         "type": "system",
-        "x": 430,
-        "y": 1535,
-        "width": 430,
-        "height": 150,
+        "x": 487,
+        "y": 1724,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "canvas",
-        "title": "2 · SystemIcon registry",
-        "subtitle": "hand-authored local SVG paths",
-        "body": "src/editor/SystemIcon.tsx draws interactive canvas icons. No icon package supplies this system artwork; the static template script emits corresponding project-owned generated SVG geometry.",
+        "title": "SVG icon library",
+        "subtitle": "Project-owned component artwork",
+        "body": "An icon name selects its drawing",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "2 · SystemIcon registry\nhand-authored local SVG paths\nsrc/editor/SystemIcon.tsx draws interactive canvas icons. The editor and generated previews render the same SceneElementView and SystemIcon primitives; no icon package supplies this system artwork.",
           "runtimeLocation": "Browser bundle; generator at build/design time",
           "layer": "Visual asset registry",
-          "sourcePath": "src/editor/SystemIcon.tsx; scripts/template-diagram-kit.mjs",
+          "sourcePath": "src/editor/SystemIcon.tsx; src/editor/CanvasElementView.tsx; scripts/render-scene.tsx",
           "packageName": "project-owned SVG geometry",
-          "objectType": "React SVG component plus generator function",
+          "objectType": "shared React SVG component used by browser and generator",
           "inputs": "iconId",
           "outputs": "SVG paths, circles, rectangles",
-          "ownership": "project-owned"
+          "ownership": "project-owned",
+          "referenceLinks": "Implementation · src/editor/SystemIcon.tsx | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/src/editor/SystemIcon.tsx\nArchitecture and responsibilities | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DESIGN.md\nBoard data model | https://github.com/DannyS95/system-design-proofs/blob/main/drawing-platform/DATA_MODEL.md"
         },
+        "parentId": "visual-vocabulary-zone",
         "variant": "service",
+        "width": 349.91999999999985,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "stencil-definition",
         "type": "system",
-        "x": 910,
-        "y": 1545,
-        "width": 400,
-        "height": 130,
+        "x": 885,
+        "y": 1734,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "template-grid",
-        "title": "3 · Stencil definition",
-        "subtitle": "name + role + color + iconId",
-        "body": "The catalog turns visual vocabulary into searchable insertable choices.",
+        "title": "Component definition",
+        "subtitle": "Name · icon · default appearance",
+        "body": "Describes a component available in the palette",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "3 · Stencil definition\nname + role + color + iconId\nThe catalog turns visual vocabulary into searchable insertable choices.",
           "runtimeLocation": "Browser bundle",
           "layer": "Stencil catalog",
           "sourcePath": "src/stencils/catalog.ts",
@@ -2142,30 +2055,35 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "outputs": "searchable shelf item",
           "ownership": "project-owned"
         },
+        "parentId": "visual-vocabulary-zone",
         "variant": "service",
+        "width": 443.68,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "placed-canvas-object",
         "type": "system",
-        "x": 1360,
-        "y": 1545,
-        "width": 410,
-        "height": 130,
+        "x": 1377,
+        "y": 1734,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "file-snapshot",
-        "title": "4 · Placed canvas object",
-        "subtitle": "CanvasSystemElement saved in BoardScene JSON",
-        "body": "The element stores iconId plus editable title, subtitle, body, size, style, lock, and metadata.",
+        "title": "Editable object",
+        "subtitle": "Saved properties + an icon name",
+        "body": "Saved properties restore each object's appearance",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "4 · Placed canvas object\nCanvasSystemElement saved in BoardScene JSON\nThe element stores iconId plus editable title, subtitle, body, size, style, lock, and metadata.",
           "runtimeLocation": "Browser memory, localStorage, server JSON",
           "layer": "Canvas data",
           "sourcePath": "shared/contracts.ts; src/stencils/createStencilElements.ts",
@@ -2175,30 +2093,35 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "outputs": "editable rendered SVG card",
           "ownership": "board document"
         },
+        "parentId": "visual-vocabulary-zone",
         "variant": "storage",
+        "width": 474.7599999999999,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "lucide-ui-icons",
         "type": "system",
-        "x": 1830,
-        "y": 1535,
-        "width": 780,
-        "height": 150,
+        "x": 1900,
+        "y": 1724,
         "rotation": 0,
         "style": {
           "fill": "#ffffff",
-          "stroke": "#087e8b",
+          "stroke": "#477d80",
           "strokeWidth": 2,
           "strokeStyle": "solid",
           "opacity": 1,
           "textColor": "#17212b"
         },
         "iconId": "control-plane",
-        "title": "Toolbar icons are a separate source",
-        "subtitle": "lucide-react 0.468.0 · third-party React icon package",
-        "body": "EditorCanvas.tsx imports MousePointer2, Hand, Square, Circle, Diamond, ArrowUpRight, Type, ImagePlus, Lock, Undo2, and other interface controls. Lucide decorates the app UI; it does not define the system stencil artwork.",
+        "title": "Lucide · UI icon library",
+        "subtitle": "Ready-made SVG icons",
+        "body": "Button and toolbar icons: delete, undo, zoom",
+        "titleFontSize": 18,
+        "bodyFontSize": 14,
         "metadata": {
+          "explanation": "Toolbar icons are a separate source\nlucide-react 0.468.0 · third-party React icon package\nEditorCanvas.tsx imports MousePointer2, Hand, Square, Circle, Diamond, ArrowUpRight, Type, ImagePlus, Lock, Undo2, and other interface controls. Lucide decorates the app UI; it does not define the system stencil artwork.",
           "runtimeLocation": "Browser UI bundle",
           "layer": "Interface controls",
           "sourcePath": "src/editor/EditorCanvas.tsx and src/components/*.tsx",
@@ -2208,16 +2131,18 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "outputs": "toolbar/control glyphs",
           "ownership": "third-party package"
         },
+        "parentId": "visual-vocabulary-zone",
         "variant": "service",
+        "width": 425.7599999999999,
+        "height": 109,
+        "align": "left",
         "locked": true
       },
       {
         "id": "title",
         "type": "text",
-        "x": 52,
-        "y": 36,
-        "width": 1600,
-        "height": 48,
+        "x": 32,
+        "y": 32,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -2227,20 +2152,20 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "opacity": 1,
           "textColor": "#17212b"
         },
-        "text": "System Canvas · what runs where",
+        "text": "System Canvas · website architecture",
         "fontSize": 34,
         "fontFamily": "sans",
         "fontWeight": 600,
         "align": "left",
+        "width": 760,
+        "height": 103.04,
         "locked": true
       },
       {
         "id": "legend",
         "type": "text",
-        "x": 1540,
-        "y": 42,
-        "width": 1030,
-        "height": 24,
+        "x": 840,
+        "y": 32,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -2250,44 +2175,20 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "opacity": 1,
           "textColor": "#66717d"
         },
-        "text": "BLUE browser · GREEN browser storage · PURPLE server · AMBER build · TEAL visual assets",
+        "text": "This website: editing, rendering and persistence\nSaved properties → React → SVG elements → browser graphics\n↗ reference to the same component",
         "fontSize": 14,
         "fontFamily": "sans",
-        "fontWeight": 600,
-        "align": "right",
-        "locked": true
-      },
-      {
-        "id": "tooling-zone-label",
-        "type": "text",
-        "x": 58,
-        "y": 102,
-        "width": 374,
-        "height": 24,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "transparent",
-          "strokeWidth": 0,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#17212b"
-        },
-        "text": "BUILD / DEVELOPMENT · NOT APP DATA RUNTIME",
-        "fontSize": 15,
-        "fontFamily": "sans",
-        "fontWeight": 700,
+        "fontWeight": 400,
         "align": "left",
-        "parentId": "tooling-zone",
+        "width": 501.86159999999967,
+        "height": 69.76,
         "locked": true
       },
       {
         "id": "browser-zone-label",
         "type": "text",
-        "x": 508,
-        "y": 102,
-        "width": 1194,
-        "height": 24,
+        "x": 64,
+        "y": 200,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -2297,21 +2198,21 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "opacity": 1,
           "textColor": "#17212b"
         },
-        "text": "FRONTEND RUNTIME · THE USER'S WEB BROWSER",
-        "fontSize": 15,
+        "text": "BROWSER · workspace and graphics",
+        "fontSize": 18,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
         "parentId": "browser-zone",
+        "width": 414.36160000000007,
+        "height": 39.04,
         "locked": true
       },
       {
         "id": "browser-persistence-zone-label",
         "type": "text",
-        "x": 553,
-        "y": 1042,
-        "width": 1104,
-        "height": 24,
+        "x": 64,
+        "y": 1148,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -2321,207 +2222,21 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "opacity": 1,
           "textColor": "#17212b"
         },
-        "text": "BROWSER-OWNED PERSISTENCE + SYNC",
-        "fontSize": 15,
+        "text": "PERSISTENCE · browser recovery and server files",
+        "fontSize": 18,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
         "parentId": "browser-persistence-zone",
-        "locked": true
-      },
-      {
-        "id": "server-zone-label",
-        "type": "text",
-        "x": 1778,
-        "y": 102,
-        "width": 864,
-        "height": 24,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "transparent",
-          "strokeWidth": 0,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#17212b"
-        },
-        "text": "APPLICATION SERVER RUNTIME · NODE.JS PROCESS",
-        "fontSize": 15,
-        "fontFamily": "sans",
-        "fontWeight": 700,
-        "align": "left",
-        "parentId": "server-zone",
-        "locked": true
-      },
-      {
-        "id": "server-persistence-zone-label",
-        "type": "text",
-        "x": 2133,
-        "y": 1012,
-        "width": 464,
-        "height": 24,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "transparent",
-          "strokeWidth": 0,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#17212b"
-        },
-        "text": "SERVER PERSISTENCE",
-        "fontSize": 15,
-        "fontFamily": "sans",
-        "fontWeight": 700,
-        "align": "left",
-        "parentId": "server-persistence-zone",
-        "locked": true
-      },
-      {
-        "id": "vite-note",
-        "type": "text",
-        "x": 72,
-        "y": 1060,
-        "width": 350,
-        "height": 77,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "transparent",
-          "strokeWidth": 0,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#bd6212"
-        },
-        "text": "Vite is tooling.\nIt is not the SVG editor,\napplication server, or database.",
-        "fontSize": 19,
-        "fontFamily": "sans",
-        "fontWeight": 700,
-        "align": "left",
-        "locked": true
-      },
-      {
-        "id": "editor-definition",
-        "type": "text",
-        "x": 530,
-        "y": 420,
-        "width": 600,
-        "height": 43,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "transparent",
-          "strokeWidth": 0,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#2563eb"
-        },
-        "text": "Editor definition · browser code in this repository—not a separate library, server, database, browser, or runtime.",
-        "fontSize": 15,
-        "fontFamily": "sans",
-        "fontWeight": 700,
-        "align": "left",
-        "locked": true
-      },
-      {
-        "id": "local-storage-note",
-        "type": "text",
-        "x": 620,
-        "y": 1300,
-        "width": 840,
-        "height": 45,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "transparent",
-          "strokeWidth": 0,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#15803d"
-        },
-        "text": "Every edit writes locally first. localStorage belongs to the browser; it is not server storage or a database server.",
-        "fontSize": 16,
-        "fontFamily": "sans",
-        "fontWeight": 700,
-        "align": "center",
-        "locked": true
-      },
-      {
-        "id": "server-definition",
-        "type": "text",
-        "x": 1820,
-        "y": 445,
-        "width": 280,
-        "height": 81,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "transparent",
-          "strokeWidth": 0,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#7c3aed"
-        },
-        "text": "This Node.js process is the application server. In production it also serves Vite's dist/ files.",
-        "fontSize": 15,
-        "fontFamily": "sans",
-        "fontWeight": 700,
-        "align": "left",
-        "locked": true
-      },
-      {
-        "id": "save-request-note",
-        "type": "text",
-        "x": 1010,
-        "y": 1070,
-        "width": 300,
-        "height": 40,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "transparent",
-          "strokeWidth": 0,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#7c3aed"
-        },
-        "text": "SAVE REQUEST →\nboard JSON + expected revision",
-        "fontSize": 14,
-        "fontFamily": "sans",
-        "fontWeight": 700,
-        "align": "center",
-        "locked": true
-      },
-      {
-        "id": "save-response-note",
-        "type": "text",
-        "x": 1350,
-        "y": 1070,
-        "width": 300,
-        "height": 40,
-        "rotation": 0,
-        "style": {
-          "fill": "transparent",
-          "stroke": "transparent",
-          "strokeWidth": 0,
-          "strokeStyle": "solid",
-          "opacity": 1,
-          "textColor": "#d84b43"
-        },
-        "text": "SAVE RESPONSE ←\nnew revision, or conflict keeps local",
-        "fontSize": 14,
-        "fontFamily": "sans",
-        "fontWeight": 700,
-        "align": "center",
+        "width": 564.3519999999997,
+        "height": 39.04,
         "locked": true
       },
       {
         "id": "visual-vocabulary-zone-label",
         "type": "text",
-        "x": 58,
-        "y": 1482,
-        "width": 2584,
-        "height": 24,
+        "x": 64,
+        "y": 1652,
         "rotation": 0,
         "style": {
           "fill": "transparent",
@@ -2531,25 +2246,31 @@ export const SYSTEM_CANVAS_APP_TEMPLATE: TemplateDefinition = {
           "opacity": 1,
           "textColor": "#17212b"
         },
-        "text": "VISUAL VOCABULARY · WHAT AN ICON ACTUALLY IS",
-        "fontSize": 15,
+        "text": "VISUAL VOCABULARY · artwork → component → editable object",
+        "fontSize": 18,
         "fontFamily": "sans",
         "fontWeight": 700,
         "align": "left",
         "parentId": "visual-vocabulary-zone",
+        "width": 698.2144,
+        "height": 39.04,
         "locked": true
       }
     ],
     "appState": {
       "camera": {
-        "x": 18,
-        "y": 18,
-        "zoom": 0.62
+        "x": 6.399999999999999,
+        "y": 70.4,
+        "zoom": 0.8
       },
       "background": {
         "color": "#f8fafc",
         "pattern": "dots",
         "spacing": 24
+      },
+      "layoutSpacing": {
+        "nodeGap": 32,
+        "edgeClearance": 24
       }
     },
     "files": {}

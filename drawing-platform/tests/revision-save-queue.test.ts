@@ -113,3 +113,45 @@ describe("RevisionSaveQueue", () => {
     queue.dispose();
   });
 });
+
+
+describe("manual server saving", () => {
+  it("never sends edits on a timer or automatically sends edits made during a save", async () => {
+    vi.useFakeTimers();
+    let finish: ((value: BoardDocument) => void) | undefined;
+    const save = vi.fn((payload: PendingBoardSave, revision: number) => new Promise<BoardDocument>(resolve => {
+      finish = () => resolve(savedDocument(payload, revision + 1));
+    }));
+    const queue = new RevisionSaveQueue({ initialRevision: 1, manualOnly: true, save, onSaved: vi.fn(), onStatus: vi.fn() });
+    try {
+      queue.enqueue({ name: "A", scene: scene("A") });
+      await vi.advanceTimersByTimeAsync(10_000);
+      expect(save).not.toHaveBeenCalled();
+      const saving = queue.flush();
+      queue.enqueue({ name: "B", scene: scene("B") });
+      finish?.(savedDocument({ name: "A", scene: scene("A") }, 2));
+      await saving;
+      await vi.advanceTimersByTimeAsync(10_000);
+      expect(save).toHaveBeenCalledTimes(1);
+      const second = queue.flush();
+      expect(save.mock.calls[1][0].name).toBe("B");
+      expect(save.mock.calls[1][1]).toBe(2);
+      finish?.(savedDocument({ name: "B", scene: scene("B") }, 3));
+      await second;
+    } finally { queue.dispose(); vi.useRealTimers(); }
+  });
+
+  it("requires another manual save after a network failure", async () => {
+    vi.useFakeTimers();
+    const save = vi.fn().mockRejectedValue(new Error("Offline"));
+    const queue = new RevisionSaveQueue({ initialRevision: 1, manualOnly: true, save, onSaved: vi.fn(), onStatus: vi.fn() });
+    try {
+      queue.enqueue({ name: "A", scene: scene("A") });
+      await queue.flush();
+      await vi.advanceTimersByTimeAsync(10_000);
+      expect(save).toHaveBeenCalledTimes(1);
+      await queue.flush();
+      expect(save).toHaveBeenCalledTimes(2);
+    } finally { queue.dispose(); vi.useRealTimers(); }
+  });
+});
